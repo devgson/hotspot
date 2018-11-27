@@ -1,0 +1,19 @@
+{
+  "name": "hotspot",
+  "version": "1.0.0",
+  "description": "A web application that allows users explore top entertainment, restaurant spots around their area",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgson/hotspot.git"
+  },
+  "author": "Devgson,Seyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devgson/hotspot/issues"
+  },
+  "homepage": "https://github.com/devgson/hotspot#readme"
+}
