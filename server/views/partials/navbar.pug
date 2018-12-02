@@ -1,0 +1,28 @@
+header.header.menu_fixed
+      #logo
+        a(href='/', title='Hotspot - Find the hottest places in Lagos')
+          h3.text-dark Hotspot
+      ul#top_menu
+        li
+          a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+      // /top_menu
+      a.btn_mobile(href='#menu')
+        #hamburger.hamburger.hamburger--spin
+          .hamburger-box
+            .hamburger-inner
+      nav#menu.main-menu
+        ul.text-center
+          li
+            span
+              a(href='/') Home
+          li
+            span
+              a(href='/listing-detail') Listings
+          li
+            span
+              a(href='/grid-search') Search
+            ul
+              li
+                a(href='row-search.html') Row Search
+              li
+                a(href='/grid-search') Grid Search

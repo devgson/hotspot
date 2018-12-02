@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  include partials/navbar.pug
+  main
+    #error_page
+      .wrapper
+        .container
+          .row.justify-content-center.text-center
+            .col-xl-7.col-lg-9
+              h2
+                | 404 
+                i.icon_error-triangle_alt
+              p We're sorry, but the page you were looking for doesn't exist.
+              form
+                .search_bar_error
+                  input.form-control(type='text', placeholder='What are you looking for?')
+                  input(type='submit', value='Search')
+          // /row
+          // /container
+          // /wrapper
+          // /error_page
+  include partials/footer.pug

@@ -1,0 +1,345 @@
+extends layout
+
+block content
+  include partials/navbar.pug
+  main
+    .hero_in.shop_detail
+      .wrapper
+        span.magnific-gallery
+          a.btn_photos(href='img/gallery/hotel_list_1.jpg', title='Photo title', data-effect='mfp-zoom-in') View photos
+          a(href='img/gallery/hotel_list_2.jpg', title='Photo title', data-effect='mfp-zoom-in')
+          a(href='img/gallery/hotel_list_3.jpg', title='Photo title', data-effect='mfp-zoom-in')
+    // /hero_in
+    nav.secondary_nav.sticky_horizontal_2
+      .container
+        ul.clearfix
+          li
+            a.active(href='#description') Description
+          li
+            a(href='#reviews') Reviews
+          li
+            a(href='#sidebar') Booking
+    .container.margin_60_35
+      .row
+        .col-lg-8
+          section#description
+            .detail_title_1
+              h1 Victoria Secrets
+              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') 438 Rush Green Road, Romford
+            p
+              | Per consequat adolescens ex, cu nibh commune 
+              strong temporibus vim
+              | , ad sumo viris eloquentiam sed. Mea appareat omittantur eloquentiam ad, nam ei quas oportere democritum. Prima causae admodum id est, ei timeam inimicus sed. Sit an meis aliquam, cetero inermis vel ut. An sit illum euismod facilisis, tamquam vulputate pertinacia eum at.
+            p
+              | Cum et probo menandri. Officiis consulatu pro et, ne sea sale invidunt, sed ut sint 
+              strong blandit
+              |  efficiendi. Atomorum explicari eu qui, est enim quaerendum te. Quo harum viris id. Per ne quando dolore evertitur, pro ad cibo commune.
+            h5.add_bottom_15 Brands
+            .row.add_bottom_30
+              .col-md-4
+                ul.bullets
+                  li Valentino
+                  li Gucci
+                  li Louis Vuitton
+                  li Burberry
+              .col-md-4
+                ul.bullets
+                  li Moschino
+                  li Diesel
+                  li Prada
+                  li Ralph Lauren
+              .col-md-4
+                ul.bullets
+                  li Moschino
+                  li Diesel
+                  li Prada
+                  li Ralph Lauren
+            // /row
+            .opening
+              .ribbon
+                span.open Now Open
+              i.icon_clock_alt
+              h4 Opening Hours
+              .row
+                .col-md-6
+                  ul
+                    li
+                      | Monday 
+                      span 9 AM - 5 PM
+                    li
+                      | Tuesday 
+                      span 9 AM - 5 PM
+                    li
+                      | Wednesday 
+                      span 9 AM - 5 PM
+                    li
+                      | Thursday 
+                      span 9 AM - 5 PM
+                .col-md-6
+                  ul
+                    li
+                      | Friday 
+                      span 9 AM - 5 PM
+                    li
+                      | Saturday 
+                      span 9 AM - 5 PM
+                    li
+                      | Sunday 
+                      span Closed
+            // /opening
+            hr
+            h5 Special offers
+            .row
+              .col-lg-6.col-md-12
+                ul.menu_list
+                  li
+                    .thumb
+                      img(src='img/shop_item_1.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_2.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_3.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_4.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+              .col-lg-6.col-md-12
+                ul.menu_list
+                  li
+                    .thumb
+                      img(src='img/shop_item_5.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_6.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_7.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+                  li
+                    .thumb
+                      img(src='img/shop_item_8.jpg', alt='')
+                    h6
+                      | Clothing Cloth T-shirt 
+                      span $12
+                    p
+                      | Small / Medium / Large
+            // /row
+            hr
+            h3 Location
+            #map.map.map_single.add_bottom_45
+            // End Map
+            // /section
+            section#reviews
+              h2 Reviews
+              .reviews-container.add_bottom_30
+                .row
+                  .col-lg-3
+                    #review_summary
+                      strong 8.5
+                      em Superb
+                      small Based on 4 reviews
+                  .col-lg-9
+                    .row
+                      .col-lg-10.col-9
+                        .progress
+                          .progress-bar(role='progressbar', style='width: 90%', aria-valuenow='90', aria-valuemin='0', aria-valuemax='100')
+                      .col-lg-2.col-3
+                        small
+                          strong 5 stars
+                    // /row
+                    .row
+                      .col-lg-10.col-9
+                        .progress
+                          .progress-bar(role='progressbar', style='width: 95%', aria-valuenow='95', aria-valuemin='0', aria-valuemax='100')
+                      .col-lg-2.col-3
+                        small
+                          strong 4 stars
+                    // /row
+                    .row
+                      .col-lg-10.col-9
+                        .progress
+                          .progress-bar(role='progressbar', style='width: 60%', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100')
+                      .col-lg-2.col-3
+                        small
+                          strong 3 stars
+                    // /row
+                    .row
+                      .col-lg-10.col-9
+                        .progress
+                          .progress-bar(role='progressbar', style='width: 20%', aria-valuenow='20', aria-valuemin='0', aria-valuemax='100')
+                      .col-lg-2.col-3
+                        small
+                          strong 2 stars
+                    // /row
+                    .row
+                      .col-lg-10.col-9
+                        .progress
+                          .progress-bar(role='progressbar', style='width: 0', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+                      .col-lg-2.col-3
+                        small
+                          strong 1 stars
+                    // /row
+                    // /row
+              .reviews-container
+                .review-box.clearfix
+                  figure.rev-thumb
+                    img(src='img/avatar1.jpg', alt='')
+                  .rev-content
+                    .rating
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star
+                    .rev-info
+                      | Admin – April 03, 2016:
+                    .rev-text
+                      p
+                        | Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
+                // /review-box
+                .review-box.clearfix
+                  figure.rev-thumb
+                    img(src='img/avatar2.jpg', alt='')
+                  .rev-content
+                    .rating
+                      i.icon-star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star
+                    .rev-info
+                      | Ahsan – April 01, 2016:
+                    .rev-text
+                      p
+                        | Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
+                // /review-box
+                .review-box.clearfix
+                  figure.rev-thumb
+                    img(src='img/avatar3.jpg', alt='')
+                  .rev-content
+                    .rating
+                      i.icon-star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star.voted
+                      i.icon_star
+                    .rev-info
+                      | Sara – March 31, 2016:
+                    .rev-text
+                      p
+                        | Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
+                // /review-box
+                // /review-container
+                // /section
+                hr
+                .add-review
+                  h5 Leave a Review
+                  form
+                    .row
+                      .form-group.col-md-6
+                        label Name and Lastname *
+                        input#name_review.form-control(type='text', name='name_review', placeholder='')
+                      .form-group.col-md-6
+                        label Email *
+                        input#email_review.form-control(type='email', name='email_review')
+                      .form-group.col-md-6
+                        label Rating 
+                        .custom-select-form
+                          select#rating_review.wide(name='rating_review')
+                            option(value='1') 1 (lowest)
+                            option(value='2') 2
+                            option(value='3') 3
+                            option(value='4') 4
+                            option(value='5', selected='') 5 (medium)
+                            option(value='6') 6
+                            option(value='7') 7
+                            option(value='8') 8
+                            option(value='9') 9
+                            option(value='10') 10 (highest)
+                      .form-group.col-md-12
+                        label Your Review
+                        textarea#review_text.form-control(name='review_text', style='height:130px;')
+                      .form-group.col-md-12.add_top_20.add_bottom_30
+                        input#submit-review.btn_1(type='submit', value='Submit')
+        // /col
+        aside#sidebar.col-lg-4
+          .box_detail.booking
+            .price
+              h5.d-inline Contact us
+              .score
+                span
+                  | Good
+                  em 350 Reviews
+                strong 7.0
+            #message-contact-detail
+            form#contact_detail(method='post', action='http://www.ansonika.com/sparker/assets/contact_detail.php', autocomplete='off')
+              .form-group
+                input#name_detail.form-control(type='text', placeholder='Name', name='name_detail')
+                i.ti-user
+              .form-group
+                input#email_detail.form-control(type='email', placeholder='Email', name='email_detail')
+                i.icon_mail_alt
+              .form-group
+                textarea#message_detail.form-control(placeholder='Your message', name='message_detail')
+                i.ti-pencil
+              .form-group
+                input#verify_contact_detail.form-control(placeholder='Are you human? 3 + 1 =', type='text', name='verify_contact_detail')
+              .form-group
+                input#submit-contact-detail.add_top_30.btn_1.full-width.purchase(type='submit', value='Contact us')
+              a.btn_1.full-width.outline.wishlist(href='wishlist.html')
+                i.icon_heart
+                |  Add to wishlist
+              .text-center
+                small No money charged in this step
+          ul.share-buttons
+            li
+              a.fb-share(href='#0')
+                i.social_facebook
+                |  Share
+            li
+              a.twitter-share(href='#0')
+                i.social_twitter
+                |  Tweet
+            li
+              a.gplus-share(href='#0')
+                i.social_googleplus
+                |  Share
+      // /row
+      // /container
+  include partials/footer.pug
+

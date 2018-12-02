@@ -1,0 +1,149 @@
+extends layout
+
+block content
+  include partials/header-search.pug
+  main
+    .container.margin_60
+      .row.justify-content-center
+        .col-xl-6.col-lg-6.col-md-8
+          .box_account
+            h3.client Already Client
+            .form_container
+              .row.no-gutters
+                .col-lg-6.pr-lg-1
+                  a.social_bt.facebook(href='#0') Login with Facebook
+                .col-lg-6.pl-lg-1
+                  a.social_bt.google(href='#0') Login with Google
+              .divider
+                span Or
+              .form-group
+                input#email.form-control(type='email', name='email', placeholder='Email*')
+              .form-group
+                input#password_in.form-control(type='password', name='password_in', value='', placeholder='Password*')
+              .clearfix.add_bottom_15
+                .checkboxes.float-left
+                  label.container_check
+                    | Remember me
+                    input(type='checkbox')
+                    span.checkmark
+                .float-right
+                  a#forgot(href='javascript:void(0);') Lost Password?
+              .text-center
+                input.btn_1.full-width(type='submit', value='Log In')
+              #forgot_pw
+                .form-group
+                  input#email_forgot.form-control(type='email', name='email_forgot', placeholder='Type your email')
+                p A new password will be sent shortly.
+                .text-center
+                  input.btn_1(type='submit', value='Reset Password')
+            // /form_container
+            // /box_account
+            .row.hidden_tablet
+              .col-md-6
+                ul.list_ok
+                  li Find Locations
+                  li Quality Location check
+                  li Data Protection
+              .col-md-6
+                ul.list_ok
+                  li Secure Payments
+                  li H24 Support
+            // /row
+        .col-xl-6.col-lg-6.col-md-8
+          .box_account
+            h3.new_client New Client
+            small.float-right.pt-2 * Required Fields
+            .form_container
+              .form-group
+                input#email.form-control(type='email', name='email', placeholder='Email*')
+              .form-group
+                input#password_in_2.form-control(type='password', name='password_in_2', value='', placeholder='Password*')
+              hr
+              .form-group
+                label.container_radio(style='display: inline-block; margin-right: 15px;')
+                  | Private
+                  input(type='radio', name='client_type', checked='', value='private')
+                  span.checkmark
+                label.container_radio(style='display: inline-block;')
+                  | Company
+                  input(type='radio', name='client_type', value='company')
+                  span.checkmark
+              .private.box
+                .row.no-gutters
+                  .col-6.pr-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Name*')
+                  .col-6.pl-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Last Name*')
+                  .col-12
+                    .form-group
+                      input.form-control(type='text', placeholder='Full Address*')
+                // /row
+                .row.no-gutters
+                  .col-6.pr-1
+                    .form-group
+                      input.form-control(type='text', placeholder='City*')
+                  .col-6.pl-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Postal Code*')
+                  .col-12
+                    .form-group
+                      .custom-select-form
+                        select#country.wide.add_bottom_10(name='country')
+                          option(value='', selected='') Country*
+                          option(value='Europe') Europe
+                          option(value='United states') United states
+                          option(value='Asia') Asia
+                // /row
+                .row
+                  .col-md-12
+                    .form-group
+                      input.form-control(type='text', placeholder='Telephone *')
+                // /row
+                // /privato
+                .company.box(style='display: none;')
+                  .row.no-gutters
+                    .col-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Company Name*')
+                    .col-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Full Address')
+                  // /row
+                  .row.no-gutters
+                    .col-6.pr-1
+                      .form-group
+                        input.form-control(type='text', placeholder='City*')
+                    .col-6.pl-1
+                      .form-group
+                        input.form-control(type='text', placeholder='Postal Code*')
+                    .col-12
+                      .form-group
+                        .custom-select-form
+                          select#country.wide.add_bottom_10(name='country')
+                            option(value='', selected='') Country*
+                            option(value='Europe') Europe
+                            option(value='United states') United states
+                            option(value='Asia') Asia
+                  // /row
+                  .row
+                    .col-md-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Telephone *')
+                  // /row
+                  // /azienda
+                  hr
+                  .form-group
+                    label.container_check
+                      | Accept 
+                      a(href='#0') Terms and conditions
+                      input(type='checkbox')
+                      span.checkmark
+                  .text-center
+                    input.btn_1.full-width(type='submit', value='Register')
+            // /form_container
+            // /box_account
+            // /row
+            // /container
+  include partials/footer.pug

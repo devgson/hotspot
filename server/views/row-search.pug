@@ -1,0 +1,295 @@
+extends layout
+
+block content
+  include partials/header-search.pug
+  main
+    #results
+      .container
+        .row
+          .col-lg-3.col-md-4.col-10
+            h4
+              strong 145
+              |  result for All listing
+          .col-lg-9.col-md-8.col-2
+            a.search_mob.btn_search_mobile(href='#0')
+            // /open search panel
+            .row.no-gutters.custom-search-input-2.inner
+              .col-lg-4
+                .form-group
+                  input.form-control(type='text', placeholder='What are you looking for...')
+                  i.icon_search
+              .col-lg-4
+                .form-group
+                  input.form-control(type='text', placeholder='Where')
+                  i.icon_pin_alt
+              .col-lg-3
+                select.wide
+                  option All Categories
+                  option Shops
+                  option Hotels
+                  option Restaurants
+                  option Bars
+                  option Events
+                  option Fitness
+              .col-lg-1
+                input(type='submit', value='Search')
+        // /row
+        .search_mob_wp
+          .custom-search-input-2
+            .form-group
+              input.form-control(type='text', placeholder='What are you looking for...')
+              i.icon_search
+            .form-group
+              input.form-control(type='text', placeholder='Where')
+              i.icon_pin_alt
+            select.wide
+              option All Categories
+              option Shops
+              option Hotels
+              option Restaurants
+              option Bars
+              option Events
+              option Fitness
+            input(type='submit', value='Search')
+        // /search_mobile
+        // /container
+        // /results
+        .filters_listing.sticky_horizontal
+          .container
+            ul.clearfix
+              li
+                .switch-field
+                  input#all(type='radio', name='listing_filter', value='all', checked='')
+                  label(for='all') All
+                  input#popular(type='radio', name='listing_filter', value='popular')
+                  label(for='popular') Popular
+                  input#latest(type='radio', name='listing_filter', value='latest')
+                  label(for='latest') Latest
+              li
+                a.btn_filt(data-toggle='collapse', href='#filters', aria-expanded='false', aria-controls='filters', data-text-swap='Less filters', data-text-original='More filters') More filters
+              li
+                .layout_view
+                  a(href='grid-listings-filterstop.html')
+                    i.icon-th
+                  a.active(href='#0')
+                    i.icon-th-list
+                  a(href='listing-map-2.html', icon-map"='')
+              li
+                a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
+          // /container
+          // /filters
+          #collapseMap.collapse
+            #map.map
+          // /Map
+          #filters.collapse
+            .container.margin_30_5
+              .row
+                .col-md-4
+                  h6 Rating
+                  ul
+                    li
+                      label.container_check
+                        | Superb 9+ 
+                        small 356
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Very Good 8+ 
+                        small 54
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Good 7+ 
+                        small 45
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Pleasant 6+ 
+                        small 25
+                        input(type='checkbox')
+                        span.checkmark
+                .col-md-4
+                  h6 Tags
+                  ul
+                    li
+                      label.container_check
+                        | Wireless Internet 
+                        small 12
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Smoking Allowed 
+                        small 11
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Wheelchair Accesible 
+                        small 23
+                        input(type='checkbox')
+                        span.checkmark
+                    li
+                      label.container_check
+                        | Parking 
+                        small 56
+                        input(type='checkbox')
+                        span.checkmark
+                .col-md-4
+                  .add_bottom_30
+                    h6 Distance
+                    .distance
+                      | Radius around selected destination 
+                      span
+                      |  km
+                    input(type='range', min='10', max='100', step='10', value='30', data-orientation='horizontal')
+              // /row
+              // /Filters
+              .container.margin_60_35
+                .strip.list_view
+                  .row.no-gutters
+                    .col-lg-5
+                      figure
+                        a(href='detail-restaurant.html')
+                          img.img-fluid(src='img/location_1.jpg', alt='')
+                          .read_more
+                            span Read more
+                        small Bar
+                    .col-lg-7
+                      .wrapper
+                        a.wish_bt(href='#0')
+                        h3
+                          a(href='detail-restaurant.html') Da Alfredo
+                        small 27 Old Gloucester St
+                        p
+                          | Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.
+                        a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') Get directions
+                      ul
+                        li
+                          span.loc_open Now Open
+                        li
+                          .score
+                            span
+                              | Superb
+                              em 350 Reviews
+                            strong 8.9
+                // /strip list_view
+                .strip.list_view
+                  .row.no-gutters
+                    .col-lg-5
+                      figure
+                        a(href='detail-restaurant.html')
+                          img.img-fluid(src='img/location_2.jpg', alt='')
+                          .read_more
+                            span Read more
+                        small Bar
+                    .col-lg-7
+                      .wrapper
+                        a.wish_bt(href='#0')
+                        h3
+                          a(href='detail-restaurant.html') Limon Bar
+                        small 438 Rush Green Road, Romford
+                        p
+                          | Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.
+                        a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') Get directions
+                      ul
+                        li
+                          span.loc_open Now Open
+                        li
+                          .score
+                            span
+                              | Good
+                              em 350 Reviews
+                            strong 7.0
+                // /strip list_view
+                .strip.list_view
+                  .row.no-gutters
+                    .col-lg-5
+                      figure
+                        a(href='detail-shop.html')
+                          img.img-fluid(src='img/location_3.jpg', alt='')
+                          .read_more
+                            span Read more
+                        small Shop
+                    .col-lg-7
+                      .wrapper
+                        a.wish_bt(href='#0')
+                        h3
+                          a(href='detail-shop.html') Mary Boutique
+                        small 43 Stephen Road, Bexleyheath
+                        p
+                          | Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.
+                        a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') Get directions
+                      ul
+                        li
+                          span.loc_closed Now Closed
+                        li
+                          .score
+                            span
+                              | Good
+                              em 350 Reviews
+                            strong 7.0
+                // /strip list_view
+                .strip.list_view
+                  .row.no-gutters
+                    .col-lg-5
+                      figure
+                        a(href='detail-restaurant.html')
+                          img.img-fluid(src='img/location_4.jpg', alt='')
+                          .read_more
+                            span Read more
+                        small Bar
+                    .col-lg-7
+                      .wrapper
+                        a.wish_bt(href='#0')
+                        h3
+                          a(href='detail-restaurant.html') Garden Bar
+                        small 40 Beechwood Road, Sanderstead
+                        p
+                          | Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.
+                        a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') Get directions
+                      ul
+                        li
+                          span.loc_closed Now Closed
+                        li
+                          .score
+                            span
+                              | Superb
+                              em 350 Reviews
+                            strong 9.0
+                // /strip list_view
+                .strip.list_view
+                  .row.no-gutters
+                    .col-lg-5
+                      figure
+                        a(href='detail-hotel.html')
+                          img.img-fluid(src='img/location_5.jpg', alt='')
+                          .read_more
+                            span Read more
+                        small Hotel
+                    .col-lg-7
+                      .wrapper
+                        a.wish_bt(href='#0')
+                        h3
+                          a(href='detail-hotel.html') Mariott Hotel
+                        small 213 Malden Road, New Malden
+                        p
+                          | Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.
+                        a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361') Get directions
+                      ul
+                        li
+                          span.loc_open Now Open
+                        li
+                          .score
+                            span
+                              | Good
+                              em 350 Reviews
+                            strong 7.5
+                // /strip list_view
+                p.text-center.add_top_60
+                  a.btn_1.rounded(href='#0') Load more
+                // /container
+  include partials/footer.pug
