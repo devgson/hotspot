@@ -1,0 +1,69 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Ansonika')
+    title SPARKER - Admin dashboard
+    // Favicons
+    block stylesheets
+      link(rel='shortcut icon', href='/admin_section/img/favicon.ico', type='image/x-icon')
+      link(rel='apple-touch-icon', type='image/x-icon', href='/admin_section/img/apple-touch-icon-57x57-precomposed.png')
+      link(rel='apple-touch-icon', type='image/x-icon', sizes='72x72', href='/admin_section/img/apple-touch-icon-72x72-precomposed.png')
+      link(rel='apple-touch-icon', type='image/x-icon', sizes='114x114', href='/admin_section/img/apple-touch-icon-114x114-precomposed.png')
+      link(rel='apple-touch-icon', type='image/x-icon', sizes='144x144', href='/admin_section/img/apple-touch-icon-144x144-precomposed.png')
+      // Bootstrap core CSS
+      link(href='/admin_section/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+      // Main styles
+      link(href='/admin_section/css/admin.css', rel='stylesheet')
+      // Icon fonts
+      link(href='/admin_section/vendor/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+      // Plugin styles
+      link(href='/admin_section/vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+      link(href='/admin_section/vendor/dropzone.css', rel='stylesheet')
+      link(href='/admin_section/css/date_picker.css', rel='stylesheet')
+      // Your custom styles
+      link(href='/admin_section/css/custom.css', rel='stylesheet')
+      // WYSIWYG Editor
+      link(rel='stylesheet', href='/admin_section/js/editor/summernote-bs4.css')
+ 
+  body#page-top.fixed-nav.sticky-footer 
+    block content
+
+  block scripts
+      script(src='/admin_section/vendor/jquery/jquery.min.js')
+      script(src='/admin_section/vendor/bootstrap/js/bootstrap.bundle.min.js')
+      // Core plugin JavaScript
+      script(src='/admin_section/vendor/jquery-easing/jquery.easing.min.js')
+      // Page level plugin JavaScript
+      script(src='/admin_section/vendor/chart.js/Chart.min.js')
+      script(src='/admin_section/vendor/datatables/jquery.dataTables.js')
+      script(src='/admin_section/vendor/datatables/dataTables.bootstrap4.js')
+      script(src='/admin_section/vendor/jquery.selectbox-0.2.js')
+      script(src='/admin_section/vendor/retina-replace.min.js')
+      script(src='/admin_section/vendor/jquery.magnific-popup.min.js')
+      // Custom scripts for all pages
+      script(src='/admin_section/js/admin.js')
+      // Custom scripts for this page
+      script(src='/admin_section/vendor/dropzone.min.js')
+      script(src='/admin_section/vendor/bootstrap-datepicker.js')
+      script.
+        $('input.date-pick').datepicker();
+      // WYSIWYG Editor
+      //- script(src='/admin_section/js/editor/summernote-bs4.min.js')
+      
+#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title Ready to Leave?
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body Select "Logout" below if you are ready to end your current session.
+      .modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+        a.btn.btn-primary(href='/admin_section/login.html') Logout
+
+

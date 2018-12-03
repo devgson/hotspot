@@ -16,6 +16,13 @@ router.get('/register', (req, res) => {
   res.render('register');
 })
 
+router.get('/add-listing', (req, res) => {
+  res.render('add-listing');
+})
+
+router.get('/messages', (req, res) => {
+  res.render('messages');
+})
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');
 })*/
