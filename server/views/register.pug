@@ -1,14 +1,17 @@
 extends layout
 
 block content
-  include partials/header-search.pug
-  main
+  include partials/navbar.pug
+  main.pt-7
     .container.margin_60
       .row.justify-content-center
         .col-xl-6.col-lg-6.col-md-8
           .box_account
-            h3.client Already Client
-            .form_container
+            h3.client Existing User?
+            if flashes.signinError
+              .alert.alert-danger.alert-dismissible.fade.show
+                p.mb-0 Error : #{flashes.signinError}
+            form.form_container(method="POST" action="/signin")
               .row.no-gutters
                 .col-lg-6.pr-lg-1
                   a.social_bt.facebook(href='#0') Login with Facebook
@@ -17,11 +20,13 @@ block content
               .divider
                 span Or
               .form-group
-                input#email.form-control(type='email', name='email', placeholder='Email*')
+                label Email
+                input.form-control(type='email', name='email')
               .form-group
-                input#password_in.form-control(type='password', name='password_in', value='', placeholder='Password*')
+                label Password
+                input#password_in.form-control(type='password', name='password')
               .clearfix.add_bottom_15
-                .checkboxes.float-left
+                //.checkboxes.float-left
                   label.container_check
                     | Remember me
                     input(type='checkbox')
@@ -30,7 +35,7 @@ block content
                   a#forgot(href='javascript:void(0);') Lost Password?
               .text-center
                 input.btn_1.full-width(type='submit', value='Log In')
-              #forgot_pw
+              //#forgot_pw
                 .form-group
                   input#email_forgot.form-control(type='email', name='email_forgot', placeholder='Type your email')
                 p A new password will be sent shortly.
@@ -39,27 +44,42 @@ block content
             // /form_container
             // /box_account
             .row.hidden_tablet
-              .col-md-6
-                ul.list_ok
-                  li Find Locations
-                  li Quality Location check
-                  li Data Protection
-              .col-md-6
-                ul.list_ok
-                  li Secure Payments
-                  li H24 Support
             // /row
         .col-xl-6.col-lg-6.col-md-8
           .box_account
-            h3.new_client New Client
+            h3.new_client New User?
             small.float-right.pt-2 * Required Fields
-            .form_container
-              .form-group
-                input#email.form-control(type='email', name='email', placeholder='Email*')
-              .form-group
-                input#password_in_2.form-control(type='password', name='password_in_2', value='', placeholder='Password*')
-              hr
-              .form-group
+            if flashes.signupError
+              .alert.alert-danger.alert-dismissible.fade.show
+                p.mb-0 Error : #{flashes.signupError}
+            form.form_container.form-row(method="POST" action="/signup")
+              .form-group.col-lg-6.col-md-6.col-12
+                label * First Name
+                input.form-control(type='text', name='first_name' required)
+              .form-group.col-lg-6.col-md-6.col-12
+                label * Last Name
+                input.form-control(type='text', name='last_name' required)
+              .form-group.col-lg-6.col-md-6.col-12
+                label * Phone Number
+                input.form-control(type='phone', name='phone' required)
+              .form-group.col-lg-6.col-md-6.col-12
+                label * Country
+                .custom-select-form
+                  select#country.wide.add_bottom_10(name='location.country')
+                    option(value='Nigeria') Nigeria
+              .form-group.col-lg-12.col-md-12.col-12
+                label * Email
+                input#email.form-control(type='email', name='email' required)
+              .form-group.col-lg-12.col-md-12.col-12
+                label * Password
+                input.form-control(type='password', name='password' required)
+              .form-group.col-lg-12.col-md-12.col-12
+                label * Confirm Password
+                input.form-control(type='password', name='confirm_password' required)
+              .form-group.col-lg-12.col-md-12.col-12
+                .text-center
+                input.btn_1.full-width(type='submit', value='Sign Up')
+              //.form-group
                 label.container_radio(style='display: inline-block; margin-right: 15px;')
                   | Private
                   input(type='radio', name='client_type', checked='', value='private')
@@ -68,7 +88,7 @@ block content
                   | Company
                   input(type='radio', name='client_type', value='company')
                   span.checkmark
-              .private.box
+              //.private.box
                 .row.no-gutters
                   .col-6.pr-1
                     .form-group
@@ -146,4 +166,8 @@ block content
             // /box_account
             // /row
             // /container
+    script.
+      /*setTimeout(function(){
+        $('.alert').alert('close')
+      }, 5000)*/
   include partials/footer.pug

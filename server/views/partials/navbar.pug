@@ -4,7 +4,10 @@ header.header.menu_fixed
           h3.text-dark Hotspot
       ul#top_menu
         li
-          a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+          if !currentUser 
+            a(href='/register', title='Sign In') Sign In
+          else
+            a(href='/signout', title='Sign Out') Sign Out
       // /top_menu
       a.btn_mobile(href='#menu')
         #hamburger.hamburger.hamburger--spin

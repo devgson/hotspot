@@ -1,0 +1,127 @@
+extends layout
+
+block content
+  include partials/navbar.pug
+  main.pt-7
+    .container.mt-5
+      .row
+        .col-lg-10.col-md-12.col-12.mx-auto
+          .box_account
+            .text-center.col-.col-lg-10.col-md-12.col-12.mx-auto
+              h3.new_client.text-center User Profile
+            form.form-row.form_container
+              .form-group.col-12.my-3
+                .text-center
+                  .icon-user-4(style="font-size : 2rem;")
+                  h3.font-weight(style="padding-left : 0px;") Edit Details
+              .form-group.col-md-6.col-12
+                label First Name
+                input.form-control(type='text', name='first_name', value=(user.first_name) disabled)
+              .form-group.col-md-6.col-12
+                label Last Name
+                input.form-control(type='text', name='last_name', value=(user.last_name) disabled)
+              .form-group.col-md-6.col-12
+                label Email
+                input#email.form-control(type='email', name='email' value=(user.email) disabled)
+              .form-group.col-md-6.col-12
+                label Phone
+                input.form-control(type='phone', name='phone', value=(user.phone))
+              .form-group.col-12.my-3
+                .text-center
+                  .icon-chat-4(style="font-size : 2rem;")
+                  h3.font-weight(style="padding-left : 0px;") Edit Social Media
+              hr
+              .form-group.col-md-6.col-12
+                label 
+                  i(class="icon-facebook-7")
+                  |  Facebook Link
+                input.form-control(type='text', name='social_media.facebook', value='')
+              .form-group.col-md-6.col-12
+                label
+                  i(class="icon-twitter-7")
+                  |  Twitter Link
+                input.form-control(type='text', name='social_media.twitter', value='')
+              .form-group.text-center.mt-3.col-md-12.col-12
+                input.mx-auto.btn_1.half-width.form-control(type='submit' value="Update")
+
+
+              //hr
+              //.private.box
+                .row.no-gutters
+                  .col-6.pr-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Name*')
+                  .col-6.pl-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Last Name*')
+                  .col-12
+                    .form-group
+                      input.form-control(type='text', placeholder='Full Address*')
+                // /row
+                .row.no-gutters
+                  .col-6.pr-1
+                    .form-group
+                      input.form-control(type='text', placeholder='City*')
+                  .col-6.pl-1
+                    .form-group
+                      input.form-control(type='text', placeholder='Postal Code*')
+                  .col-12
+                    .form-group
+                      .custom-select-form
+                        select#country.wide.add_bottom_10(name='country')
+                          option(value='', selected='') Country*
+                          option(value='Europe') Europe
+                          option(value='United states') United states
+                          option(value='Asia') Asia
+                // /row
+                .row
+                  .col-md-12
+                    .form-group
+                      input.form-control(type='text', placeholder='Telephone *')
+                // /row
+                // /privato
+                .company.box(style='display: none;')
+                  .row.no-gutters
+                    .col-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Company Name*')
+                    .col-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Full Address')
+                  // /row
+                  .row.no-gutters
+                    .col-6.pr-1
+                      .form-group
+                        input.form-control(type='text', placeholder='City*')
+                    .col-6.pl-1
+                      .form-group
+                        input.form-control(type='text', placeholder='Postal Code*')
+                    .col-12
+                      .form-group
+                        .custom-select-form
+                          select#country.wide.add_bottom_10(name='country')
+                            option(value='', selected='') Country*
+                            option(value='Europe') Europe
+                            option(value='United states') United states
+                            option(value='Asia') Asia
+                  // /row
+                  .row
+                    .col-md-12
+                      .form-group
+                        input.form-control(type='text', placeholder='Telephone *')
+                  // /row
+                  // /azienda
+                  hr
+                  .form-group
+                    label.container_check
+                      | Accept 
+                      a(href='#0') Terms and conditions
+                      input(type='checkbox')
+                      span.checkmark
+                  .text-center
+                    input.btn_1.full-width(type='submit', value='Register')
+            // /form_container
+            // /box_account
+            // /row
+            // /container
+  include partials/footer.pug

@@ -541,6 +541,14 @@ a.btn_1.full-width,
   margin-bottom: 5px
 }
 
+a.btn_1.half-width,
+.btn_1.half-width {
+  display: block;
+  width: 30%;
+  text-align: center;
+  margin-bottom: 5px
+}
+
 a.btn_1.full-width.purchase,
 .btn_1.full-width.purchase {
   background-color: #004dda
@@ -8571,4 +8579,9 @@ a.social_bt.google:before {
   #style-switcher {
     display: none
   }
+}
+
+/* Custom Styles */
+.pt-7 {
+  padding-top: 4rem !important;
 }
