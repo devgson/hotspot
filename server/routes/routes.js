@@ -21,13 +21,16 @@ router.get('/signout', user.isUserLoggedIn, user.signout);
 
 router.post('/signin', user.signin);
 router.post('/signup', user.signup);
-router.get('/add-listing', (req, res) => {
-  res.render('add-listing');
-})
 
 router.get('/messages', (req, res) => {
   res.render('messages');
 })
+
+/* Admin Routes */
+router.get('/admin/add-listing', (req, res) => {
+  res.render('add-listing');
+})
+
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');
 })*/
