@@ -29,14 +29,18 @@ block content
                   p
                     | #{listing.description}
                   p
-                    a.btn_1.gray(href='#{listing.slug}')
+                    a.btn_1.gray(href=`/${listing.slug}`)
                       i.fa.fa-fw.fa-eye
-                      |  View item
+                      |  View Listing
                   ul.buttons
-                    li
-                      a.btn_1.gray.delete.wishlist_close(href='#0')
-                        i.fa.fa-fw.fa-times-circle-o
-                        |  Cancel
+                    li.mr-2
+                      a.btn_1.red.delete(href='#0' onclick="return confirm('Are you sure?')")
+                        i.fa.fa-fw.fa-trash
+                        | Delete Listing
+                    li.ml-2
+                      a.btn_1.blue.edit(href='#0')
+                        i.fa.fa-fw.fa-edit
+                        | Edit Listing
           // /box_general
       nav(aria-label='...')
         ul.pagination.pagination-sm.add_bottom_30

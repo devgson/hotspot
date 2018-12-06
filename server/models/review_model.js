@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const ReviewSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "store",
+    ref: "user",
     required: "User not Found : Review must belong to a User"
   },
   listing: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: "listing",
     required: "Listing not Found : Review must belong to a Listing"
   },
@@ -15,7 +15,7 @@ const ReviewSchema = new Schema({
     type: String,
     trim: true
   },
-  star: {
+  rating: {
     type: Number,
     min: 1,
     max: 5

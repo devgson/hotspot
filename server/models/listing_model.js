@@ -39,10 +39,6 @@ const ListingSchema = new Schema({
       type: String,
       trim: true
     },
-    city: {
-      type: String,
-      trim: true
-    },
     coordinates: {
       lat: {
         type: Number
@@ -60,11 +56,9 @@ const ListingSchema = new Schema({
   header_image: {
     type: String
   },
-  hours: [
-    {
-      type: Schema.Types.Mixed
-    }
-  ],
+  hours: {
+    type: Schema.Types.Mixed
+  },
   social_media: {
     twitter: {
       type: String,
@@ -81,14 +75,16 @@ const ListingSchema = new Schema({
   }
 });
 
-ListingSchema.pre('save', async function(next) {
-  if(!this.isModified('title')){
+ListingSchema.pre('save', async function (next) {
+  if (!this.isModified('title')) {
     return next();
   }
   this.slug = slug(this.title);
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`,'i');
-  const listingWithSlug = await this.constructor.find({  slug : slugRegEx });
-  if(listingWithSlug.length){
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+  const listingWithSlug = await this.constructor.find({
+    slug: slugRegEx
+  });
+  if (listingWithSlug.length) {
     this.slug = `${this.slug}-${listingWithSlug.length + 1}`;
   }
   next();

@@ -549,6 +549,12 @@ a.btn_1.half-width,
   margin-bottom: 5px
 }
 
+@media (max-width : 500px) {
+  .btn_1.half-width {
+    width: 50% !important;
+  }
+}
+
 a.btn_1.full-width.purchase,
 .btn_1.full-width.purchase {
   background-color: #004dda
@@ -4487,6 +4493,24 @@ a.btn_search_mobile.map_view {
   font-weight: 500
 }
 
+a.btn_bookmark {
+  position: absolute;
+  right: 40px;
+  bottom: 20px;
+  background-color: #fff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+  padding: 10px 15px;
+  color: #444;
+  font-weight: 500
+}
+
 .hero_in a.btn_photos:hover {
   color: #004dda
 }
@@ -5187,7 +5211,7 @@ ul.hotel_facilities li img {
 .opening {
   background-color: #0044c2;
   background-color: rgba(0, 77, 218, 0.05);
-  padding: 25px 25px 25px 80px;
+  padding: 25px 25px 25px 25px;
   position: relative;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
