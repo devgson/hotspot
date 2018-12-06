@@ -72,6 +72,6 @@ exports.signup = async (req, res, next) => {
 
 exports.signout = async (req, res, next) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.redirect('back');
   })
 }
