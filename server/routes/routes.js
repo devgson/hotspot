@@ -28,6 +28,8 @@ router.get('/add-listing', (req, res) => {
 
 router.get('/admin-listings',store.getListing);
 
+router.get('/populate-listings',store.addListingfromGoogle, store.addListingtodb);
+
 router.post('/add-listing', store.postAddListing );
 
 router.get('/messages', (req, res) => {
