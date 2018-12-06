@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const slug = require('slugs');
 
 const Schema = mongoose.Schema;
 
@@ -78,6 +79,19 @@ const ListingSchema = new Schema({
     type: Date,
     default: Date.now
   }
+});
+
+ListingSchema.pre('save', async function(next) {
+  if(!this.isModified('title')){
+    return next();
+  }
+  this.slug = slug(this.title);
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`,'i');
+  const listingWithSlug = await this.constructor.find({  slug : slugRegEx });
+  if(listingWithSlug.length){
+    this.slug = `${this.slug}-${listingWithSlug.length + 1}`;
+  }
+  next();
 });
 
 const Listing = mongoose.model("listing", ListingSchema);

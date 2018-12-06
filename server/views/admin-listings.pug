@@ -1,0 +1,55 @@
+extends admin-layout
+
+block content
+  include partials/admin-nav.pug  
+  .content-wrapper
+    .container-fluid
+      // Breadcrumbs
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#') Dashboard
+        li.breadcrumb-item.active Listings
+      .box_general
+        .header_box
+          h2.d-inline-block Listings
+          .filter
+            select.selectbox(name='orderby')
+              option(value='Any time') Any time
+              option(value='Latest') Latest
+              option(value='Oldest') Oldest
+        .list_general
+          ul
+            if listings
+              each listing in listings
+                li
+                  figure
+                    img(src='img/item_1.jpg', alt='')
+                  small #{listing.category}
+                  h4 #{listing.title}
+                  p
+                    | #{listing.description}
+                  p
+                    a.btn_1.gray(href='#{listing.slug}')
+                      i.fa.fa-fw.fa-eye
+                      |  View item
+                  ul.buttons
+                    li
+                      a.btn_1.gray.delete.wishlist_close(href='#0')
+                        i.fa.fa-fw.fa-times-circle-o
+                        |  Cancel
+          // /box_general
+      nav(aria-label='...')
+        ul.pagination.pagination-sm.add_bottom_30
+          li.page-item.disabled
+            a.page-link(href='#', tabindex='-1') Previous
+          li.page-item
+            a.page-link(href='#') 1
+          li.page-item
+            a.page-link(href='#') 2
+          li.page-item
+            a.page-link(href='#') 3
+          li.page-item
+            a.page-link(href='#') Next
+      // /pagination
+      // /container-fluid
+  include partials/admin-footer.pug

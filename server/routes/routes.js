@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const user = require('../controller/user_controller');
+const store = require('../controller/store_controller');
 
 router.get('/', (req, res) => {
   res.render('index.pug');
@@ -23,7 +24,11 @@ router.post('/signin', user.signin);
 router.post('/signup', user.signup);
 router.get('/add-listing', (req, res) => {
   res.render('add-listing');
-})
+});
+
+router.get('/admin-listings',store.getListing);
+
+router.post('/add-listing', store.postAddListing );
 
 router.get('/messages', (req, res) => {
   res.render('messages');
