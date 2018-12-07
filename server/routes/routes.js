@@ -3,6 +3,7 @@ const router = require('express').Router();
 const user = require('../controller/user_controller');
 const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
+const review = require('../controller/review_controller');
 
 router.get('/', (req, res) => {
   res.render('index.pug');
@@ -24,6 +25,11 @@ router.post('/signup', user.redirectIfLoggedIn, user.signup);
 router.get('/messages', (req, res) => {
   res.render('messages');
 })
+
+/* Review Routes */
+router.get('/review', review.getReview);
+router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
+router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
 router.get('/admin/add-listing', admin.getAddListing);

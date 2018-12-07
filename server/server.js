@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
@@ -45,6 +46,7 @@ app.use(async (req, res, next) => {
   }
 })
 app.use((req, res, next) => {
+  res.locals.moment = moment;
   res.locals.flashes = req.flash();
   next();
 })

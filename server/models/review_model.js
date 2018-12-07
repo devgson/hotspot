@@ -7,7 +7,7 @@ const ReviewSchema = new Schema({
     required: "User not Found : Review must belong to a User"
   },
   listing: {
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: "listing",
     required: "Listing not Found : Review must belong to a Listing"
   },
@@ -25,6 +25,16 @@ const ReviewSchema = new Schema({
     default: Date.now
   }
 });
+
+ReviewSchema.pre('find', function (next) {
+  this.populate('user');
+  next();
+})
+
+ReviewSchema.pre('findOne', function (next) {
+  this.populate('user');
+  next();
+})
 
 const Review = mongoose.model("review", ReviewSchema);
 

@@ -75,6 +75,22 @@ const ListingSchema = new Schema({
   }
 });
 
+ListingSchema.virtual("reviews", {
+  ref: "review",
+  localField: "_id",
+  foreignField: "listing"
+});
+
+ListingSchema.pre('find', function (next) {
+  this.populate('reviews');
+  next();
+})
+
+ListingSchema.pre('findOne', function (next) {
+  this.populate('reviews');
+  next();
+})
+
 ListingSchema.pre('save', async function (next) {
   if (!this.isModified('title')) {
     return next();
