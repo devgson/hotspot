@@ -5,12 +5,12 @@ block content
   .content-wrapper
     .container-fluid
       include partials/bread-crumb.pug
-      form(method="post" action="/admin/add-listing")   
+      form( action=`/admin/add-listing/${listing.slug || ''}` method="post")   
         .box_general.padding_bottom
           .header_box.version_2
             h2
               i.fa.fa-file
-              |Add Listing
+              | #{title}
           .asterisk.my-3(style="color:red;")
             | * Required Fields   
           .row
@@ -18,13 +18,13 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Listing Title
-                input.form-control(type='text', name='title', placeholder='Hotel Mariott' required)
+                input.form-control(type='text', value=listing.title, name='title', placeholder='Hotel Mariott' required)
             .col-md-6
               .form-group
                 bold(style="color:red") * 
                 label Category
                 .styled-select
-                  select(name="category" required)
+                  select(name="category" required value=listing.category)
                     option Hotel
                     option Shops
                     option Restaurant
@@ -34,29 +34,31 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Tags
-                input.form-control(type='text', placeholder='Tags MUST be separated by commas' name='tags' required)
+                if listing.slug
+                  -var tag_listings = listing.tags.toString();
+                input.form-control(type='text', value= tag_listings || '' placeholder='Tags MUST be separated by commas' name='tags' required)
           .row
             .col-md-12
               .form-group
                 bold(style="color:red") * 
                 label Description
                 .editor
-                  textarea.form-control.note-codable(role='textbox', aria-multiline='true' name="description" rows="5" required)
+                  textarea.form-control.note-codable(role='textbox', aria-multiline='true' name="description" rows="5" required) #{listing.description}
           .row
             .col-md-4
               .form-group
                 bold(style="color:red") * 
                 label Phone Number
-                input.form-control(type='text' name='info[number]' required)
+                input.form-control(type='text' name='info[number]' value= listing.info ?  listing.info.number : '' required)
             .col-md-4
               .form-group
                 label Web site
-                input.form-control(type='text' name='info[website]')
+                input.form-control(type='text' name='info[website]' value= listing.info ? listing.info.website : '')
             .col-md-4
               .form-group
                 bold(style="color:red") * 
                 label Email
-                input.form-control(type='text' name='info[email]' required)
+                input.form-control(type='text' name='info[email]' value=listing.info ? listing.info.email : '' required)
           .row
             .col-md-4
               .form-group
@@ -81,14 +83,14 @@ block content
                 bold(style="color:red") * 
                 label Select State
                 .styled-select
-                  select(name="info[state]" required)
+                  select(name="info[state]" value=listing.info ? listing.info.state : '' required)
                     option Lagos
                     option Abuja
             .col-md-6
               .form-group
                 bold(style="color:red") * 
                 label Address
-                input.form-control(type='text', placeholder='ex. 250, Fifth Avenue...' name='info[address]' required)
+                input.form-control(type='text', value=listing.info ? listing.info.address : '' placeholder='ex. 250, Fifth Avenue...' name='info[address]' required)
         .box_general.padding_bottom
           .header_box.version_2
             h2 

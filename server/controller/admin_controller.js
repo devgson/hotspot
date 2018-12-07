@@ -3,11 +3,22 @@ const fetch = require("node-fetch");
 
 exports.getAddListing = async (req, res, next) => {
   try {
-    res.render('add-listing');
+    res.render('add-listing', {title:'Add Listing', listing: {} });
   } catch (error) {
     res.send(error.message);
   }
 }
+
+
+exports.getEditListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findOne({ slug: req.params.listing })
+    res.render('add-listing', { listing , title:'Edit Listing'});
+  } catch (error) {
+    res.send("error is ", error.message);
+  }
+}
+
 
 exports.postAddListing = async (req, res, next) => {
   try {
@@ -24,15 +35,31 @@ exports.postAddListing = async (req, res, next) => {
   }
 };
 
+
+exports.editListing = async (req, res, next) => {
+  try {
+    //req.body.owner = req.session.userID;
+    const store = await Listing.findOneAndUpdate({ slug: req.params.listing }, req.body, {
+      new: true,
+      runValidators: true
+    }).exec();
+    res.redirect('/admin/listings');
+  } catch (error) {
+    // next(ErrorHandler(error));
+    // console.log(error);
+    // document.write(error);
+    res.send(error.message);
+  }
+};
+
 exports.DeleteListing = async (req, res, next) => {
   try {
     lisitng = req.params.listing;
-    console.log(lisitng);
     await Listing.findOneAndRemove({ slug: lisitng });
     res.redirect('/admin/listings');
   }
 
-  catch(error){
+  catch (error) {
     res.send(error.message);
   }
 };
