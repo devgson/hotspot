@@ -6,6 +6,12 @@ exports.getReviewsStats = async (listing, numberOfReviews) => {
     2: 0,
     1: 0
   };
+  if (numberOfReviews === 0) {
+    return {
+      reviewsStat,
+      numberOfReviewsPerRating: reviewsStat
+    }
+  }
   const getReviews = listing.reviews.forEach(review => {
     reviewsStat[review.rating]++;
   });

@@ -7,24 +7,24 @@ block content
       .wrapper
         span.magnific-gallery
           a.btn_photos(href='img/gallery/hotel_list_1.jpg', title='Photo title', data-effect='mfp-zoom-in') View photos
-          a.btn_bookmark
-            | Bookmark
-            span.icon-heart(style="font-size : 2em")
           a(href='img/gallery/hotel_list_2.jpg', title='Photo title', data-effect='mfp-zoom-in')
           a(href='img/gallery/hotel_list_3.jpg', title='Photo title', data-effect='mfp-zoom-in')
     // /hero_in
     nav.secondary_nav.sticky_horizontal_2
       .container
-        ul.clearfix
+        ul.clearfix.d-flex.align-items-baseline.justify-content-start
           li
             a.active(href='#description') Description
           li
             a(href='#reviews') Reviews
-          li.float-right(style="border :1px red !important")
-            a(href='wishlist.html')
-              span Bookmark
-          li
-            a(href='#sidebar') Booking
+          if currentUser
+            - const changeIdToString = currentUser.bookmarks.map( _id => _id.toString() );
+            - const userBookmarked = changeIdToString.includes( listing._id.toString() );
+            - const formClass = userBookmarked ? 'btn_bookmark_selected' : '';
+            li.bookmark.float-right(class=(formClass) name="bookmarks" style="margin-left:auto")
+              form(action=`/api/bookmark/${listing._id}` method="POST")
+                a.icon-bookmark-2()
+                button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
     .container.margin_60_35
       .row
         .col-lg-8
@@ -79,9 +79,12 @@ block content
                 .row
                   .col-lg-3
                     #review_summary
-                      strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2} / 10
-                      //em Superb
-                      small Based on #{reviewsInfo.numberOfReviews} reviews
+                      if reviewsInfo
+                        strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2} / 10
+                        //em Superb
+                        small Based on #{reviewsInfo.numberOfReviews} reviews
+                      else 
+                        strong 0 / 10
                   .col-lg-9
                     .row
                       .col-lg-10.col-9
@@ -148,10 +151,11 @@ block content
                           - }
                         .rev-info
                           | #{moment(review.createdAt).format('MMMM, Do YYYY')}:
-                        if review.user._id.toString() === currentUser._id.toString()
-                          a.rev-text.float-right(onclick='return confirm(\'Are you sure?\')' href=(`/review/delete/${review._id}`) style='color:#dc3545; cursor:pointer')
-                            span.icon_trash
-                            small.ml-1 Delete
+                        if review.user && currentUser
+                          if review.user._id.toString() === currentUser._id.toString()
+                            a.rev-text.float-right(onclick='return confirm(\'Are you sure?\')' href=(`/review/delete/${review._id}`) style='color:#dc3545; cursor:pointer')
+                              span.icon_trash
+                              small.ml-1 Delete
                         .rev-text
                           p
                             | #{review.content}
@@ -193,11 +197,17 @@ block content
           .box_detail.booking
             .price
               h5.d-inline Contact us
-              .score
-                span
-                  | Good
-                  em #{reviewsInfo.numberOfReviews} Reviews
-                strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2}
+              if reviewsInfo
+                .score
+                  span
+                    | Good
+                    em #{reviewsInfo.numberOfReviews} Reviews
+                  strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2}
+              else
+                .score
+                  span
+                    em 0 Reviews
+                  strong 0.0
             #message-contact-detail
             form#contact_detail(method='post', action='', autocomplete='off')
               .form-group
@@ -225,4 +235,17 @@ block content
       // /row
       // /container
   include partials/footer.pug
-
+block append scripts
+  script.
+    $('.bookmark').on('submit', function(evt){
+      evt.preventDefault();
+      var self = this;
+      $.ajax({
+        type : "POST",
+        url : evt.target.action,
+        success : function(data){
+          var bookmarked = document.querySelector('.bookmark').classList.toggle('btn_bookmark_selected');
+          bookmarked ? $('.bookmark button').text('Bookmarked') : $('.bookmark button').text('Bookmark')
+        }
+      })
+    })

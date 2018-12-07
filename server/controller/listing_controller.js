@@ -28,7 +28,7 @@ exports.getListing = async (req, res) => {
     const {
       numberOfReviewsPerRating,
       reviewsStat
-    } = await helper.getReviewsStats(listing, reviewsInfo[0].numberOfReviews);
+    } = await helper.getReviewsStats(listing, (reviewsInfo[0] ? reviewsInfo[0].numberOfReviews : 0));
     res.render('listing-detail', {
       reviewsInfo: reviewsInfo[0],
       listing,

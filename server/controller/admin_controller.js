@@ -17,22 +17,18 @@ exports.postAddListing = async (req, res, next) => {
     const listing = await new Listing(req.body).save();
     res.redirect('/admin/listings');
   } catch (error) {
-    // next(ErrorHandler(error));
-    // console.log(error);
-    // document.write(error);
     res.send(error.message);
   }
 };
 
 exports.DeleteListing = async (req, res, next) => {
   try {
-    lisitng = req.params.listing;
-    console.log(lisitng);
-    await Listing.findOneAndRemove({ slug: lisitng });
+    const listing = req.params.listing;
+    await Listing.findOneAndRemove({
+      slug: listing
+    });
     res.redirect('/admin/listings');
-  }
-
-  catch(error){
+  } catch (error) {
     res.send(error.message);
   }
 };
@@ -45,8 +41,6 @@ exports.getAllListings = async (req, res, next) => {
       listings
     });
   } catch (error) {
-    // next(ErrorHandler(error));
-    // console.log(error);
     res.send(error.message);
   }
 };
@@ -75,8 +69,7 @@ exports.addListingtodb = async (req, res, next) => {
       const store = await new Store(body).save();
     }
     res.send('limit reached');
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
   }
 };

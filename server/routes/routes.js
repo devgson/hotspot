@@ -13,8 +13,6 @@ router.get('/grid-search', (req, res) => {
   res.render('grid-search');
 })
 
-router.get('/listing/:slug', listing.getListing);
-
 /* User Authentication Routes */
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isUserLoggedIn, user.userProfile);
@@ -24,14 +22,16 @@ router.get('/add-listing', (req, res) => {
   res.render('add-listing');
 });
 
-
-router.get('/admin/populate-listings',admin.addListingfromGoogle, admin.addListingtodb);
 router.post('/signin', user.redirectIfLoggedIn, user.signin);
 router.post('/signup', user.redirectIfLoggedIn, user.signup);
 
 router.get('/messages', (req, res) => {
   res.render('messages');
 })
+
+/* Listing Routes */
+router.get('/listing/:slug', listing.getListing);
+router.post('/api/bookmark/:listingId', user.bookmarkListing);
 
 /* Review Routes */
 router.get('/review', review.getReview);
@@ -40,11 +40,11 @@ router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
 router.get('/admin/add-listing', admin.getAddListing);
-router.get('/admin/listings', admin.getAllListings);
-
-router.get('/admin/delete-listing/:listing', admin.DeleteListing);
-
 router.post('/admin/add-listing', admin.postAddListing);
+
+router.get('/admin/listings', admin.getAllListings);
+router.get('/admin/delete-listing/:listing', admin.DeleteListing);
+router.get('/admin/populate-listings', admin.addListingfromGoogle, admin.addListingtodb);
 
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');

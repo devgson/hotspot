@@ -75,3 +75,19 @@ exports.signout = async (req, res, next) => {
     res.redirect('back');
   })
 }
+
+exports.bookmarkListing = async (req, res, next) => {
+  try {
+    const listing = req.params.listingId;
+    const bookmarks = res.locals.currentUser.bookmarks.map(_id => _id.toString());
+    const operator = bookmarks.includes(listing.toString()) ? '$pull' : '$addToSet';
+    const saveBookmark = await User.findByIdAndUpdate(res.locals.currentUser._id, {
+      [operator]: {
+        bookmarks: listing
+      }
+    })
+    res.json(saveBookmark);
+  } catch (error) {
+    res.send(error.message);
+  }
+}
