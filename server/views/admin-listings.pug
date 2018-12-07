@@ -34,7 +34,7 @@ block content
                       |  View Listing
                   ul.buttons
                     li.mr-2
-                      a.btn_1.red.delete(href='#0' onclick="return confirm('Are you sure?')")
+                      a.btn_1.red.delete(href=`/admin/delete-listing/${listing.slug}` onclick="return confirm('Are you sure?')")
                         i.fa.fa-fw.fa-trash
                         | Delete Listing
                     li.ml-2

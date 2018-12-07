@@ -23,11 +23,8 @@ router.get('/add-listing', (req, res) => {
   res.render('add-listing');
 });
 
-router.get('/admin-listings',store.getListing);
 
-router.get('/populate-listings',store.addListingfromGoogle, store.addListingtodb);
-
-router.post('/add-listing', store.postAddListing );
+router.get('/admin/populate-listings',admin.addListingfromGoogle, admin.addListingtodb);
 router.post('/signin', user.redirectIfLoggedIn, user.signin);
 router.post('/signup', user.redirectIfLoggedIn, user.signup);
 
@@ -38,6 +35,8 @@ router.get('/messages', (req, res) => {
 /* Admin Routes */
 router.get('/admin/add-listing', admin.getAddListing);
 router.get('/admin/listings', admin.getAllListings);
+
+router.get('/admin/delete-listing/:listing', admin.DeleteListing);
 
 router.post('/admin/add-listing', admin.postAddListing);
 
