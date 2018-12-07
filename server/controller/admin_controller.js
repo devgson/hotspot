@@ -3,7 +3,14 @@ const fetch = require("node-fetch");
 
 exports.getAddListing = async (req, res, next) => {
   try {
+<<<<<<< HEAD
     res.render('add-listing', { title: 'Add Listing', listing: {} });
+=======
+    res.render('add-listing', {
+      title: 'Add Listing',
+      listing: {}
+    });
+>>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send(error.message);
   }
@@ -12,8 +19,18 @@ exports.getAddListing = async (req, res, next) => {
 
 exports.getEditListing = async (req, res, next) => {
   try {
+<<<<<<< HEAD
     const listing = await Listing.findOne({ slug: req.params.listing })
     res.render('add-listing', { listing, title: 'Edit Listing' });
+=======
+    const listing = await Listing.findOne({
+      slug: req.params.listing
+    })
+    res.render('add-listing', {
+      listing,
+      title: 'Edit Listing'
+    });
+>>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send("error is ", error.message);
   }
@@ -28,9 +45,6 @@ exports.postAddListing = async (req, res, next) => {
     const listing = await new Listing(req.body).save();
     res.redirect('/admin/listings');
   } catch (error) {
-    // next(ErrorHandler(error));
-    // console.log(error);
-    // document.write(error);
     res.send(error.message);
   }
 };
@@ -39,7 +53,9 @@ exports.postAddListing = async (req, res, next) => {
 exports.editListing = async (req, res, next) => {
   try {
     //req.body.owner = req.session.userID;
-    const store = await Listing.findOneAndUpdate({ slug: req.params.listing }, req.body, {
+    const store = await Listing.findOneAndUpdate({
+      slug: req.params.listing
+    }, req.body, {
       new: true,
       runValidators: true
     }).exec();
@@ -54,12 +70,12 @@ exports.editListing = async (req, res, next) => {
 
 exports.DeleteListing = async (req, res, next) => {
   try {
-    lisitng = req.params.listing;
-    await Listing.findOneAndRemove({ slug: lisitng });
+    const listing = req.params.listing;
+    await Listing.findOneAndRemove({
+      slug: listing
+    });
     res.redirect('/admin/listings');
-  }
-
-  catch (error) {
+  } catch (error) {
     res.send(error.message);
   }
 };
@@ -72,8 +88,6 @@ exports.getAllListings = async (req, res, next) => {
       listings
     });
   } catch (error) {
-    // next(ErrorHandler(error));
-    // console.log(error);
     res.send(error.message);
   }
 };
@@ -104,8 +118,7 @@ exports.addListingtodb = async (req, res, next) => {
       const store = await new Listing(body).save();
     }
     res.send('limit reached');
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
   }
 };

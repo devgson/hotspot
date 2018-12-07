@@ -4566,10 +4566,6 @@ a.btn_bookmark {
   color: #fff
 }
 
-.secondary_nav ul li:last-child {
-  display: none
-}
-
 @media (max-width: 575px) {
   .secondary_nav ul li:last-child {
     display: inline-block
@@ -8608,4 +8604,31 @@ a.social_bt.google:before {
 /* Custom Styles */
 .pt-7 {
   padding-top: 4rem !important;
+}
+
+.bookmark {
+  border-radius: 4px;
+  background: black;
+  border: 1px red;
+  padding: .3em;
+}
+
+.bookmark a {
+  color: white !important;
+}
+
+.btn_bookmark_selected {
+  border-radius: 4px;
+  background: #ffc107;
+  border: 1px red !important;
+  padding: .3em;
+  color: black;
+}
+
+.btn_bookmark_selected a {
+  color: black !important;
+}
+
+.btn_bookmark_selected button {
+  color: black !important
 }
