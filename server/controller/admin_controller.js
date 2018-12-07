@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 
 exports.getAddListing = async (req, res, next) => {
   try {
-    res.render('add-listing', {title:'Add Listing', listing: {} });
+    res.render('add-listing', { title: 'Add Listing', listing: {} });
   } catch (error) {
     res.send(error.message);
   }
@@ -13,7 +13,7 @@ exports.getAddListing = async (req, res, next) => {
 exports.getEditListing = async (req, res, next) => {
   try {
     const listing = await Listing.findOne({ slug: req.params.listing })
-    res.render('add-listing', { listing , title:'Edit Listing'});
+    res.render('add-listing', { listing, title: 'Edit Listing' });
   } catch (error) {
     res.send("error is ", error.message);
   }
@@ -99,7 +99,9 @@ exports.addListingtodb = async (req, res, next) => {
       var element = listings[i];
       body.title = element.name;
       body.tags = element.types;
-      const store = await new Store(body).save();
+      body.category = element.types[0];
+      body.info = { address: element.formatted_address, country: 'Nigeria', state: 'Lagos', coordinates: { lat: element.geometry.location.lat, lon: element.geometry.location.lng } };
+      const store = await new Listing(body).save();
     }
     res.send('limit reached');
   }
