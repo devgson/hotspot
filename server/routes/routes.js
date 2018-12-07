@@ -19,6 +19,16 @@ router.get('/listing/:slug', listing.getListing);
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isUserLoggedIn, user.userProfile);
 router.get('/signout', user.isUserLoggedIn, user.signout);
+
+router.get('/add-listing', (req, res) => {
+  res.render('add-listing');
+});
+
+router.get('/admin-listings',store.getListing);
+
+router.get('/populate-listings',store.addListingfromGoogle, store.addListingtodb);
+
+router.post('/add-listing', store.postAddListing );
 router.post('/signin', user.redirectIfLoggedIn, user.signin);
 router.post('/signup', user.redirectIfLoggedIn, user.signup);
 
