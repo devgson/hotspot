@@ -40,11 +40,16 @@ router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
 router.get('/admin/add-listing', admin.getAddListing);
-router.post('/admin/add-listing', admin.postAddListing);
+router.get('/admin/edit-listing/:listing', admin.getEditListing);
+
+router.get('/admin/listings', admin.getAllListings);
 
 router.get('/admin/listings', admin.getAllListings);
 router.get('/admin/delete-listing/:listing', admin.DeleteListing);
 router.get('/admin/populate-listings', admin.addListingfromGoogle, admin.addListingtodb);
+
+router.post('/admin/add-listing', admin.postAddListing);
+router.post('/admin/edit-listing/:listing', admin.editListing);
 
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');
