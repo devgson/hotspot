@@ -170,7 +170,15 @@ exports.addListingtodb = async (req, res, next) => {
       body.title = element.name;
       body.tags = element.types;
       body.category = element.types[0];
-      body.info = { address: element.formatted_address, country: 'Nigeria', state: 'Lagos', coordinates: { lat: element.geometry.location.lat, lon: element.geometry.location.lng } };
+      body.info = {
+        address: element.formatted_address,
+        country: 'Nigeria',
+        state: 'Lagos',
+        coordinates: {
+          lat: element.geometry.location.lat,
+          lon: element.geometry.location.lng
+        }
+      };
       const store = await new Listing(body).save();
     }
     res.send('limit reached');

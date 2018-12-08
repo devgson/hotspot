@@ -8,12 +8,12 @@ const moment = require('moment');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
+const db = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
 
 const User = require('./models/user_model');
 const app = express();
 
-const db = 'mongodb://localhost:27017/hotspot';
 mongoose.connect(db, {
   useNewUrlParser: true
 });
@@ -71,6 +71,6 @@ app.use((error, req, res) => {
   })
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server listening at port 3000");
 });
