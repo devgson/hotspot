@@ -1,16 +1,13 @@
 const Listing = require('../models/listing_model');
+const Admin = require('../models/admin_model');
 const fetch = require("node-fetch");
 
 exports.getAddListing = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-    res.render('add-listing', { title: 'Add Listing', listing: {} });
-=======
     res.render('add-listing', {
       title: 'Add Listing',
       listing: {}
     });
->>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send(error.message);
   }
@@ -19,10 +16,6 @@ exports.getAddListing = async (req, res, next) => {
 
 exports.getEditListing = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-    const listing = await Listing.findOne({ slug: req.params.listing })
-    res.render('add-listing', { listing, title: 'Edit Listing' });
-=======
     const listing = await Listing.findOne({
       slug: req.params.listing
     })
@@ -30,7 +23,6 @@ exports.getEditListing = async (req, res, next) => {
       listing,
       title: 'Edit Listing'
     });
->>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send("error is ", error.message);
   }
@@ -104,6 +96,70 @@ exports.addListingfromGoogle = async (req, res, next) => {
   }
 };
 
+exports.redirectIfLoggedIn = (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    next();
+  } else {
+    res.redirect('/admin')
+  }
+}
+
+exports.isadminLoggedIn = async (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    next();
+  } else {
+    res.render('admin-login.pug');
+  }
+
+}
+
+exports.signout = async (req, res, next) => {
+  console.log(req.session.adminId);
+  req.session.destroy((err) => {
+    if(err){
+      console.log(err);
+      next(err)
+    }
+    res.redirect('/admin');
+  })
+}
+
+exports.signin = async (req, res, next) => {
+  try {
+    const {
+      email,
+      password
+    } = req.body;
+    const user = await Admin.findOne({
+      email
+    });
+    if (user) {
+      const isValidPassword = await user.validatePassword(password);
+      if (isValidPassword) {
+        req.session.adminId = user._id;
+        return res.redirect('/admin/listings');
+      } else {
+        console.log('wrongggg');
+        req.flash('signinError', 'Wrong Email Address or Password');
+        res.redirect('back');
+      }
+    } else {
+      console.log('wrongggg');
+      req.flash('signinError', 'Wrong Email Address or Password');
+      res.redirect('back');
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.createSuperadmin = async (req, res, next) => {
+  let body = {};
+  body.email = 'admin@hotspot.com';
+  body.password = 'password';
+  const adminuser = await new Admin(body).save();
+  res.send('saved');
+};
 exports.addListingtodb = async (req, res, next) => {
   try {
     let body = {};

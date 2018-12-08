@@ -5490,7 +5490,7 @@ ul.menu_list li .thumb img {
   top: 0;
   overflow-y: auto;
   background-color: #fff;
-  min-height: 100vh
+  min-height: 50%
 }
 
 @media (max-width: 767px) {

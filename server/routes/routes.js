@@ -39,17 +39,24 @@ router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
 router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
-router.get('/admin/add-listing', admin.getAddListing);
+router.get('/admin/add-listing',admin.isadminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.getEditListing);
 
-router.get('/admin/listings', admin.getAllListings);
+/*create superadmin*/
+router.get('/admin/create', admin.createSuperadmin);
 
-router.get('/admin/listings', admin.getAllListings);
-router.get('/admin/delete-listing/:listing', admin.DeleteListing);
-router.get('/admin/populate-listings', admin.addListingfromGoogle, admin.addListingtodb);
+router.get('/admin', admin.isadminLoggedIn, admin.getAllListings);
 
-router.post('/admin/add-listing', admin.postAddListing);
-router.post('/admin/edit-listing/:listing', admin.editListing);
+router.get('/admin/logout', admin.isadminLoggedIn, admin.signout);
+
+router.post('/admin/login', admin.signin);
+
+router.get('/admin/listings', admin.isadminLoggedIn, admin.getAllListings);
+router.get('/admin/delete-listing/:listing',admin.isadminLoggedIn, admin.DeleteListing);
+router.get('/admin/populate-listings',admin.isadminLoggedIn, admin.addListingfromGoogle, admin.addListingtodb);
+
+router.post('/admin/add-listing',admin.isadminLoggedIn, admin.postAddListing);
+router.post('/admin/edit-listing/:listing',admin.isadminLoggedIn, admin.editListing);
 
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');
