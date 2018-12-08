@@ -3,14 +3,10 @@ const fetch = require("node-fetch");
 
 exports.getAddListing = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-    res.render('add-listing', { title: 'Add Listing', listing: {} });
-=======
     res.render('add-listing', {
       title: 'Add Listing',
       listing: {}
     });
->>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send(error.message);
   }
@@ -19,10 +15,6 @@ exports.getAddListing = async (req, res, next) => {
 
 exports.getEditListing = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-    const listing = await Listing.findOne({ slug: req.params.listing })
-    res.render('add-listing', { listing, title: 'Edit Listing' });
-=======
     const listing = await Listing.findOne({
       slug: req.params.listing
     })
@@ -30,7 +22,6 @@ exports.getEditListing = async (req, res, next) => {
       listing,
       title: 'Edit Listing'
     });
->>>>>>> d09b1a8ad23393a7d57862eff07321734c2b808e
   } catch (error) {
     res.send("error is ", error.message);
   }
@@ -114,7 +105,15 @@ exports.addListingtodb = async (req, res, next) => {
       body.title = element.name;
       body.tags = element.types;
       body.category = element.types[0];
-      body.info = { address: element.formatted_address, country: 'Nigeria', state: 'Lagos', coordinates: { lat: element.geometry.location.lat, lon: element.geometry.location.lng } };
+      body.info = {
+        address: element.formatted_address,
+        country: 'Nigeria',
+        state: 'Lagos',
+        coordinates: {
+          lat: element.geometry.location.lat,
+          lon: element.geometry.location.lng
+        }
+      };
       const store = await new Listing(body).save();
     }
     res.send('limit reached');
