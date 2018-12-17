@@ -6,9 +6,10 @@ block content
     .hero_in.shop_detail
       .wrapper
         span.magnific-gallery
-          a.btn_photos(href='img/gallery/hotel_list_1.jpg', title='Photo title', data-effect='mfp-zoom-in') View photos
-          a(href='img/gallery/hotel_list_2.jpg', title='Photo title', data-effect='mfp-zoom-in')
-          a(href='img/gallery/hotel_list_3.jpg', title='Photo title', data-effect='mfp-zoom-in')
+          a.btn_photos(href='', title='Photo title', data-effect='mfp-zoom-in') View photos
+          if listing.images && listing.images.length > 0
+            each image in listing.images
+              a(href=image.secure_url, title='Photo title', data-effect='mfp-zoom-in')
     // /hero_in
     nav.secondary_nav.sticky_horizontal_2
       .container
@@ -54,7 +55,7 @@ block content
                     ul
                       li
                         | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('open') || hour[1][1].includes('clos') )
+                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
                           span Closed
                         else  
                           span #{hour[1][0]} - #{hour[1][1]}
@@ -63,7 +64,7 @@ block content
                     ul
                       li
                         | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('open') || hour[1][1].includes('clos') )
+                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
                           span Closed
                         else  
                           span #{hour[1][0]} - #{hour[1][1]}

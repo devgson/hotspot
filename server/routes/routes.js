@@ -39,24 +39,26 @@ router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
 router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
-router.get('/admin/add-listing',admin.isadminLoggedIn, admin.getAddListing);
-router.get('/admin/edit-listing/:listing', admin.getEditListing);
+router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
+router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
+router.post('/admin/upload-header/:slug', admin.uploadHeader);
+router.post('/admin/upload-image/:slug', admin.uploadImages);
+router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);
+router.post('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.editListing);
 
 /*create superadmin*/
 router.get('/admin/create', admin.createSuperadmin);
 
-router.get('/admin', admin.isadminLoggedIn, admin.getAllListings);
+router.get('/admin', admin.isAdminLoggedIn, admin.getAllListings);
 
-router.get('/admin/logout', admin.isadminLoggedIn, admin.signout);
+router.get('/admin/logout', admin.isAdminLoggedIn, admin.signout);
 
-router.post('/admin/login', admin.signin);
+router.get('/admin/login', admin.redirectIfLoggedIn, admin.getSignIn)
+router.post('/admin/login', admin.redirectIfLoggedIn, admin.postSignIn);
 
-router.get('/admin/listings', admin.isadminLoggedIn, admin.getAllListings);
-router.get('/admin/delete-listing/:listing',admin.isadminLoggedIn, admin.DeleteListing);
-router.get('/admin/populate-listings',admin.isadminLoggedIn, admin.addListingfromGoogle, admin.addListingtodb);
-
-router.post('/admin/add-listing',admin.isadminLoggedIn, admin.postAddListing);
-router.post('/admin/edit-listing/:listing',admin.isadminLoggedIn, admin.editListing);
+router.get('/admin/listings', admin.isAdminLoggedIn, admin.getAllListings);
+router.get('/admin/delete-listing/:listing', admin.isAdminLoggedIn, admin.DeleteListing);
+router.get('/admin/populate-listings', admin.isAdminLoggedIn, admin.addListingfromGoogle, admin.addListingtodb);
 
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');

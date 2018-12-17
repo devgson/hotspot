@@ -1,6 +1,43 @@
 const Listing = require('../models/listing_model');
 const Admin = require('../models/admin_model');
 const fetch = require("node-fetch");
+const {
+  cloudinary,
+  flat
+} = require('../helper/helper');
+
+function upload(image) {
+  return new Promise((resolve, reject) => {
+    cloudinary()
+      .uploader.upload_stream(result => resolve(result))
+      .end(image.data);
+  });
+}
+
+function deleteUpload(image) {
+  return new Promise((resolve, reject) => {
+    cloudinary().v2.uploader.destroy(image, (error, result) => {
+      if (error) reject(error);
+      resolve(result);
+    });
+  });
+}
+
+exports.redirectIfLoggedIn = (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    next();
+  } else {
+    res.redirect('/admin')
+  }
+}
+
+exports.isAdminLoggedIn = (req, res, next) => {
+  if (req.session && req.session.adminId) {
+    next();
+  } else {
+    res.redirect('/admin/login');
+  }
+}
 
 exports.getAddListing = async (req, res, next) => {
   try {
@@ -19,7 +56,7 @@ exports.getEditListing = async (req, res, next) => {
     const listing = await Listing.findOne({
       slug: req.params.listing
     })
-    res.render('add-listing', {
+    res.render('edit-listing', {
       listing,
       title: 'Edit Listing'
     });
@@ -44,18 +81,18 @@ exports.postAddListing = async (req, res, next) => {
 
 exports.editListing = async (req, res, next) => {
   try {
-    //req.body.owner = req.session.userID;
-    const store = await Listing.findOneAndUpdate({
+    const updatedListing = req.body;
+    updatedListing.tags ? updatedListing.tags = updatedListing.tags.split(',') : '';
+    const listing = await Listing.findOneAndUpdate({
       slug: req.params.listing
-    }, req.body, {
+    }, updatedListing, {
       new: true,
       runValidators: true
-    }).exec();
-    res.redirect('/admin/listings');
+    });
+    res.render('edit-listing', {
+      listing
+    });
   } catch (error) {
-    // next(ErrorHandler(error));
-    // console.log(error);
-    // document.write(error);
     res.send(error.message);
   }
 };
@@ -92,59 +129,46 @@ exports.addListingfromGoogle = async (req, res, next) => {
     req.listings = json;
     next();
   } catch (error) {
-    console.log(error);
+    res.send(error.message);
   }
 };
 
-exports.redirectIfLoggedIn = (req, res, next) => {
-  if (req.session && req.session.adminId) {
-    next();
-  } else {
-    res.redirect('/admin')
-  }
-}
-
-exports.isadminLoggedIn = async (req, res, next) => {
-  if (req.session && req.session.adminId) {
-    next();
-  } else {
-    res.render('admin-login.pug');
-  }
-
-}
-
 exports.signout = async (req, res, next) => {
-  console.log(req.session.adminId);
-  req.session.destroy((err) => {
-    if(err){
-      console.log(err);
-      next(err)
-    }
+  try {
+    await req.session.destroy();
     res.redirect('/admin');
-  })
+  } catch (error) {
+    res.send(error.message);
+  }
 }
 
-exports.signin = async (req, res, next) => {
+exports.getSignIn = async (req, res, next) => {
+  try {
+    res.render('admin-login');
+  } catch (error) {
+    res.send(error.message);
+  }
+}
+
+exports.postSignIn = async (req, res, next) => {
   try {
     const {
       email,
       password
     } = req.body;
-    const user = await Admin.findOne({
+    const admin = await Admin.findOne({
       email
     });
-    if (user) {
-      const isValidPassword = await user.validatePassword(password);
+    if (admin) {
+      const isValidPassword = await admin.validatePassword(password);
       if (isValidPassword) {
-        req.session.adminId = user._id;
+        req.session.adminId = admin._id;
         return res.redirect('/admin/listings');
       } else {
-        console.log('wrongggg');
         req.flash('signinError', 'Wrong Email Address or Password');
         res.redirect('back');
       }
     } else {
-      console.log('wrongggg');
       req.flash('signinError', 'Wrong Email Address or Password');
       res.redirect('back');
     }
@@ -154,12 +178,17 @@ exports.signin = async (req, res, next) => {
 }
 
 exports.createSuperadmin = async (req, res, next) => {
-  let body = {};
-  body.email = 'admin@hotspot.com';
-  body.password = 'password';
-  const adminuser = await new Admin(body).save();
-  res.send('saved');
+  try {
+    let body = {};
+    body.email = 'admin@hotspot.com';
+    body.password = 'password';
+    const adminUser = await new Admin(body).save();
+    res.send('saved');
+  } catch (error) {
+    res.send(error.message);
+  }
 };
+
 exports.addListingtodb = async (req, res, next) => {
   try {
     let body = {};
@@ -186,3 +215,60 @@ exports.addListingtodb = async (req, res, next) => {
     console.log(error);
   }
 };
+
+exports.uploadHeader = async (req, res, next) => {
+  try {
+    const listing = await Listing.findOne({
+      slug: req.params.slug
+    });
+    if (listing.header) {
+      await deleteUpload(listing.header.public_id);
+    }
+    const image = await upload(req.files.header);
+    if (image.public_id == null || image.url == null) {
+      next(ErrorHandler("Serious error fam", 404));
+    }
+    await listing.updateOne({
+      header: {
+        public_id: image.public_id,
+        url: image.url,
+        secure_url: image.secure_url
+      }
+    });
+    req.flash('uploadHeaderSuccess', 'Header Image has been successfully uploaded');
+    return res.redirect('back');
+  } catch (error) {
+    req.flash('uploadHeaderError', 'Error occured, please try again');
+    return res.redirect('back');
+  }
+}
+
+exports.uploadImages = async (req, res, next) => {
+  try {
+    const listing = await Listing.findOne({
+      slug: req.params.slug
+    });
+    for (const image in req.files) {
+      if (listing.images.length >= 5) {
+        return res.status(401).send('Error : Maximum Images reached, delete some');
+      } else {
+        const result = await upload(req.files[image]);
+        if (result.public_id == null || result.url == null) {
+          return res.status(401).send("Error uploading images, please try again");
+        }
+        await listing.update({
+          $push: {
+            images: {
+              public_id: result.public_id,
+              url: result.url,
+              secure_url: result.secure_url
+            }
+          }
+        })
+      }
+    }
+    res.send('Upload Complete');
+  } catch (error) {
+    res.status(401).send("Error occured, please retry");
+  }
+}

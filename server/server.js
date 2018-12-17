@@ -8,6 +8,7 @@ const moment = require('moment');
 const session = require('express-session');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
+const fileUpload = require('express-fileupload');
 const db = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
 
@@ -21,6 +22,7 @@ mongoose.connect(db, {
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname + '/views'))
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname + '/../public')));
 app.use(session({
   secret: "testing",

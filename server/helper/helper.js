@@ -25,3 +25,15 @@ exports.getReviewsStats = async (listing, numberOfReviews) => {
     reviewsStat
   }
 }
+
+exports.cloudinary = () => {
+  const cloud = require('cloudinary');
+  cloud.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET
+  });
+  return cloud;
+}
+
+exports.flat = require('flat');

@@ -5,12 +5,34 @@ block content
   .content-wrapper
     .container-fluid
       include partials/bread-crumb.pug
-      form(action=`/admin/upload-image` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
+      form(action=`/admin/upload-image/${listing.slug}` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
         .dz-default.dz-message
           span Drag and drop
         button.btn.theme-btn#saveImage(type="submit") Upload Images
 
-      form( action=`/admin/add-listing` method="post")   
+      form.mb-5.header_image(action=`/admin/upload-header/${listing.slug}`, method="post" enctype="multipart/form-data")
+        .box_general.padding_bottom
+          .header_box.version_2
+            h2
+              i.fa.fa-dollar
+              | Header Image
+          if flashes.uploadHeaderSuccess
+            .row
+              .col-md-12
+                .form-group
+                  p(style="color:green") #{flashes.uploadHeaderSuccess}
+          if flashes.uploadHeaderError
+            .row
+              .col-md-12
+                .form-group
+                  p(style="color:red") #{flashes.uploadHeaderError}
+          .row
+            .col-md-12
+              .form-group
+                input(type="file" id="input_header" name="header" accept=".jpg, .jpeg, .png")
+        button.btn.btn-primary.btn_1.medium(type="submit") Upload Header Image
+
+      form( action=`/admin/edit-listing/${listing.slug}` method="post")   
         .box_general.padding_bottom
           .header_box.version_2
             h2
@@ -39,7 +61,9 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Tags
-                input.form-control(type='text' placeholder='Tags MUST be separated by commas' name='tags' required)
+                if listing.slug
+                  -var tag_listings = listing.tags.toString();
+                input.form-control(type='text', value= tag_listings placeholder='Tags MUST be separated by commas' name='tags' required)
           .row
             .col-md-12
               .form-group
@@ -52,29 +76,26 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Phone Number
-                input.form-control(type='text' name='info[number]' value= listing.info ?  listing.info.number : '' required)
+                input.form-control(type='text' name='info[number]' value=listing.info.number required)
             .col-md-4
               .form-group
                 label Web site
-                input.form-control(type='text' name='info[website]' value= listing.info ? listing.info.website : '')
+                input.form-control(type='text' name='info[website]' value=listing.info.website)
             .col-md-4
               .form-group
                 bold(style="color:red") * 
                 label Email
-                input.form-control(type='text' name='info[email]' value=listing.info ? listing.info.email : '' required)
+                input.form-control(type='text' name='info[email]' value=listing.info.email required)
           .row
             .col-md-4
               .form-group
                 label Facebook link (Optional)
-                input.form-control(type='text' name='social_media[facebook]')
+                input.form-control(type='text' name='social_media[facebook]' value=listing.social_media.facebook)
             .col-md-4
               .form-group
                 label Twitter link (Optional)
-                input.form-control(type='text' name='social_media[twitter]')
-          .row
-            .col-md-12
-              .form-group
-                label Photos
+                input.form-control(type='text' name='social_media[twitter]' value=listing.social_media.twitter)
+
         .box_general.padding_bottom
           .header_box.version_2
             h2
@@ -86,14 +107,14 @@ block content
                 bold(style="color:red") * 
                 label Select State
                 .styled-select
-                  select(name="info[state]" value=listing.info ? listing.info.state : '' required)
+                  select(name="info[state]" value=listing.info.state required)
                     option Lagos
                     option Abuja
             .col-md-6
               .form-group
                 bold(style="color:red") * 
                 label Address
-                input.form-control(type='text', value=listing.info ? listing.info.address : '' placeholder='ex. 250, Fifth Avenue...' name='info[address]' required)
+                input.form-control(type='text', value=listing.info.address placeholder='ex. 250, Fifth Avenue...' name='info[address]' required)
         .box_general.padding_bottom
           .header_box.version_2
             h2 
@@ -108,6 +129,7 @@ block content
                 .form-group
                   .styled-select
                     select(name=`hours[${days}]` required)
+                      option(selected)= listing.hours[days][0]
                       option Opening Time
                       option Closed
                       option 1 AM
@@ -138,6 +160,7 @@ block content
                 .form-group
                   .styled-select
                     select(name=`hours[${days}]` required)
+                      option(selected)= listing.hours[days][1]
                       option Closing Time
                       option Closed
                       option 1 AM
@@ -195,17 +218,18 @@ block content
                               i.fa.fa-fw.fa-remove
               a.btn_1.gray.add-pricing-list-item(href='#0')
                 i.fa.fa-fw.fa-plus-circle
-                |Add Item
+                |Edit Item
           // /row
           // /box_general
         button.btn.btn-primary.btn_1.medium(type="submit") Save
+  
   include partials/admin-footer.pug
   block append scripts
     script(src="/admin_section/vendor/dropzone/dropzone.js")
     script.
       Dropzone.options.myImage = {
         autoProcessQueue : false,
-        acceptedFiles : '.png,.jpg.jpeg',
+        acceptedFiles : '.png,.jpg,.jpeg',
         uploadMultiple : true,
         maxFilesize : 5,
         maxFiles : 5,
@@ -230,3 +254,22 @@ block content
           })
         }
       }
+
+      /*$('form.header_image').on('submit', function(e){
+        e.preventDefault();
+        console.log(`#{listing.slug}`);
+        var formData = new FormData();  
+        formData.append( "PostImage", document.getElementById("input_header").files[0] )
+        $.ajax({
+          url : `/admin/upload-header/#{listing.slug}`,
+          type : 'POST',
+          data :  formData,
+          contentType : "image/png",
+          processData: false,
+          cache: false,
+          mimeType: 'multipart/form-data',
+          success : function(response){
+            console.log(response);
+          }
+        })
+      })*/

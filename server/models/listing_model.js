@@ -52,10 +52,8 @@ const ListingSchema = new Schema({
     type: String
   },
   tags: [String],
-  images: [String],
-  header_image: {
-    type: String
-  },
+  images: [],
+  header: {},
   hours: {
     type: Schema.Types.Mixed
   },
