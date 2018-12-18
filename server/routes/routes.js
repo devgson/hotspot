@@ -41,11 +41,12 @@ router.get('/review/delete/:reviewId', review.deleteReview);
 /* Admin Routes */
 router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
-router.post('/admin/upload-header/:slug', admin.uploadHeader);
-router.post('/admin/upload-image/:slug', admin.uploadImages);
 router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);
 router.post('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.editListing);
 
+router.post('/admin/upload-header/:slug', admin.uploadHeader);
+router.post('/admin/upload-image/:slug', admin.uploadImages);
+router.post('/admin/delete-image/:slug', admin.deleteImage);
 /*create superadmin*/
 router.get('/admin/create', admin.createSuperadmin);
 
@@ -54,7 +55,7 @@ router.get('/admin', admin.isAdminLoggedIn, admin.getAllListings);
 router.get('/admin/logout', admin.isAdminLoggedIn, admin.signout);
 
 router.get('/admin/login', admin.redirectIfLoggedIn, admin.getSignIn)
-router.post('/admin/login', admin.redirectIfLoggedIn, admin.postSignIn);
+router.post('/admin/login', admin.postSignIn);
 
 router.get('/admin/listings', admin.isAdminLoggedIn, admin.getAllListings);
 router.get('/admin/delete-listing/:listing', admin.isAdminLoggedIn, admin.DeleteListing);

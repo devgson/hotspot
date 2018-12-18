@@ -25,9 +25,9 @@ function deleteUpload(image) {
 
 exports.redirectIfLoggedIn = (req, res, next) => {
   if (req.session && req.session.adminId) {
-    next();
-  } else {
     res.redirect('/admin')
+  } else {
+    next();
   }
 }
 
@@ -270,5 +270,29 @@ exports.uploadImages = async (req, res, next) => {
     res.send('Upload Complete');
   } catch (error) {
     res.status(401).send("Error occured, please retry");
+  }
+}
+
+exports.deleteImage = async (req, res, next) => {
+  try {
+    const id = req.body.id;
+    const listing = await Listing.findOne({
+      slug: req.params.slug
+    });
+    if (id) {
+      await deleteUpload(id)
+    } else {
+      return res.status(401).send("Error no ID provided");
+    }
+    await listing.updateOne({
+      $pull: {
+        images: {
+          public_id: id
+        }
+      }
+    })
+    res.status(200).send('Delete Successful')
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 }
