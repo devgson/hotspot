@@ -1,6 +1,6 @@
 var search = instantsearch({
-    appId: 'Z2B9G8AGOI',
-    apiKey: '88b2a29bf991f639cf7eb14efe2b27da', // search only API key, no ADMIN key
+    appId: algoliaid,
+    apiKey: searchkey, // search only API key, no ADMIN key
     indexName: 'listings',
     urlSync: true,
     searchParameters: {
