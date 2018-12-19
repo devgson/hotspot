@@ -58,6 +58,7 @@ router.get('/admin/logout', admin.isAdminLoggedIn, admin.signout);
 router.get('/admin/login', admin.redirectIfLoggedIn, admin.getSignIn)
 router.post('/admin/login', admin.postSignIn);
 
+router.get('/admin/algolia', admin.addListingtoAlgolia);
 router.get('/admin/listings', admin.isAdminLoggedIn, admin.getAllListings);
 router.get('/admin/delete-listing/:listing', admin.isAdminLoggedIn, admin.DeleteListing);
 router.get('/admin/populate-listings', admin.isAdminLoggedIn, admin.addListingfromGoogle, admin.addListingtodb);

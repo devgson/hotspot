@@ -48,6 +48,7 @@ block content
                 h3.icon_clock_alt.mr-2.d-inline-block
                 h4.d-inline-block Opening Hours
               .row
+              if listing.hours
                 - var hours3 = Object.entries( listing.hours ).slice(0 ,4);
                 - var hours4 = Object.entries( listing.hours ).slice(4);
                 .col-md-6
@@ -71,6 +72,7 @@ block content
             hr
             h3 Location
             #map.map.map_single.add_bottom_45
+              img(style="width : 100%" src=`https://maps.googleapis.com/maps/api/staticmap?center=${listing.info.address}&zoom=16&maptype=roadmap&format=png&size=900x400&key=${process.env.GOOGLE_KEY}&markers=${listing.info.address}&scale=1`)
             // End Map
             // /section
             section#reviews
