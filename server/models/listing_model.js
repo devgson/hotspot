@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoolia = require('mongoolia').default;
 const validator = require("validator");
 const slug = require('slugs');
 
@@ -8,48 +9,60 @@ const ListingSchema = new Schema({
   title: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    algoliaIndex:true
   },
   description: {
     type: String,
-    trim: true
+    trim: true,
+    algoliaIndex:true
   },
   slug: {
-    type: String
+    type: String,
+    algoliaIndex:true
   },
   info: {
     number: {
-      type: String
+      type: String,
+      algoliaIndex:true
     },
     email: {
-      type: String
+      type: String,
+      algoliaIndex:true
     },
     website: {
-      type: String
+      type: String,
+      algoliaIndex:true
     },
     state: {
       type: String,
-      trim: true
+      trim: true,
+      algoliaIndex:true
     },
     country: {
       type: String,
-      trim: true
+      trim: true,
+      algoliaIndex:true
     },
     address: {
       type: String,
-      trim: true
+      trim: true,
+      algoliaIndex:true
     },
     coordinates: {
       lat: {
-        type: Number
+        type: Number,
+        algoliaIndex:true
       },
       lon: {
-        type: Number
+        type: Number,
+        algoliaIndex:true
       }
     }
   },
   category: {
-    type: String
+    type: String,
+    algoliaIndex:true
   },
   tags: [String],
   images: [],
@@ -69,7 +82,8 @@ const ListingSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    algoliaIndex:true
   }
 });
 
@@ -103,6 +117,12 @@ ListingSchema.pre('save', async function (next) {
   }
   next();
 });
+
+ListingSchema.plugin(mongoolia, {
+  appId: process.env.ALGOLIA_ID,
+  apiKey: process.env.ALGOLIA_ADMIN,
+  indexName: 'listings'
+})
 
 const Listing = mongoose.model("listing", ListingSchema);
 
