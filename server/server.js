@@ -1,17 +1,8 @@
 require('dotenv').config({
   path: 'variables.env'
 });
-const algoliasearch = require('algoliasearch');
-var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
-var index = client.initIndex('listings');
-index.setSettings({
-  searchableAttributes: [
-    'title',
-    'tags',
-    'category',
-    'info'
-  ]
-});
+//var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
+//var index = client.initIndex('listings');
 const express = require("express");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -20,12 +11,20 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const fileUpload = require('express-fileupload');
+const algoliasearch = require('algoliasearch');
 const db = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
 
-var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
-var index = client.initIndex('listings');
-
+const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
+const index = client.initIndex('listings');
+index.setSettings({
+  searchableAttributes: [
+    'title',
+    'tags',
+    'category',
+    'info'
+  ]
+});
 const User = require('./models/user_model');
 const app = express();
 
@@ -45,7 +44,7 @@ app.use(session({
   store: new mongoStore({
     mongooseConnection: mongoose.connection
   })
-}))
+}));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -63,7 +62,7 @@ app.use(async (req, res, next) => {
   } else {
     next();
   }
-})
+});
 app.use((req, res, next) => {
   res.locals.moment = moment;
   res.locals.flashes = req.flash();
