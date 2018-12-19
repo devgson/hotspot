@@ -16,6 +16,7 @@ router.get('/grid-search', (req, res) => {
 /* User Authentication Routes */
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isUserLoggedIn, user.userProfile);
+router.post('/profile/:userId', user.isUserLoggedIn, user.updateUserProfile);
 router.get('/signout', user.isUserLoggedIn, user.signout);
 
 router.get('/add-listing', (req, res) => {

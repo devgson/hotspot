@@ -9,7 +9,23 @@ block content
           .box_account
             .text-center.col-.col-lg-10.col-md-12.col-12.mx-auto
               h3.new_client.text-center User Profile
-            form.form-row.form_container
+            form.form-row.form_container(action=`/profile/${user._id}` method="POST")
+              if flashes.profileEditSuccess
+                .form-group.col-12.my-3
+                  .alert.alert-success.alert-dismissible.fade.show
+                    p.d-inline-block.mb-0 
+                      span.icon-ok-circled
+                      | #{flashes.profileEditSuccess}
+                    button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                      span(aria-hidden="true") &times;
+              if flashes.profileEditError
+                .form-group.col-12.my-3
+                  .alert.alert-danger.alert-dismissible.fade.show
+                    p.mb-0 
+                      span.icon-cancel-circled2
+                      | #{flashes.profileEditError}
+                    button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                      span(aria-hidden="true") &times;
               .form-group.col-12.my-3
                 .text-center
                   .icon-user-4(style="font-size : 2rem;")
@@ -24,8 +40,8 @@ block content
                 label Email
                 input#email.form-control(type='email', name='email' value=(user.email) disabled)
               .form-group.col-md-6.col-12
-                label Phone
-                input.form-control(type='phone', name='phone', value=(user.phone))
+                label Phone Number
+                input.form-control(type='phone', name='info.phone', value=(user.info.phone))
               .form-group.col-12.my-3
                 .text-center
                   .icon-chat-4(style="font-size : 2rem;")
@@ -35,12 +51,32 @@ block content
                 label 
                   i(class="icon-facebook-7")
                   |  Facebook Link
-                input.form-control(type='text', name='social_media.facebook', value='')
+                input.form-control(type='text', name='social_media.facebook', value=user.social_media.facebook)
               .form-group.col-md-6.col-12
                 label
                   i(class="icon-twitter-7")
                   |  Twitter Link
-                input.form-control(type='text', name='social_media.twitter', value='')
+                input.form-control(type='text', name='social_media.twitter', value=user.social_media.twitter)
+              .form-group.col-12.my-3
+                .text-center
+                  .icon-lock-open(style="font-size : 2rem;")
+                  h3.font-weight(style="padding-left : 0px;") Update Login Details
+              hr
+              .form-group.col-md-4.col-12
+                label 
+                  i(class="icon-lock")
+                  |  Old password
+                input.form-control(type='password', name='old_password')
+              .form-group.col-md-4.col-12
+                label
+                  i(class="icon-lock")
+                  |  New password
+                input.form-control(type='password', name='new_password')
+              .form-group.col-md-4.col-12
+                label
+                  i(class="icon-lock")
+                  |  Confirm new password
+                input.form-control(type='password', name='confirm_new_password')
               .form-group.text-center.mt-3.col-md-12.col-12
                 input.mx-auto.btn_1.half-width.form-control(type='submit' value="Update")
 

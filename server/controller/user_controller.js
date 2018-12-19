@@ -76,6 +76,37 @@ exports.signout = async (req, res, next) => {
   })
 }
 
+exports.updateUserProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const oldPassword = req.body.old_password;
+    const newPassword = req.body.new_password;
+    const confirmNewPassword = req.body.confirm_new_password;
+    if (newPassword !== confirmNewPassword) {
+      req.flash('profileEditError', 'New passwords do not match');
+      return res.redirect('back');
+    }
+    if (oldPassword && newPassword && confirmNewPassword) {
+      const doPasswordsMatch = await user.validatePassword(oldPassword);
+      if (doPasswordsMatch) {
+        const hashedPassword = await user.hashNewPassword(newPassword)
+        req.body.password = hashedPassword;
+      } else {
+        req.flash('profileEditError', 'Old password is incorrect');
+        return res.redirect('back');
+      }
+    }
+    const userUpdated = await User.findByIdAndUpdate(req.params.userId, req.body, {
+      upsert: true
+    })
+    req.flash('profileEditSuccess', 'Profile Updated Successfully');
+    res.redirect('back');
+  } catch (error) {
+    req.flash('profileEditError', 'Error occured, please try again');
+    res.redirect('back');
+  }
+}
+
 exports.bookmarkListing = async (req, res, next) => {
   try {
     const listing = req.params.listingId;

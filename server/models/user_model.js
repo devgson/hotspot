@@ -27,6 +27,11 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  info: {
+    phone: {
+      type: String
+    }
+  },
   location: {
     country: {
       type: String,
@@ -58,10 +63,18 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function (next) {
   const user = this;
-  const hash = await bcrypt.hash(user.password, 10);
-  user.password = hash;
-  return next();
+  if (user.isModified('password')) {
+    const hash = await bcrypt.hash(user.password, 10);
+    user.password = hash;
+    return next();
+  } else {
+    next();
+  }
 });
+
+UserSchema.methods.hashNewPassword = async function (password) {
+  return await bcrypt.hash(password, 10);
+}
 
 UserSchema.methods.validatePassword = async function (password) {
   const user = this;
