@@ -8632,3 +8632,7 @@ a.social_bt.google:before {
 .btn_bookmark_selected button {
   color: black !important
 }
+
+.ais-search-box--magnifier{
+  display: none;
+}

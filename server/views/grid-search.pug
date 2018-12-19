@@ -16,7 +16,7 @@ block content
             .row.no-gutters.custom-search-input-2.inner
               .col-lg-4
                 .form-group
-                  input.form-control(type='text', placeholder='What are you looking for...')
+                  input.form-control(type='text', id='search-field' placeholder='What are you looking for...')
                   i.icon_search
               .col-lg-4
                 .form-group
@@ -37,33 +37,33 @@ block content
         // /container
         // /results
     .filters_listing.sticky_horizontal
-        .container
-          ul.clearfix
-            li
-              .switch-field
-                input#all(type='radio', name='listing_filter', value='all', checked='')
-                label(for='all') All
-                input#popular(type='radio', name='listing_filter', value='popular')
-                label(for='popular') Popular
-                input#latest(type='radio', name='listing_filter', value='latest')
-                label(for='latest') Latest
-            li
-              a.btn_filt(data-toggle='collapse', href='#filters', aria-expanded='false', aria-controls='filters', data-text-swap='Less filters', data-text-original='More filters') More filters
-            li
-              .layout_view
-                a.active(href='#0')
-                  i.icon-th
-                a(href='row-listings-filterstop.html')
-                  i.icon-th-list
-                a(href='listing-map.html')
-                  i.icon-map
-            li
-              a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
-        // /container
-        // /filters
+      .container
+        ul.clearfix
+          li
+            .switch-field
+              input#all(type='radio', name='listing_filter', value='all', checked='')
+              label(for='all') All
+              input#popular(type='radio', name='listing_filter', value='popular')
+              label(for='popular') Popular
+              input#latest(type='radio', name='listing_filter', value='latest')
+              label(for='latest') Latest
+          li
+            a.btn_filt(data-toggle='collapse', href='#filters', aria-expanded='false', aria-controls='filters', data-text-swap='Less filters', data-text-original='More filters') More filters
+          li
+            .layout_view
+              a.active(href='#0')
+                i.icon-th
+              a(href='row-listings-filterstop.html')
+                i.icon-th-list
+              a(href='listing-map.html')
+                i.icon-map
+          li
+            a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
+      // /container
+      // /filters
     #collapseMap.collapse
-          #map.map
-          // /Map
+      #map.map
+      // /Map
     #filters.collapse
       .container.margin_30_5
         .row
@@ -132,164 +132,6 @@ block content
         // /row
         // /Filters
     .container.margin_60_35
-              .row
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-restaurant.html')
-                        img.img-fluid(src='img/location_1.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Restaurant
-                    .wrapper
-                      h3
-                        a(href='detail-restaurant.html') Da Alfredo
-                      small 27 Old Gloucester St
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_open Now Open
-                      li
-                        .score
-                          span
-                            | Superb
-                            em 350 Reviews
-                          strong 8.9
-                // /strip grid
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-restaurant.html')
-                        img.img-fluid(src='img/location_2.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Bar
-                    .wrapper
-                      h3
-                        a(href='detail-restaurant.html') Limon Bar
-                      small 438 Rush Green Road, Romford
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_open Now Open
-                      li
-                        .score
-                          span
-                            | Good
-                            em 350 Reviews
-                          strong 7.0
-                // /strip grid
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-shop.html')
-                        img.img-fluid(src='img/location_3.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Shop
-                    .wrapper
-                      h3
-                        a(href='detail-shop.html') Mary Boutique
-                      small 43 Stephen Road, Bexleyheath
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_closed Now Closed
-                      li
-                        .score
-                          span
-                            | Good
-                            em 350 Reviews
-                          strong 7.0
-                // /strip grid
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-restaurant.html')
-                        img.img-fluid(src='img/location_4.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Bar
-                    .wrapper
-                      h3
-                        a(href='detail-restaurant.html') Garden Bar
-                      small 40 Beechwood Road, Sanderstead
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_closed Now Closed
-                      li
-                        .score
-                          span
-                            | Superb
-                            em 350 Reviews
-                          strong 9.0
-                // /strip grid
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-hotel.html')
-                        img.img-fluid(src='img/location_5.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Hotel
-                    .wrapper
-                      h3
-                        a(href='detail-hotel.html') Mariott Hotel
-                      small 213 Malden Road, New Malden
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_open Now Open
-                      li
-                        .score
-                          span
-                            | Good
-                            em 350 Reviews
-                          strong 7.5
-                // /strip grid
-                .col-xl-4.col-lg-6.col-md-6
-                  .strip.grid
-                    figure
-                      a.wish_bt(href='#0')
-                      a(href='detail-restaurant.html')
-                        img.img-fluid(src='img/location_6.jpg', alt='')
-                        .read_more
-                          span Read more
-                      small Event
-                    .wrapper
-                      h3
-                        a(href='detail-restaurant.html') Six Pistols
-                      small Coverdale Road, Willesden
-                      p
-                        | Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu.
-                      a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361', target='_blank') Get directions
-                    ul
-                      li
-                        span.loc_open Now Open
-                      li
-                        .score
-                          span
-                            | Good
-                            em 350 Reviews
-                          strong 7.8
-                // /strip grid
-                // /row
-                p.text-center
-                  a.btn_1.rounded.add_top_30(href='#0') Load more  
+      div#hits.row
+      div#pagination
   include partials/footer.pug

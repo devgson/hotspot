@@ -1,6 +1,9 @@
 const Listing = require('../models/listing_model');
 const Admin = require('../models/admin_model');
 const fetch = require("node-fetch");
+const algoliasearch = require('algoliasearch');
+var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
+var index = client.initIndex('listings');
 const {
   cloudinary,
   flat
@@ -86,9 +89,9 @@ exports.editListing = async (req, res, next) => {
     const listing = await Listing.findOneAndUpdate({
       slug: req.params.listing
     }, updatedListing, {
-      new: true,
-      runValidators: true
-    });
+        new: true,
+        runValidators: true
+      });
     res.render('edit-listing', {
       listing
     });
@@ -208,6 +211,7 @@ exports.addListingtodb = async (req, res, next) => {
           lon: element.geometry.location.lng
         }
       };
+      console.log("lat is ", element.geometry.location.lat);
       const store = await new Listing(body).save();
     }
     res.send('limit reached');
@@ -294,5 +298,15 @@ exports.deleteImage = async (req, res, next) => {
     res.status(200).send('Delete Successful')
   } catch (error) {
     res.status(500).send(error.message);
+  }
+}
+
+exports.addListingtoAlgolia = async (req, res, next) => {
+  try {
+    const listings = await Listing.find();
+    index.addObjects(listings);
+    res.send('done');
+  } catch (error) {
+    res.send(error.message);
   }
 }

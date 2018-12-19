@@ -10,6 +10,7 @@ html(lang='en')
     // Favicons
     link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700', rel='stylesheet')
     block stylesheets
+      link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.css')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
       link(href='/css/style.css', rel='stylesheet')
       link(href='/css/vendors.css', rel='stylesheet')
@@ -20,5 +21,7 @@ html(lang='en')
     block scripts
       script(src='/js/jquery.min.js')
       script(src='/js/common_scripts.js')
+      script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.js')
+      script(src='/js/algolia.js')
       script(src='/js/functions.js')
       script(src='/assets/validate.js')
