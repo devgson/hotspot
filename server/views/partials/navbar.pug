@@ -1,4 +1,32 @@
 header.header.menu_fixed
+  #logo
+    a(href='/', title='Hotspot - Find the hottest places in Lagos')
+      h3.text-light.logo-text Hotspot
+  ul#top_menu
+    li.d-flex
+      if !currentUser 
+        a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+    li
+      a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
+  // /top_menu
+  a.btn_mobile(href='#menu')
+    #hamburger.hamburger.hamburger--spin
+      .hamburger-box
+        .hamburger-inner
+  nav#menu.main-menu
+    ul
+      li
+        span
+          a(href='/') Home
+      li
+        span
+          if !currentUser 
+            a(href='#sign-in-dialog', title='Sign In') Sign In
+          else
+            a(href='/signout', title='Sign Out') Sign Out
+
+
+//- header.header.menu_fixed
       #logo
         a(href='/', title='Hotspot - Find the hottest places in Lagos')
           h3.text-dark Hotspot

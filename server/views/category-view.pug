@@ -1,0 +1,166 @@
+
+extends layout
+
+block content
+  include partials/header-search.pug
+  main
+    #results
+      .container
+        .row
+          .col-lg-3.col-md-4.col-10
+            h4
+              strong 145
+              |  result for All listing
+          .col-lg-9.col-md-8.col-2
+            a.side_panel.btn_search_mobile(href='#0')
+            // /open search panel
+            .row.no-gutters.custom-search-input-2.inner
+              .col-lg-4
+                .form-group
+                  input.form-control(type='text', id='search-field' placeholder='What are you looking for...')
+                  i.icon_search
+              .col-lg-4
+                .form-group
+                  input.form-control(type='text', placeholder='Where')
+                  i.icon_pin_alt
+              .col-lg-3
+                select.wide
+                  option All Categories
+                  option Shops
+                  option Hotels
+                  option Restaurants
+                  option Bars
+                  option Events
+                  option Fitness
+              .col-lg-1
+                input(type='submit', value='Search')
+        // /row
+        // /container
+        // /results
+    .filters_listing.sticky_horizontal
+      .container
+        ul.clearfix
+          li
+            .switch-field
+              input#all(type='radio', name='listing_filter', value='all', checked='')
+              label(for='all') All
+              input#popular(type='radio', name='listing_filter', value='popular')
+              label(for='popular') Popular
+              input#latest(type='radio', name='listing_filter', value='latest')
+              label(for='latest') Latest
+          li
+            a.btn_filt(data-toggle='collapse', href='#filters', aria-expanded='false', aria-controls='filters', data-text-swap='Less filters', data-text-original='More filters') More filters
+          li
+            .layout_view
+              a.active(href='#0')
+                i.icon-th
+              a(href='row-listings-filterstop.html')
+                i.icon-th-list
+              a(href='listing-map.html')
+                i.icon-map
+          li
+            a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
+      // /container
+      // /filters
+    #collapseMap.collapse
+      #map.map
+      // /Map
+    #filters.collapse
+      .container.margin_30_5
+        .row
+          .col-md-4
+            h6 Rating
+            ul
+              li
+                label.container_check
+                  | Superb 9+ 
+                  small 25
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Very Good 8+ 
+                  small 133
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Good 7+ 
+                  small 32
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Pleasant 6+ 
+                  small 12
+                  input(type='checkbox')
+                  span.checkmark
+          .col-md-4
+            h6 Tags
+            ul
+              li
+                label.container_check
+                  | Wireless Internet 
+                  small 12
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Smoking Allowed 
+                  small 11
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Wheelchair Accesible 
+                  small 23
+                  input(type='checkbox')
+                  span.checkmark
+              li
+                label.container_check
+                  | Parking 
+                  small 56
+                  input(type='checkbox')
+                  span.checkmark
+          .col-md-4
+            .add_bottom_30
+              h6 Distance
+              .distance
+                | Radius around selected destination 
+                span
+                |  km
+              input(type='range', min='10', max='100', step='10', value='30', data-orientation='horizontal')
+        // /row
+        // /Filters
+    .container.margin_60_35
+      if listings.length
+        #list-hits.row
+          each listing in listings
+            .col-xl-4.col-lg-6.col-md-6
+              .strip.grid
+                figure
+                  a.wish_bt(href='#0')
+                  a(href='detail-restaurant.html')
+                    img.img-fluid(src=listing.images[0], alt='')
+                    .read_more
+                      span Read more
+                  small #{listing.category}
+                .wrapper
+                  h3
+                    a(href=`/listing/${listing.slug}`) #{listing.title}
+                  small #{listing.info ? JSON.stringify(listing.info.address) : ''}
+                  p #{listing.description ? listing.description : ''}
+                  a.address(href='', target='_blank') Get directions
+                ul
+                  li
+                    span.loc_open Now Open
+                  li
+                    .score
+                      span
+                        | Superb
+                        em 350 Reviews
+                      strong 8.9
+      else
+        .row.justify-content-center
+          h4 No Results Found
+  include partials/footer.pug

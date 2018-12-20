@@ -14,7 +14,7 @@ html(lang='en')
     block stylesheets
       link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.css')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
-      link(href='/css/style.css', rel='stylesheet')
+      link(href='/css/style-new.css', rel='stylesheet')
       link(href='/css/vendors.css', rel='stylesheet')
   body
     #page
@@ -29,4 +29,46 @@ html(lang='en')
       script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.js')
       script(src='/js/algolia.js')
       script(src='/js/functions.js')
+      script(src='/js/animated_canvas.min.js')
       script(src='/assets/validate.js')
+
+  #sign-in-dialog.zoom-anim-dialog.mfp-hide
+    .small-dialog-header
+      h3 Sign In
+    form(action="/signin" method="post")
+      .sign-in-wrapper
+        a.social_bt.facebook(href='#0') Login with Facebook
+        a.social_bt.google(href='#0') Login with Google
+        .divider
+          span Or
+        .form-group
+          label Email
+          input#email.form-control(type='email', name='email')
+          i.icon_mail_alt
+        .form-group
+          label Password
+          input#password.form-control(type='password', name='password', value='')
+          i.icon_lock_alt
+        .clearfix.add_bottom_15
+          .checkboxes.float-left
+            label.container_check
+              | Remember me 
+              input(type='checkbox')
+              span.checkmark
+          .float-right.mt-1
+            a#forgot(href='javascript:void(0);') Forgot Password?
+        .text-center
+          input.btn_1.full-width(type='submit', value='Log In')
+        .text-center
+          | Don’t have an account? 
+          a(href='register.html') Sign up
+        #forgot_pw
+          .form-group
+            label Please confirm login email below
+            input#email_forgot.form-control(type='email', name='email_forgot')
+            i.icon_mail_alt
+          p
+            | You will receive an email containing a link allowing you to reset
+            | your password to a new preferred one.
+          .text-center
+            input.btn_1(type='submit', value='Reset Password')

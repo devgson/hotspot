@@ -39,3 +39,16 @@ exports.getListing = async (req, res) => {
     res.send(error.message);
   }
 }
+
+exports.getCategory = async(req,res) => {
+  try{
+    const listings = await Listing.find({
+      category: req.params.category
+    })
+    res.render('category-view', {listings})
+  }
+  catch(e){
+    res.send(e.message);
+    
+  }
+}

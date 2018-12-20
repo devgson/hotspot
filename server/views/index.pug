@@ -3,218 +3,208 @@ extends layout
 block content
   include partials/navbar.pug
 
-  main
-    section.hero_single.version_5
+  main.pattern
+    section.hero_single.version_2
       .wrapper
         .container
-          .row.justify-content-center.pt-lg-5
-            .col-xl-5.col-lg-6
-              h3 Find what you need!
-              p
-                | Discover top rated hotels, shops and restaurants around Lagos
-              form(method='post', action='grid-search.html')
-                .custom-search-input-2
-                  .form-group
-                    input.form-control(type='text', placeholder='What are you looking for...')
-                    i.icon_search
-                  .form-group
-                    input.form-control(type='text', placeholder='Where')
-                    i.icon_pin_alt
-                  select.wide
-                    option All Categories
-                    option Shops
-                    option Hotels
-                    option Restaurants
-                    option Bars
-                    option Events
-                    option Fitness
-                  input(type='submit', value='Search')
-            .col-xl-5.col-lg-6.text-right.d-none.d-lg-block
-              img.img-fluid(src='img/graphic_home_2.svg', alt='')
-    // /hero_single
-    .bg_color_1
-      .container.margin_80_55
-        .main_title_2
-          span
-            em
-          h2 Popular Categories
-        .row
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_1.jpg', alt='')
-                .info
-                  small 122 Locations
-                  h3 Shops
-          // /grid_item
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_2.jpg', alt='')
-                .info
-                  small 245 Locations
-                  h3 Hotels
-          // /grid_item
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_3.jpg', alt='')
-                .info
-                  small 95 Locations
-                  h3 Restaurants
-          // /grid_item
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_4.jpg', alt='')
-                .info
-                  small 123 Locations
-                  h3 Bars
-          // /grid_item
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_5.jpg', alt='')
-                .info
-                  small 92 Locations
-                  h3 Events
-          // /grid_item
-          .col-lg-4.col-sm-6
-            a.grid_item(href='grid-listings-filterstop.html')
-              figure
-                img(src='img/home_cat_6.jpg', alt='')
-                .info
-                  small 92 Locations
-                  h3 Fitness
-          // /grid_item
-          // /row
-          // /container
-          // /bg_color_1
-    .container-fluid.margin_80_55
-      .main_title_2
-        span
-          em
-        h2 Popular listings
-      #reccomended.owl-carousel.owl-theme
-        .item
-          .strip.grid
-            figure
-              a.wish_bt(href='detail-restaurant.html')
-              a(href='detail-restaurant.html')
-                img.img-fluid(src='img/location_2.jpg', alt='', width='400', height='266')
-                .read_more
-                  span Read more
-              small Bar
-            .wrapper
-              h3
-                a(href='detail-restaurant.html') Notredam
-              p
-                | Id placerat tacimates definitionem sea, prima quidam vim no.
-                | Duo nobis persecuti cu.
-              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361')
-                | Get
-                | directions
-            ul
-              li
-                span.loc_closed Now Closed
-              li
-                .score
-                  span
-                    | Good
-                    em 350 Reviews
-                  strong 7.0
-        // /item
-        .item
-          .strip.grid
-            figure
-              a.wish_bt(href='detail-shop.html')
-              a(href='detail-shop.html')
-                img.img-fluid(src='img/location_3.jpg', alt='', width='400', height='266')
-                .read_more
-                  span Read more
-              small Shop
-            .wrapper
-              h3
-                a(href='detail-shop.html') Camden Mark
-              p
-                | Id placerat tacimates definitionem sea, prima quidam vim no.
-                | Duo nobis persecuti cu.
-              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361')
-                | Get
-                | directions
-            ul
-              li
-                span.loc_open Now Open
-              li
-                .score
-                  span
-                    | Good
-                    em 350 Reviews
-                  strong 7.0
-        // /item
-        .item
-          .strip.grid
-            figure
-              a.wish_bt(href='detail-restaurant.html')
-              a(href='detail-restaurant.html')
-                img.img-fluid(src='img/location_4.jpg', alt='', width='400', height='266')
-                .read_more
-                  span Read more
-              small Bar
-            .wrapper
-              h3
-                a(href='detail-restaurant.html') Bistroter
-              p
-                | Id placerat tacimates definitionem sea, prima quidam vim no.
-                | Duo nobis persecuti cu.
-              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361')
-                | Get
-                | directions
-            ul
-              li
-                span.loc_open Now Open
-              li
-                .score
-                  span
-                    | Good
-                    em 350 Reviews
-                  strong 7.0
+          h3 Find what you need!
+          p Discover top rated hotels, shops and restaurants around the world
+          form(method='post', action='http://www.ansonika.com/sparker/grid-listings-filterscol.html')
+            .row.no-gutters.custom-search-input-2
+              .col-lg-4
+                .form-group
+                  input.form-control(type='text', placeholder='What are you looking for...')
+                  i.icon_search
+              .col-lg-3
+                .form-group
+                  input.form-control(type='text', placeholder='Where')
+                  i.icon_pin_alt
+              .col-lg-3
+                select.wide
+                  option All Categories
+                  option Shops
+                  option Hotels
+                  option Restaurants
+                  option Bars
+                  option Events
+                  option Fitness
+              .col-lg-2
+                input(type='submit', value='Search')
+            // /row
+            // /hero_single
+    .main_categories
       .container
-        .btn_home_align
-          a.btn_1.rounded(href='grid-listings-filterscol.html') View all
-        // /container
-        // /container
-    .call_section.image_bg
+        ul.clearfix
+          li
+            a(href='/category/shops')
+              i.icon-shop
+              h3 Shops
+          li
+            a(href='/category/hotels')
+              i.icon-lodging
+              h3 Hotels
+          li
+            a(href='/category/restaurant')
+              i.icon-restaurant
+              h3 Restaurants
+          li
+            a(href='/category/shops')
+              i.icon-bar
+              h3 Bars
+          li
+            a(href='/grid-search')
+              i.icon-dot-3
+              h3 More
+
+    .container.margin_60_35
+      .main_title_3
+        span
+        h2 Famous Shops
+        p Cum doctus civibus efficiantur in imperdiet deterruisset.
+        a(href='grid-listings-filterscol.html') See all
+      .row.add_bottom_30
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-shop.html')
+            figure
+              img(src='img/shop_1.jpg', alt='')
+              .info
+                h3 Victoria Secretes
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-shop.html')
+            figure
+              img(src='img/shop_2.jpg', alt='')
+              .info
+                h3 Louis Vuitton
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-shop.html')
+            figure
+              img(src='img/shop_3.jpg', alt='')
+              .info
+                h3 Burberry
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-shop.html')
+            figure
+              img(src='img/shop_4.jpg', alt='')
+              .info
+                h3 Pinko
+      // /row
+      .main_title_3
+        span
+        h2 Popular Hotels
+        p Cum doctus civibus efficiantur in imperdiet deterruisset.
+        a(href='grid-listings-filterscol.html') See all
+      .row.add_bottom_30
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-hotel.html')
+            figure
+              img(src='img/hotel_1.jpg', alt='')
+              .info
+                .cat_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                h3 Hotel Mariott
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-hotel.html')
+            figure
+              img(src='img/hotel_2.jpg', alt='')
+              .info
+                .cat_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                h3 Hotel Concorde
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-hotel.html')
+            figure
+              img(src='img/hotel_3.jpg', alt='')
+              .info
+                .cat_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                h3 Hotel La Defanse
+        .col-lg-3.col-sm-6
+          a.grid_item.small(href='detail-hotel.html')
+            figure
+              img(src='img/hotel_4.jpg', alt='')
+              .info
+                .cat_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                  i.icon_star
+                h3 Hotel Carlton
+      // /row
+      .main_title_3
+        span
+        h2 Top Restaurants
+        p Cum doctus civibus efficiantur in imperdiet deterruisset.
+        a(href='grid-listings-filterscol.html') See all
+      .row
+          .col-lg-3.col-sm-6
+            a.grid_item.small(href='detail-restaurant.html')
+              figure
+                img(src='img/restaurant_1.jpg', alt='')
+                .info
+                  h3 Da Alfredo
+          .col-lg-3.col-sm-6
+            a.grid_item.small(href='detail-restaurant.html')
+              figure
+                img(src='img/restaurant_2.jpg', alt='')
+                .info
+                  h3 Bistroter
+          .col-lg-3.col-sm-6
+            a.grid_item.small(href='detail-restaurant.html')
+              figure
+                img(src='img/restaurant_3.jpg', alt='')
+                .info
+                  h3 Da Luigi
+          .col-lg-3.col-sm-6
+            a.grid_item.small(href='detail-restaurant.html')
+              figure
+                img(src='img/restaurant_4.jpg', alt='')
+                .info
+                  h3 Marco King
+                // /row
+                // /container
+    .call_section
       .wrapper
         .container.margin_80_55
           .main_title_2
             span
               em
             h2 How it Works
+            p Cum doctus civibus efficiantur in imperdiet deterruisset.
           .row
             .col-md-4
-              .box_how.wow
+              .box_how
                 i.pe-7s-search
                 h3 Search Locations
-                //
-                  <p>An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.</p>
+                p
+                  | An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.
                 span
             .col-md-4
               .box_how
                 i.pe-7s-info
                 h3 View Location Info
-                //
-                  <p>An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.</p>
+                p
+                  | An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.
                 span
             .col-md-4
               .box_how
                 i.pe-7s-like2
                 h3 Book, Reach or Call
-                //
-                  <p>An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.</p>
+                p
+                  | An nec placerat repudiare scripserit, temporibus complectitur at sea, vel ignota fierent eloquentiam id.
           // /row
-          p.text-center.add_top_30.wow.bounceIn(data-wow-delay='0.5')
-            a.btn_1.rounded(href='register.html') Register Now
-      // /wrapper
-      // /call_section
+          p.text-center.add_top_30.wow.bounceIn(data-wow-delay='0.5s')
+            a.btn_1.rounded(href='account.html') Register Now
+        canvas#hero-canvas(width='1920', height='1080')
+      
+      // /container
+
   include partials/footer.pug
