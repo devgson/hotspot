@@ -23,6 +23,9 @@ router.get('/add-listing', (req, res) => {
   res.render('add-listing');
 });
 
+
+router.get('/category/:category', listing.getCategory);
+
 router.post('/signin', user.redirectIfLoggedIn, user.signin);
 router.post('/signup', user.redirectIfLoggedIn, user.signup);
 
