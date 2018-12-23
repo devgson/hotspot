@@ -22,7 +22,8 @@ var pageToGet = location.pathname.slice(pageIndex);
 );
 
 ga("create", "UA-130675440-1", "auto");
-ga("send", {
+/*ga("send", {
   hitType: "pageviews",
   page: pageToGet
-});
+});*/
+ga("send", "pageviews");

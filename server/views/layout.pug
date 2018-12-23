@@ -1,17 +1,16 @@
 doctype html
 html(lang='en')
   head
-  -var algoliaid = process.env.ALGOLIA_ID
-  -var searchkey = process.env.ALGOLIA_SEARCH
+  -var algoliaid = process.env.ALGOLIA_ID;
+  -var searchkey = process.env.ALGOLIA_SEARCH;
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description', content='Hotspot - Find the Hottest places in Lagos')
     meta(name='author', content='Hotspot')
     title Hotspot
-    // Favicons
-    link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700', rel='stylesheet')
     block stylesheets
+      link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700', rel='stylesheet')
       link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.css')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
       link(href='/css/style-new.css', rel='stylesheet')

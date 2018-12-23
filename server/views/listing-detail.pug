@@ -1,5 +1,8 @@
 extends layout
 
+block prepend stylesheets
+  script(src='/js/analytics.js')
+
 block content
   include partials/navbar.pug
   main
@@ -239,7 +242,6 @@ block content
       // /container
   include partials/footer.pug
 block append scripts
-  script(src='/js/analytics.js')
   script.
     $('.bookmark').on('submit', function(evt){
       evt.preventDefault();
