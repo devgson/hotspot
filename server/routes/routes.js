@@ -24,6 +24,8 @@ router.get('/add-listing', (req, res) => {
 });
 
 
+router.post('/search-listings', listing.findListings);
+
 router.get('/category/:category', listing.getCategory);
 
 router.post('/signin', user.redirectIfLoggedIn, user.signin);

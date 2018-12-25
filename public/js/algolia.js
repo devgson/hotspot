@@ -27,7 +27,7 @@ function renderFn(HitsRenderingOptions,helper) {
                         <div class="read_more"><span>Read more</span></div>
                     </a><small>${hit.category}</small></figure>
                 <div class="wrapper">
-                    <h3><a href="detail-restaurant.html">${hit.title}</a></h3><small>${hit.info ? JSON.stringify(hit.info.address) : ''}</small>
+                    <h3><a href=/listing/${hit.slug}>${hit.title}</a></h3><small>${hit.info ? JSON.stringify(hit.info.address) : ''}</small>
                     <p>${hit.description ? hit.description : ''}</p><a class="address" href="" target="_blank">Get directions</a> </div>
                 <ul>
                     <li><span class="loc_open">Now Open</span></li>

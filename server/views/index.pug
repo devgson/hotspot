@@ -9,25 +9,25 @@ block content
         .container
           h3 Find what you need!
           p Discover top rated hotels, shops and restaurants around the world
-          form(method='post', action='http://www.ansonika.com/sparker/grid-listings-filterscol.html')
+          form(method='post', action='/search-listings')
             .row.no-gutters.custom-search-input-2
               .col-lg-4
                 .form-group
-                  input.form-control(type='text', placeholder='What are you looking for...')
+                  input.form-control(type='text', name="title" placeholder='What are you looking for...')
                   i.icon_search
               .col-lg-3
                 .form-group
-                  input.form-control(type='text', placeholder='Where')
+                  input.form-control(type='text', name="location" placeholder='Where')
                   i.icon_pin_alt
               .col-lg-3
-                select.wide
-                  option All Categories
-                  option Shops
-                  option Hotels
-                  option Restaurants
-                  option Bars
-                  option Events
-                  option Fitness
+                select.wide(name="category")
+                  option(value="") All Categories
+                  option(value="shops") Shops
+                  option(value="hotel") Hotel
+                  option(value="restaurant") Restaurants
+                  option(value="bars") Bars
+                  option(value="events") Events
+                  option(value="fitness") Fitness
               .col-lg-2
                 input(type='submit', value='Search')
             // /row
