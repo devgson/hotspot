@@ -239,6 +239,7 @@ block content
       // /container
   include partials/footer.pug
 block append scripts
+  script(src='/js/analytics.js')
   script.
     $('.bookmark').on('submit', function(evt){
       evt.preventDefault();
