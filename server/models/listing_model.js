@@ -58,7 +58,9 @@ const ListingSchema = new Schema({
         type: Number,
         algoliaIndex:true
       }
-    }
+    },
+    type: Object,
+    algoliaIndex:true,
   },
   category: {
     type: String,

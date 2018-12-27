@@ -45,9 +45,9 @@ exports.findListings = async (req, res) => {
   try {
     // console.log(req.body);
     var query= {
-      category:{ $regex: `.*` + req.body.category + `.*`},
-      title: { $regex: `.*` + req.body.title + `.*`},
-      'info.address': { $regex: `.*`+  req.body.location + `.*`} 
+      category:{ $regex: `.*` + req.body.category + `.*`, $options: 'i'},
+      title: { $regex: `.*` + req.body.title + `.*`, $options: 'i'},
+      'info.address': { $regex: `.*`+  req.body.location + `.*`, $options: 'i'} 
     }
     console.log('spread is', {...query});
     const listings = await Listing.find({...query})
