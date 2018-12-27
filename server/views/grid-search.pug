@@ -12,27 +12,27 @@ block content
               |  result for All listing
           .col-lg-9.col-md-8.col-2
             a.side_panel.btn_search_mobile(href='#0')
-            // /open search panel
-            .row.no-gutters.custom-search-input-2.inner
-              .col-lg-4
-                .form-group
-                  input.form-control(type='text', id='search-field' placeholder='What are you looking for...')
-                  i.icon_search
-              .col-lg-4
-                .form-group
-                  input.form-control(type='text', placeholder='Where')
-                  i.icon_pin_alt
-              .col-lg-3
-                select.wide
-                  option All Categories
-                  option Shops
-                  option Hotels
-                  option Restaurants
-                  option Bars
-                  option Events
-                  option Fitness
-              .col-lg-1
-                input(type='submit', value='Search')
+            form(method='post', action='/search-listings')
+              .row.no-gutters.custom-search-input-2.inner
+                .col-lg-4
+                  .form-group
+                    input.form-control(type='text',name='title' id='search-field' placeholder='What are you looking for...')
+                    i.icon_search
+                .col-lg-4
+                  .form-group
+                    input.form-control(type='text', name='location' id="location-field" placeholder='Where')
+                    i.icon_pin_alt
+                .col-lg-3
+                  select.wide(name="category")
+                    option(value="") All Categories
+                    option(value="shops") Shops
+                    option(value="hotel") Hotel
+                    option(value="restaurant") Restaurants
+                    option(value="bars") Bars
+                    option(value="events") Events
+                    option(value="fitness") Fitness
+                .col-lg-1
+                  input(type='submit', value='Search')
         // /row
         // /container
         // /results

@@ -103,7 +103,7 @@ exports.editListing = async (req, res, next) => {
 exports.DeleteListing = async (req, res, next) => {
   try {
     const listing = req.params.listing;
-    await Listing.findOneAndRemove({
+    await Listing.findOneAndDelete({
       slug: listing
     });
     res.redirect('/admin/listings');

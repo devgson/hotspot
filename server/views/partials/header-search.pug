@@ -7,10 +7,9 @@ header.header_in.header-menu_fixed
             h3.text-dark Hotspot
       .col-lg-9.col-12
         ul#top_menu
-          li
-            a.btn_add(href='admin_section/add-listing.html', target='_blank') Add Listing
-          li
-            a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+          if !currentUser 
+            li
+              a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
           li
             a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
         // /top_menu
@@ -22,127 +21,16 @@ header.header_in.header-menu_fixed
           ul
             li
               span
-                a(href='#0') Home
-              ul
-                li
-                  a(href='index-2.html') Home version 1
-                li
-                  a(href='index-3.html') Home version 2
-                li
-                  a(href='index-4.html') Home version 3
-                li
-                  a(href='index-5.html') Home version 4
-                li
-                  a(href='index-6.html') Home version 5
-                li
-                  a(href='index-7.html') Home version 6 (GDPR)
+                a(href='/') Home
             li
               span
-                a(href='#0') Listings
-              ul
-                li
-                  span
-                    a(href='#0') Grid Layout
-                  ul
-                    li
-                      a(href='grid-listings-filterscol-search-aside.html') Sidebar+Search mobile 1
-                    li
-                      a(href='grid-listings-filterstop-search-aside.html') Full+Search mobile 1
-                    li
-                      a(href='grid-listings-filterscol.html') Sidebar+Search mobile 2
-                    li
-                      a(href='grid-listings-filterstop.html') Full+Search mobile 2
-                    li
-                      a(href='grid-listings-isotope.html') Full+Isotope filter
-                li
-                  span
-                    a(href='#0') Row Layout
-                  ul
-                    li
-                      a(href='row-listings-filterscol-search-aside.html') Sidebar+Search mobile 1
-                    li
-                      a(href='row-listings-filterstop-search-aside.html') Full+Search mobile 1
-                    li
-                      a(href='row-listings-filterscol.html') Sidebar+Search mobile 2
-                    li
-                      a(href='row-listings-filterstop.html') Full+Search mobile 2
-                    li
-                      a(href='row-listings-isotope.html') Full+Isotope filter
-                li
-                  a(href='listing-map.html') Listing Map
-                li
-                  span
-                    a(href='#0') Detail pages
-                  ul
-                    li
-                      a(href='detail-hotel.html') Detail page 1
-                    li
-                      a(href='detail-restaurant.html') Detail page 2
-                    li
-                      a(href='detail-shop.html') Detail page 3
-                li
-                  a(href='bookings.html') Bookings - Purchases
-                li
-                  a(href='checkout.html') Checkout
-                li
-                  a(href='confirm.html') Confirm
+                a(href='/grid-search') Listings
             li
               span
-                a(href='#0') Pages
-              ul
-                li
-                  a(href='admin_section/index.html', target='_blank') Admin section
-                li
-                  a(href='blog.html') Blog
-                li
-                  a(href='account.html') Account
-                li
-                  a(href='help.html') Help Section
-                li
-                  a(href='faq.html') Faq Section
-                li
-                  a(href='wishlist.html') Wishlist page
-                li
-                  a(href='contacts.html') Contacts
-                li
-                  span
-                    a(href='#0') Icon Packs
-                  ul
-                    li
-                      a(href='icon-pack-1.html') Icon pack 1
-                    li
-                      a(href='icon-pack-2.html') Icon pack 2
-                    li
-                      a(href='icon-pack-3.html') Icon pack 3
-                    li
-                      a(href='icon-pack-4.html') Icon pack 4
-                li
-                  a(href='about.html') About
-                li
-                  a(href='media-gallery.html') Media gallery
-            li
-              span
-                a(href='#0') Extra
-              ul
-                li
-                  a(href='404.html') 404 page
-                li
-                  a(href='contacts-2.html') Contacts 2
-                li
-                  a(href='pricing-tables.html') Pricing tables
-                li
-                  a(href='login.html') Login
-                li
-                  a(href='register.html') Register
-                li
-                  a(href='menu-options.html') Menu Options
-                li
-                  a(href='invoice.html', target='_blank') Invoice
-                li
-                  a(href='coming_soon/index.html', target='_blank') Coming Soon
-            li
-              span
-                a(href='https://themeforest.net/item/sparker-directory-and-listings-template/22716006?ref=ansonika', target='_parent') Buy template
+                if !currentUser 
+                  a.login(href='#sign-in-dialog', title='Sign In') Sign In
+                else
+                  a(href='/signout', title='Sign Out') Sign Out
     // /row
     // /container
     // search_mobile

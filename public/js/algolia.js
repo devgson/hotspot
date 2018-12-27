@@ -14,6 +14,22 @@ search.addWidget(
     })
 );
 
+var location_search = instantsearch({
+    appId: algoliaid,
+    apiKey: searchkey, // search only API key, no ADMIN key
+    indexName: 'listings',
+    urlSync: true,
+    searchParameters: {
+        hitsPerPage: 10
+    }
+});
+
+location_search.addWidget(
+    instantsearch.widgets.searchBox({
+        container: '#location-field'
+    })
+);
+
 function renderFn(HitsRenderingOptions,helper) {
     HitsRenderingOptions.widgetParams.containerNode.html(
         HitsRenderingOptions.hits.map(function (hit,results) {
@@ -23,11 +39,11 @@ function renderFn(HitsRenderingOptions,helper) {
             <div class="strip grid">
                 <figure>
                     <a class="wish_bt" href="#0"></a>
-                    <a href="detail-restaurant.html"><img class="img-fluid" src="${hit.images}" alt="" />
+                    <a href="detail-restaurant.html"><img class="img-fluid" src="${hit.images && hit.images.length > 0 ? hit.images[0].secure_url : '/img/blog-3.jpg'}" alt="" />
                         <div class="read_more"><span>Read more</span></div>
                     </a><small>${hit.category}</small></figure>
                 <div class="wrapper">
-                    <h3><a href="detail-restaurant.html">${hit.title}</a></h3><small>${hit.info ? JSON.stringify(hit.info.address) : ''}</small>
+                    <h3><a href=/listing/${hit.slug}>${hit.title}</a></h3><small>${hit.info ? eval(JSON.stringify(hit.info.address)) : ''}</small>
                     <p>${hit.description ? hit.description : ''}</p><a class="address" href="" target="_blank">Get directions</a> </div>
                 <ul>
                     <li><span class="loc_open">Now Open</span></li>
@@ -64,5 +80,21 @@ search.addWidget(
     })
   );
 
+  location_search.addWidget(
+    customHits({
+        containerNode: $('#hits'),
+    })
+);
+
+location_search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#pagination',
+      maxPages: 20,
+      // default is to scroll to 'body', here we disable this behavior
+      scrollTo: false
+    })
+  );
+
 
 search.start();
+location_search.start();

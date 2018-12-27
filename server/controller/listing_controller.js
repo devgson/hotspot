@@ -24,7 +24,7 @@ exports.getListing = async (req, res) => {
             $sum: "$rating"
           }
         }
-      }, ])
+      },])
     const {
       numberOfReviewsPerRating,
       reviewsStat
@@ -40,15 +40,34 @@ exports.getListing = async (req, res) => {
   }
 }
 
-exports.getCategory = async(req,res) => {
-  try{
+
+exports.findListings = async (req, res) => {
+  try {
+    // console.log(req.body);
+    var query= {
+      category:{ $regex: `.*` + req.body.category + `.*`, $options: 'i'},
+      title: { $regex: `.*` + req.body.title + `.*`, $options: 'i'},
+      'info.address': { $regex: `.*`+  req.body.location + `.*`, $options: 'i'} 
+    }
+    console.log('spread is', {...query});
+    const listings = await Listing.find({...query})
+    res.render('category-view', { listings })
+  }
+  catch (e) {
+    res.send(e.message);
+
+  }
+}
+
+exports.getCategory = async (req, res) => {
+  try {
     const listings = await Listing.find({
       category: req.params.category
     })
-    res.render('category-view', {listings})
+    res.render('category-view', { listings })
   }
-  catch(e){
+  catch (e) {
     res.send(e.message);
-    
+
   }
 }

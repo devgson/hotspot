@@ -1,14 +1,49 @@
 extends admin-layout
 
+block append stylesheets
+  link(rel="stylesheet", href="/admin_section/vendor/dropzone/dropzone.css")
+
 block content
   include partials/admin-nav.pug
   .content-wrapper
     .container-fluid
       include partials/bread-crumb.pug
-      form(action=`/admin/upload-image` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
+      //- form(action=`/admin/upload-image` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
         .dz-default.dz-message
           span Drag and drop
         button.btn.theme-btn#saveImage(type="submit") Upload Images
+
+      .box_general.padding_bottom
+        .header_box.version_2
+          h2
+            i.fa.fa-dollar
+            | Upload Images
+        form.mb-3(action=`/admin/upload-image/${listing.slug}` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
+          .dz-default.dz-message
+            span Click to upload multiple images
+        button.btn.btn-primary.btn_1.medium#saveImage(type="submit") Upload Images
+
+      form.mb-5.header_image(action=`/admin/upload-header/${listing.slug}`, method="post" enctype="multipart/form-data")
+        .box_general.padding_bottom
+          .header_box.version_2
+            h2
+              i.fa.fa-dollar
+              | Header Image
+          if flashes.uploadHeaderSuccess
+            .row
+              .col-md-12
+                .form-group
+                  p(style="color:green") #{flashes.uploadHeaderSuccess}
+          if flashes.uploadHeaderError
+            .row
+              .col-md-12
+                .form-group
+                  p(style="color:red") #{flashes.uploadHeaderError}
+          .row
+            .col-md-12
+              .form-group
+                input(type="file" id="input_header" name="header" accept=".jpg, .jpeg, .png")
+        button.btn.btn-primary.btn_1.medium(type="submit") Upload Header Image
 
       form( action=`/admin/add-listing` method="post")   
         .box_general.padding_bottom
