@@ -1,11 +1,13 @@
 header.header.menu_fixed
   #logo
     a(href='/', title='Hotspot - Find the hottest places in Lagos')
-      h3.text-light.logo-text Hotspot
+      h3.mt-2.mt-md-0.text-light.logo-text Hotspot
   ul#top_menu
     li.d-flex
       if !currentUser 
-        a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+        a#sign-in.login.w-7(href='#sign-in-dialog', title='Sign In') Sign In
+      else
+        a(href='/signout', title='Sign Out') Sign Out
     li
       a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
   // /top_menu
@@ -18,12 +20,12 @@ header.header.menu_fixed
       li
         span
           a(href='/') Home
-      li
-        span
-          if !currentUser 
-            a.login(href='#sign-in-dialog', title='Sign In') Sign In
-          else
-            a(href='/signout', title='Sign Out') Sign Out
+      //- li
+      //-   span
+      //-     if !currentUser 
+      //-       a.login(href='#sign-in-dialog', title='Sign In') Sign In
+      //-     else
+      //-       a(href='/signout', title='Sign Out') Sign Out
 
 
 //- header.header.menu_fixed

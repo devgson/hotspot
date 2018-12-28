@@ -16,7 +16,7 @@ html(lang='en')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
       link(href='/css/style-new.css', rel='stylesheet')
       link(href='/css/vendors.css', rel='stylesheet')
-  body
+  body#register_bg
     #page
       block content
     #toTop
@@ -76,22 +76,3 @@ html(lang='en')
             | your password to a new preferred one.
           .text-center
             input.btn_1(type='submit', value='Reset Password')
-          
-      script.
-        const urlParams = new URLSearchParams(window.location.search);
-        const myParam = urlParams.get('showdefaultmodal');
-        console.log(myParam);
-        if(showdefaultmodal)
-          $.magnificPopup.open({
-            items: {
-            src: '#sign-in-dialog' ,
-            type: 'inline'
-            }
-            // You may add options here, they're exactly the same as for $.fn.magnificPopup call
-            // Note that some settings that rely on click event (like disableOn or midClick) will not work here
-          });
-          $('.launch-signin').magnificPopup({
-              type: 'image',
-              preloader: false,
-              focus: '#email'
-          });

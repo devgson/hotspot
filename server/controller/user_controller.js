@@ -25,7 +25,7 @@ exports.userProfile = async (req, res) => {
 }
 
 exports.userSignupLogin = (req, res) => {
-  res.render('register')
+  res.render('register-new')
 }
 
 exports.signin = async (req, res, next) => {
@@ -44,11 +44,11 @@ exports.signin = async (req, res, next) => {
         return res.redirect('/profile');
       } else {
         req.flash('signinError', 'Wrong Email Address or Password');
-        res.redirect('back');
+        res.redirect('/?showdefaultmodal=true');
       }
     } else {
       req.flash('signinError', 'Wrong Email Address or Password');
-      res.redirect('back');
+      res.redirect('/?showdefaultmodal=true');
     }
   } catch (error) {
     next(error);
