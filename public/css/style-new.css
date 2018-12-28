@@ -8615,3 +8615,25 @@ a.social_bt.google:before {
     min-height: inherit!important;
     overflow-y: hidden!important;
 }
+
+.sign-out{
+    font-family: "Poppins", Helvetica, sans-serif;
+    text-indent: 0;
+    position: relative;
+    top: .7em;
+    font-weight: normal;
+    line-height: 1;
+    padding: 0 8px 15px 8px;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* header.sticky #top_menu > .sign-out{
+    color: #000;
+} */
+
+header.sticky ul#top_menu li .sign-out{
+    color: #000;
+    
+}
