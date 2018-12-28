@@ -75,7 +75,7 @@ exports.postAddListing = async (req, res, next) => {
     const tags = req.body.tags.split(',');
     req.body.tags = tags;
     const listing = await new Listing(req.body).save();
-    res.redirect('/admin/listings');
+    res.redirect(`/admin/edit-listing/${listing.title}`);
   } catch (error) {
     res.send(error.message);
   }

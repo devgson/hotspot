@@ -10,7 +10,7 @@ header.header_in.header-menu_fixed
           if !currentUser 
             li
               a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
-          li
+          //li
             a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
         // /top_menu
         a.btn_mobile(href='#menu')
@@ -24,7 +24,7 @@ header.header_in.header-menu_fixed
                 a(href='/') Home
             li
               span
-                a(href='/grid-search') Listings
+                a(href='/listings') Listings
             li
               span
                 if !currentUser 

@@ -10,61 +10,62 @@ const ListingSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    algoliaIndex:true
+    algoliaIndex: true
   },
   description: {
     type: String,
     trim: true,
-    algoliaIndex:true
+    algoliaIndex: true
   },
   slug: {
     type: String,
-    algoliaIndex:true
+    algoliaIndex: true
   },
   info: {
     number: {
       type: String,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     email: {
       type: String,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     website: {
       type: String,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     state: {
       type: String,
       trim: true,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     country: {
       type: String,
       trim: true,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     address: {
       type: String,
       trim: true,
-      algoliaIndex:true
+      algoliaIndex: true
     },
     coordinates: {
       lat: {
         type: Number,
-        algoliaIndex:true
+        algoliaIndex: true
       },
       lon: {
         type: Number,
-        algoliaIndex:true
+        algoliaIndex: true
       }
     },
     type: Object,
-    algoliaIndex:true,
+    algoliaIndex: true,
   },
   category: {
     type: String,
-    algoliaIndex:true
+    lowercase: true,
+    algoliaIndex: true
   },
   tags: [String],
   images: [],
@@ -85,7 +86,7 @@ const ListingSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    algoliaIndex:true
+    algoliaIndex: true
   }
 });
 

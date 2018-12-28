@@ -36,9 +36,9 @@ html(lang='en')
       h3 Sign In
     form(action="/signin" method="post")
       .sign-in-wrapper
-        a.social_bt.facebook(href='#0') Login with Facebook
-        a.social_bt.google(href='#0') Login with Google
-        .divider
+        //a.social_bt.facebook(href='#0') Login with Facebook
+        //a.social_bt.google(href='#0') Login with Google
+        //.divider
           span Or
         .form-group
           label Email
@@ -54,14 +54,14 @@ html(lang='en')
               | Remember me 
               input(type='checkbox')
               span.checkmark
-          .float-right.mt-1
+          //.float-right.mt-1
             a#forgot(href='javascript:void(0);') Forgot Password?
         .text-center
           input.btn_1.full-width(type='submit', value='Log In')
         .text-center
           | Don’t have an account? 
-          a(href='register.html') Sign up
-        #forgot_pw
+          a(href='/register') Sign up
+        //#forgot_pw
           .form-group
             label Please confirm login email below
             input#email_forgot.form-control(type='email', name='email_forgot')

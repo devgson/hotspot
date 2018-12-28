@@ -6,7 +6,7 @@ header.header.menu_fixed
     li.d-flex
       if !currentUser 
         a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
-    li
+    //li
       a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
   // /top_menu
   a.btn_mobile(href='#menu')
@@ -20,8 +20,11 @@ header.header.menu_fixed
           a(href='/') Home
       li
         span
+          a(href='/listings') Listings
+      li
+        span
           if !currentUser 
-            a(href='#sign-in-dialog', title='Sign In') Sign In
+            a(href='/', title='Sign In') Sign In
           else
             a(href='/signout', title='Sign Out') Sign Out
 

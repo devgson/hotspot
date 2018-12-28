@@ -5,11 +5,9 @@ const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
 const review = require('../controller/review_controller');
 
-router.get('/', (req, res) => {
-  res.render('index.pug');
-})
+router.get('/', listing.index)
 
-router.get('/grid-search', (req, res) => {
+router.get('/listings', (req, res) => {
   res.render('grid-search');
 })
 
@@ -24,7 +22,7 @@ router.get('/add-listing', (req, res) => {
 });
 
 
-router.post('/search-listings', listing.findListings);
+router.post('/search', listing.findListings);
 
 router.get('/category/:category', listing.getCategory);
 
