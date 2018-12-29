@@ -39,7 +39,7 @@ function renderFn(HitsRenderingOptions,helper) {
             <div class="strip grid">
                 <figure>
                     <a class="wish_bt" href="#0"></a>
-                    <a href="detail-restaurant.html"><img class="img-fluid" src="${hit.images && hit.images.length > 0 ? hit.images[0].secure_url : '/img/blog-3.jpg'}" alt="" />
+                    <a href=/listing/${hit.slug}><img class="img-fluid" src="${hit.images && hit.images.length > 0 ? hit.images[0].secure_url : '/img/blog-3.jpg'}" alt="" />
                         <div class="read_more"><span>Read more</span></div>
                     </a><small>${hit.category}</small></figure>
                 <div class="wrapper">
