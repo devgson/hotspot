@@ -6,15 +6,12 @@ block content
   main
     #results
       .container
-        form(method='post', action='/search')
+        form(method='post', action='/search-listings')
           .row
             .col-lg-3.col-md-4.col-10
               h4
-                if listings.length
-                  strong #{listings.length}
-                  |   Results found
-                else
-                  strong 0 Results found
+                strong 145
+                |  result for All listing
             .col-lg-9.col-md-8.col-2
               a.side_panel.btn_search_mobile(href='#0')
               // /open search panel
@@ -41,7 +38,7 @@ block content
         // /row
         // /container
         // /results
-    //.filters_listing.sticky_horizontal
+    .filters_listing.sticky_horizontal
       .container
         ul.clearfix
           li
@@ -69,7 +66,7 @@ block content
     #collapseMap.collapse
       #map.map
       // /Map
-    //#filters.collapse
+    #filters.collapse
       .container.margin_30_5
         .row
           .col-md-4
@@ -144,7 +141,7 @@ block content
               .strip.grid
                 figure
                   a.wish_bt(href='#0')
-                  a(href=`/listing/${listing.title}`)
+                  a(href='detail-restaurant.html')
                     img.img-fluid(src= listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                     .read_more
                       span Read more
@@ -160,18 +157,10 @@ block content
                     span.loc_open Now Open
                   li
                     .score
-                      if listing.reviews.length > 0
-                        - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val)
-                        - const getAverage = ((getRating * 2)/listing.reviews.length).toFixed(1);
-                        span
-                          | Superb 
-                          em #{listing.reviews.length} Reviews
-                        strong #{getAverage}
-                      //else
-                        span
-                          | 
-                          em 0 Reviews
-                        strong 0  
+                      span
+                        | Superb
+                        em 350 Reviews
+                      strong 8.9
       else
         .row.justify-content-center
           h4 No Results Found

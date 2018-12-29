@@ -1,9 +1,5 @@
 extends layout
 
-block prepend stylesheets
-  script(async src="https://www.googletagmanager.com/gtag/js?id=UA-130675440-1")
-  script(src='/js/gtag.js')
-
 block content
   include partials/navbar.pug
   main
@@ -243,6 +239,7 @@ block content
       // /container
   include partials/footer.pug
 block append scripts
+  script(src='/js/analytics.js')
   script.
     $('.bookmark').on('submit', function(evt){
       evt.preventDefault();

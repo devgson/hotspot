@@ -75,7 +75,7 @@ exports.postAddListing = async (req, res, next) => {
     const tags = req.body.tags.split(',');
     req.body.tags = tags;
     const listing = await new Listing(req.body).save();
-    res.redirect(`/admin/edit-listing/${listing.title}`);
+    res.redirect('/admin/listings');
   } catch (error) {
     res.send(error.message);
   }
@@ -89,9 +89,9 @@ exports.editListing = async (req, res, next) => {
     const listing = await Listing.findOneAndUpdate({
       slug: req.params.listing
     }, updatedListing, {
-      new: true,
-      runValidators: true
-    });
+        new: true,
+        runValidators: true
+      });
     res.render('edit-listing', {
       listing
     });
@@ -254,10 +254,9 @@ exports.uploadImages = async (req, res, next) => {
     });
     for (const image in req.files) {
       if (listing.images.length >= 5) {
-        return res.status(401).send('Error : Maximum Images reached, please delete some');
+        return res.status(401).send('Error : Maximum Images reached, delete some');
       } else {
         const result = await upload(req.files[image]);
-        console.log(result);
         if (result.public_id == null || result.url == null) {
           return res.status(401).send("Error uploading images, please try again");
         }

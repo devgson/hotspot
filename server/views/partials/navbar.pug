@@ -1,13 +1,15 @@
 header.header.menu_fixed
   #logo
     a(href='/', title='Hotspot - Find the hottest places in Lagos')
-      h3.text-light.logo-text Hotspot
+      h3.mt-2.mt-md-0.text-light.logo-text.profile-custom Hotspot
   ul#top_menu
     li.d-flex
       if !currentUser 
-        a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
-    //li
-      a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
+        a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
+      else
+        a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
+    li
+      a.wishlist_bt_top.profile-custom(href='/', title='Your wishlist') Your wishlist
   // /top_menu
   a.btn_mobile(href='#menu')
     #hamburger.hamburger.hamburger--spin
@@ -17,16 +19,17 @@ header.header.menu_fixed
     ul
       li
         span
-          a(href='/') Home
+          a.profile-custom(href='/') Home
+          
       li
         span
-          a(href='/listings') Listings
-      li
-        span
-          if !currentUser 
-            a(href='/', title='Sign In') Sign In
-          else
-            a(href='/signout', title='Sign Out') Sign Out
+          a.profile-custom(href='/listings') Listings
+      //- li
+      //-   span
+      //-     if !currentUser 
+      //-       a.login(href='#sign-in-dialog', title='Sign In') Sign In
+      //-     else
+      //-       a(href='/signout', title='Sign Out') Sign Out
 
 
 //- header.header.menu_fixed

@@ -13,25 +13,25 @@ block content
                 p.mb-0 Error : #{flashes.signinError}
             form.form_container(method="POST" action="/signin")
               .row.no-gutters
-                //.col-lg-6.pr-lg-1
+                .col-lg-6.pr-lg-1
                   a.social_bt.facebook(href='#0') Login with Facebook
-                //.col-lg-6.pl-lg-1
+                .col-lg-6.pl-lg-1
                   a.social_bt.google(href='#0') Login with Google
-              //.divider
+              .divider
                 span Or
               .form-group
-                label * Email
-                input.form-control(type='email', name='email' required)
+                label Email
+                input.form-control(type='email', name='email')
               .form-group
-                label * Password
-                input#password_in.form-control(type='password', name='password' required)
+                label Password
+                input#password_in.form-control(type='password', name='password')
               .clearfix.add_bottom_15
                 //.checkboxes.float-left
                   label.container_check
                     | Remember me
                     input(type='checkbox')
                     span.checkmark
-                //.float-right
+                .float-right
                   a#forgot(href='javascript:void(0);') Lost Password?
               .text-center
                 input.btn_1.full-width(type='submit', value='Log In')

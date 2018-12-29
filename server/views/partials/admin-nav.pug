@@ -1,7 +1,6 @@
 nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
   a.navbar-brand(href='index.html')
-    h3.text-white Hotspot
-    //img(src='/admin_section/img/logo.png', data-retina='true', alt='', width='165', height='36')
+    img(src='/admin_section/img/logo.png', data-retina='true', alt='', width='165', height='36')
   button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarResponsive.collapse.navbar-collapse
@@ -10,21 +9,17 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
         a.nav-link(href='index.html')
           i.fa.fa-fw.fa-dashboard
           span.nav-link-text Dashboard
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
-        a.nav-link(href='/admin/listings')
-          i.fa.fa-fw.fa-list
-          span.nav-link-text  Listings
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Messages')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Messages')
         a.nav-link(href='messages.html')
           i.fa.fa-fw.fa-envelope-open
           span.nav-link-text Messages
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='', data-original-title='Bookings')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='', data-original-title='Bookings')
         a.nav-link(href='bookings.html')
           i.fa.fa-fw.fa-calendar-check-o
           span.nav-link-text
             | Bookings 
             span.badge.badge-pill.badge-primary 6 New
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='My listings')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='My listings')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseMylistings', data-parent='#mylistings')
           i.fa.fa-fw.fa-list
           span.nav-link-text My listings
@@ -41,11 +36,11 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             a(href='listings.html')
               | Expired 
               span.badge.badge-pill.badge-danger 6
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Reviews')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Reviews')
         a.nav-link(href='reviews.html')
           i.fa.fa-fw.fa-star
           span.nav-link-text Reviews
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Bookmarks')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Bookmarks')
         a.nav-link(href='bookmarks.html')
           i.fa.fa-fw.fa-heart
           span.nav-link-text Bookmarks
@@ -53,11 +48,11 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
         a.nav-link(href='/admin/add-listing')
           i.fa.fa-fw.fa-plus-circle
           span.nav-link-text  Add listing
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='My profile')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='My profile')
         a.nav-link(href='user-profile.html')
           i.fa.fa-fw.fa-user
           span.nav-link-text My Profile
-      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseComponents', data-parent='#Components')
           i.fa.fa-fw.fa-gear
           span.nav-link-text Components
@@ -79,7 +74,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             span.badge.badge-pill.badge-primary 12 New
           span.indicator.text-primary.d-none.d-lg-block
             i.fa.fa-fw.fa-circle
-        //.dropdown-menu(aria-labelledby='messagesDropdown')
+        .dropdown-menu(aria-labelledby='messagesDropdown')
           h6.dropdown-header New Messages:
           .dropdown-divider
           a.dropdown-item(href='#')
@@ -109,7 +104,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             span.badge.badge-pill.badge-warning 6 New
           span.indicator.text-warning.d-none.d-lg-block
             i.fa.fa-fw.fa-circle
-        //.dropdown-menu(aria-labelledby='alertsDropdown')
+        .dropdown-menu(aria-labelledby='alertsDropdown')
           h6.dropdown-header New Alerts:
           .dropdown-divider
           a.dropdown-item(href='#')
@@ -137,7 +132,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             .dropdown-message.small This is an automated server response message. All systems are online.
           .dropdown-divider
           a.dropdown-item.small(href='#') View all alerts
-      //li.nav-item
+      li.nav-item
         form.form-inline.my-2.my-lg-0.mr-lg-2
           .input-group
             input.form-control.search-top(type='text', placeholder='Search for...')
@@ -145,6 +140,6 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
               button.btn.btn-primary(type='button')
                 i.fa.fa-search
       li.nav-item
-        a.nav-link(href="#")
+        a.nav-link(data-toggle='modal', data-target='#exampleModal')
           i.fa.fa-fw.fa-sign-out
           | Logout
