@@ -66,7 +66,9 @@ exports.signup = async (req, res, next) => {
     req.session.userId = user._id;
     res.redirect('/profile');
   } catch (error) {
-    return next(error);
+    console.log(error.message);
+    req.flash('signupError', error.message);
+    return res.redirect('back');
   }
 }
 

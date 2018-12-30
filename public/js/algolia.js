@@ -20,7 +20,7 @@ var location_search = instantsearch({
     indexName: 'listings',
     urlSync: true,
     searchParameters: {
-        hitsPerPage: 10
+        hitsPerPage: 9
     }
 });
 
@@ -39,7 +39,7 @@ function renderFn(HitsRenderingOptions,helper) {
             <div class="strip grid">
                 <figure>
                     <a class="wish_bt" href="#0"></a>
-                    <a href="detail-restaurant.html"><img class="img-fluid" src="${hit.images && hit.images.length > 0 ? hit.images[0].secure_url : '/img/blog-3.jpg'}" alt="" />
+                    <a href=/listing/${hit.slug}><img class="img-fluid" src="${hit.images && hit.images.length > 0 ? hit.images[0].secure_url : '/img/blog-3.jpg'}" alt="" />
                         <div class="read_more"><span>Read more</span></div>
                     </a><small>${hit.category}</small></figure>
                 <div class="wrapper">
@@ -89,7 +89,6 @@ search.addWidget(
 location_search.addWidget(
     instantsearch.widgets.pagination({
       container: '#pagination',
-      maxPages: 20,
       // default is to scroll to 'body', here we disable this behavior
       scrollTo: false
     })

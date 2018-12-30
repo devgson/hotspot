@@ -1,0 +1,28 @@
+  
+if results.length
+  if paginate.hasPreviousPages || paginate.hasNextPages(pageCount)
+    nav(aria-label='...')
+      ul.justify-content-center.pagination.pagination-sm.add_bottom_30
+        if paginate.hasPreviousPages
+          li.page-item
+            a.page-link(href=paginate.href(true)) Previous
+        if pages
+          each page in pages
+            li.page-item
+              a.page-link(href=page.url class=(page.number === pageno ? 'active' : ''))= page.number
+        if paginate.hasNextPages(pageCount)
+          li.page-item
+            a.page-link(href=paginate.href()) Next
+
+  //-             nav(aria-label='...')
+  //- ul.pagination.pagination-sm.add_bottom_30
+  //-   li.page-item
+  //-     a.page-link(href=paginate.href(true)) Previous
+  //-   li.page-item
+  //-     a.page-link(href=page.url)= page.number
+  //-   li.page-item
+  //-     a.page-link(href='#') 2
+  //-   li.page-item
+  //-     a.page-link(href='#') 3
+  //-   li.page-item
+  //-     a.page-link(href=paginate.href()) Next

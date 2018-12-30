@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   res.render('index.pug');
 })
 
-router.get('/grid-search', (req, res) => {
+router.get('/listings', (req, res) => {
   res.render('grid-search');
 })
 
