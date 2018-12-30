@@ -20,7 +20,7 @@ var location_search = instantsearch({
     indexName: 'listings',
     urlSync: true,
     searchParameters: {
-        hitsPerPage: 10
+        hitsPerPage: 9
     }
 });
 
@@ -89,7 +89,6 @@ search.addWidget(
 location_search.addWidget(
     instantsearch.widgets.pagination({
       container: '#pagination',
-      maxPages: 20,
       // default is to scroll to 'body', here we disable this behavior
       scrollTo: false
     })

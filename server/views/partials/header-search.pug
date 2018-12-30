@@ -8,8 +8,11 @@ header.header_in.header-menu_fixed
       .col-lg-9.col-12
         ul#top_menu
           if !currentUser 
-            li
-              a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
+            li.d-flex
+              if !currentUser 
+                a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
+              else
+                a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
           li
             a.wishlist_bt_top(href='/', title='Your wishlist') Your wishlist
         // /top_menu
@@ -25,12 +28,12 @@ header.header_in.header-menu_fixed
             li
               span
                 a(href='/listings') Listings
-            li
-              span
-                if !currentUser 
-                  a.login(href='#sign-in-dialog', title='Sign In') Sign In
-                else
-                  a(href='/signout', title='Sign Out') Sign Out
+            //- li
+            //-   span
+            //-     if !currentUser 
+            //-       a.login(href='#sign-in-dialog', title='Sign In') Sign In
+            //-     else
+            //-       a(href='/signout', title='Sign Out') Sign Out
     // /row
     // /container
     // search_mobile
