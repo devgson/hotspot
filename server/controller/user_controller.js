@@ -9,6 +9,16 @@ exports.isUserLoggedIn = async (req, res, next) => {
 
 }
 
+exports.isLoggedIn= async (req, res, next) => {
+
+  // if user is authenticated in the session, carry on 
+  if (req.isAuthenticated())
+      return next();
+
+  // if they aren't redirect them to the home page
+  res.redirect('/');
+}
+
 exports.redirectIfLoggedIn = (req, res, next) => {
   if (req.session && req.session.userId) {
     res.redirect('/profile');

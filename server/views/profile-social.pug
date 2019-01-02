@@ -9,16 +9,17 @@ block content
           .box_account
             .text-center.col-.col-lg-10.col-md-12.col-12.mx-auto
               h3.new_client.text-center User Profile
-            form.form-row.form_container(action=`/profile/${user._id}` method="POST")
-              if flashes.succesfulSocial
+            form.form-row.form_container(action='/signup' method="POST")
+              
+              if flashes.socialUser
                 .form-group.col-12.my-3
                   .alert.alert-success.alert-dismissible.fade.show
                     p.d-inline-block.mb-0 
                       span.icon-ok-circled
-                      | #{flashes.succesfulSocial}
+                      | #{flashes.socialUser}
                     button(type="button" class="close" data-dismiss="alert" aria-label="Close")
                       span(aria-hidden="true") &times;
-              if flashes.profileEditSuccess
+              if flashes.userdetails
                 .form-group.col-12.my-3
                   .alert.alert-success.alert-dismissible.fade.show
                     p.d-inline-block.mb-0 
@@ -40,16 +41,16 @@ block content
                   h3.font-weight(style="padding-left : 0px;") Edit Details
               .form-group.col-md-6.col-12
                 label First Name
-                input.form-control(type='text', name='first_name', value=(user.first_name) disabled)
+                input.form-control(type='text', name='first_name', value=(user.first_name) readonly="readonly")
               .form-group.col-md-6.col-12
                 label Last Name
-                input.form-control(type='text', name='last_name', value=(user.last_name) disabled)
+                input.form-control(type='text', name='last_name', value=(user.last_name) readonly="readonly")
               .form-group.col-md-6.col-12
                 label Email
-                input#email.form-control(type='email', name='email' value=(user.email) disabled)
+                input#email.form-control(type='email', name='email' value=(user.email) readonly="readonly")
               .form-group.col-md-6.col-12
                 label Phone Number
-                input.form-control(type='phone', name='info.phone', value=(user.info.phone))
+                input.form-control(type='phone', name='info.phone', value=(user.info ? user.info.phone: '' ))
               .form-group.col-12.my-3
                 .text-center
                   .icon-chat-4(style="font-size : 2rem;")
@@ -68,23 +69,18 @@ block content
               .form-group.col-12.my-3
                 .text-center
                   .icon-lock-open(style="font-size : 2rem;")
-                  h3.font-weight(style="padding-left : 0px;") Update Login Details
+                  h3.font-weight(style="padding-left : 0px;") Set Login Details
               hr
-              .form-group.col-md-4.col-12
-                label 
-                  i(class="icon-lock")
-                  |  Old password
-                input.form-control(type='password', name='old_password')
               .form-group.col-md-4.col-12
                 label
                   i(class="icon-lock")
                   |  New password
-                input.form-control(type='password', name='new_password')
+                input.form-control(type='password', name='password')
               .form-group.col-md-4.col-12
                 label
                   i(class="icon-lock")
                   |  Confirm new password
-                input.form-control(type='password', name='confirm_new_password')
+                input.form-control(type='password', name='confirm_password')
               .form-group.text-center.mt-3.col-md-12.col-12
                 input.mx-auto.btn_1.half-width.form-control(type='submit' value="Update")
 

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const passport = require('passport');
 const user = require('../controller/user_controller');
 const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
@@ -15,7 +16,7 @@ router.get('/listings', (req, res) => {
 
 /* User Authentication Routes */
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
-router.get('/profile', user.isUserLoggedIn, user.userProfile);
+router.get('/profile', user.isLoggedIn, user.userProfile);
 router.post('/profile/:userId', user.isUserLoggedIn, user.updateUserProfile);
 router.get('/signout', user.isUserLoggedIn, user.signout);
 
@@ -30,8 +31,35 @@ router.post('/search-listings', listing.findListings);
 router.get('/search-listings', listing.getfindListings);
 router.get('/category/:category', listing.getCategory);
 
-router.post('/signin', user.redirectIfLoggedIn, user.signin);
-router.post('/signup', user.redirectIfLoggedIn, user.signup);
+router.get('/profile-social', (req, res) => {
+  res.render('profile-social' , {user : req.session.facebook_social})
+});
+router.post('/signin', passport.authenticate('local-login', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/?showdefaultmodal=true', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/register', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  scope: ['email'],
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/profile-social', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+
+// router.get('/auth/facebook/callback', passport.authenticate('facebook-signup', {
+//   scope: ['email'],
+//   successRedirect: '/profile-social', // redirect to the secure profile section
+//   failureRedirect: '/?showdefaultmodal=true', // redirect back to the signup page if there is an error
+//   failureFlash: true // allow flash messages
+// }));
 
 router.get('/messages', (req, res) => {
   res.render('messages');

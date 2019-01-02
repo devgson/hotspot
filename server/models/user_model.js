@@ -17,7 +17,7 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: 'Please enter a Valid email',
+    required: true,
     unique: true,
     trim: true,
     validate: [validator.isEmail, "Invalid Email Address"],
@@ -40,12 +40,12 @@ const UserSchema = new Schema({
   },
   social_media: {
     twitter: {
-      type: String,
-      trim: true
+      access_token : String,
+      link : String
     },
     facebook: {
-      type: String,
-      trim: true
+      access_token : String,
+      link : String
     }
   },
   photo: {

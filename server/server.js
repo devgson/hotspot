@@ -8,12 +8,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const session = require('express-session');
+var passport = require('passport');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const fileUpload = require('express-fileupload');
 const algoliasearch = require('algoliasearch');
 const db = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
+require('./auth/config')(passport);
 
 const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
 const index = client.initIndex('listings');
@@ -35,6 +37,7 @@ mongoose.connect(db, {
 });
 
 // keep this before all routes that will use pagination
+
 app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
@@ -49,6 +52,11 @@ app.use(session({
     mongooseConnection: mongoose.connection
   })
 }));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));

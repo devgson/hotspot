@@ -41,7 +41,7 @@ html(lang='en')
         p.mb-0 Error : #{flashes.signinError}
     form(action="/signin" method="post")
       .sign-in-wrapper
-        a.social_bt.facebook(href='#0') Login with Facebook
+        a.social_bt.facebook(href='/auth/facebook/callback') Login with Facebook
         a.social_bt.google(href='#0') Login with Google
         .divider
           span Or
@@ -89,8 +89,11 @@ html(lang='en')
             // You may add options here, they're exactly the same as for $.fn.magnificPopup call
             // Note that some settings that rely on click event (like disableOn or midClick) will not work here
           });
+          document.getElementsByClassName('mfp-close').innerHTML = '';
         $('.launch-signin').magnificPopup({
             type: 'image',
             preloader: false,
             focus: '#email'
         });
+        
+        document.getElementsByClassName('mfp-close').innerHTML = '';
