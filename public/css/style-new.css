@@ -293,6 +293,7 @@ h1.main_title_in {
         font-size: 24px;
         font-size: 1.5rem
     }
+
 }
 
 .main_title span {
@@ -991,6 +992,24 @@ ul#top_menu li a.login:before {
     content: '\0042'
 }
 
+.w-7{
+    width: 7em!important
+}
+
+ul#top_menu li a.login:after {    
+    content: 'Sign in';
+    font-family: "Poppins", Helvetica, sans-serif;
+    text-indent: 0;
+    position: absolute;
+    left: 1.6em;
+    top: .2em;
+    font-weight: normal;
+    line-height: 1;
+    padding: 0 8px 15px 8px;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
 header.sticky .hamburger-inner,
 header.sticky .hamburger-inner::before,
 header.sticky .hamburger-inner::after,
@@ -7241,19 +7260,19 @@ a.btn_3,
     }
 }
 
-.pagination {
+/* .pagination {
     display: inline-block;
     list-style: none;
     margin: 0;
     padding: 0
-}
+} */
 
-.pagination li {
+/* .pagination li {
     display: block;
     float: left;
     padding: 5px
-}
-
+} */
+/* 
 .pagination li:first-child {
     border: none
 }
@@ -7302,7 +7321,7 @@ a.btn_3,
     animation: hoverAnimation 510ms linear forwards;
     height: 40px;
     width: 40px
-}
+} */
 
 .pagination a.active {
     background: #004dda;
@@ -8568,3 +8587,89 @@ a.social_bt.google:before {
   .ais-search-box--magnifier{
     display: none;
   }
+
+  
+@media (max-width: 575px) {
+
+    ul#top_menu li a.login:after{
+        display: none!important;
+    }
+
+    .w-7{
+        width: auto!important;
+    }
+}
+
+.sticky ul#top_menu li a.login:after, .sticky ul#top_menu li a.wishlist_bt_top:after {
+    color: #444;
+}
+
+.registerpage aside{
+    top: 4em
+}
+
+.aside-register{
+    height: 45em;
+    margin-top: 1.5em;
+    overflow: hidden;
+    min-height: inherit!important;
+    overflow-y: hidden!important;
+}
+
+.sign-out{
+    font-family: "Poppins", Helvetica, sans-serif;
+    text-indent: 0;
+    position: relative;
+    top: .7em;
+    font-weight: normal;
+    line-height: 1;
+    padding: 0 8px 15px 8px;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* header.sticky #top_menu > .sign-out{
+    color: #000;
+} */
+
+header.sticky ul#top_menu li .sign-out{
+    color: #000;
+    
+}
+
+.page-item{
+    width: 3em;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.pagination li.page-item:last-child {
+    width: 4em;
+} 
+
+.pagination li.page-item:first-child {
+    width: 5em;
+}
+
+.ais-pagination{
+    display: flex!important;
+    justify-content: center!important
+}
+
+.ais-pagination--link{
+    text-align: center;
+    width: 3em;
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.ais-pagination--item{
+padding: 0;
+}

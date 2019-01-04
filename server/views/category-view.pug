@@ -58,9 +58,9 @@ block content
             .layout_view
               a.active(href='#0')
                 i.icon-th
-              a(href='row-listings-filterstop.html')
+              a(href='#')
                 i.icon-th-list
-              a(href='listing-map.html')
+              a(href='#')
                 i.icon-map
           li
             a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
@@ -144,7 +144,11 @@ block content
               .strip.grid
                 figure
                   a.wish_bt(href='#0')
+<<<<<<< HEAD
                   a(href=`/listing/${listing.title}`)
+=======
+                  a(href=`/listing/${listing.slug}`)
+>>>>>>> 734a8d45858c12fa541a57a06dc0ddc85e86eb8e
                     img.img-fluid(src= listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                     .read_more
                       span Read more
@@ -175,4 +179,5 @@ block content
       else
         .row.justify-content-center
           h4 No Results Found
+  include partials/paginate.pug
   include partials/footer.pug

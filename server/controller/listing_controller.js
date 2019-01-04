@@ -21,6 +21,7 @@ exports.index = async (req, res) => {
     res.send(error.message)
   }
 }
+const paginate = require('express-paginate');
 
 exports.getListing = async (req, res) => {
   try {
@@ -62,6 +63,11 @@ exports.getListing = async (req, res) => {
 
 exports.findListings = async (req, res) => {
   try {
+
+    req.session.category_search = req.body.category;
+    req.session.title_search = req.body.title;
+    req.session.address_search = req.body.location;
+    console.log(req.body);
     var query = {
       category: {
         $regex: `.*` + req.body.category + `.*`,
@@ -76,13 +82,84 @@ exports.findListings = async (req, res) => {
         $options: 'i'
       }
     }
-    //console.log('spread is', { ...query
-    //});
-    const listings = await Listing.find({ ...query
-    }).populate('reviews')
+
+    console.log(query);
+
+
+    const [results, itemCount] = await Promise.all([
+      Listing.find({ ...query
+      }).limit(req.query.limit).skip(req.skip).lean().exec(),
+      Listing.countDocuments({})
+    ]);
+
+
+    const pageno = req.query.page || 1;
+
+    const pageCount = Math.ceil(itemCount / req.query.limit);
     res.render('category-view', {
-      listings
-    })
+      listings: results,
+      pageCount,
+      itemCount,
+      results,
+      pageno,
+      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+    });
+
+    // const listings = await Listing.find({...query})
+    // res.render('category-view', { listings })
+  } catch (e) {
+    res.send(e.message);
+
+  }
+}
+
+
+exports.getfindListings = async (req, res) => {
+  try {
+
+    // req.session.category_search 
+    // req.session.category_search 
+    // req.session.category_search  
+    console.log(req.session);
+    var query = {
+      category: {
+        $regex: `.*` + req.session.category_search + `.*`,
+        $options: 'i'
+      },
+      title: {
+        $regex: `.*` + req.session.title_search + `.*`,
+        $options: 'i'
+      },
+      'info.address': {
+        $regex: `.*` + req.session.address_search + `.*`,
+        $options: 'i'
+      }
+    }
+
+    console.log(query);
+
+
+    const [results, itemCount] = await Promise.all([
+      Listing.find({ ...query
+      }).limit(req.query.limit).skip(req.skip).lean().exec(),
+      Listing.countDocuments({})
+    ]);
+
+
+    const pageno = req.query.page || 1;
+
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    res.render('category-view', {
+      listings: results,
+      pageCount,
+      itemCount,
+      results,
+      pageno,
+      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+    });
+
+    // const listings = await Listing.find({...query})
+    // res.render('category-view', { listings })
   } catch (e) {
     res.send(e.message);
 
@@ -91,12 +168,24 @@ exports.findListings = async (req, res) => {
 
 exports.getCategory = async (req, res) => {
   try {
-    const listings = await Listing.find({
-      category: req.params.category
-    })
+    const [results, itemCount] = await Promise.all([
+      Listing.find({
+        category: req.params.category
+      }).limit(req.query.limit).skip(req.skip).lean().exec(),
+      Listing.countDocuments({})
+    ]);
+
+    const pageno = req.query.page || 1;
+
+    const pageCount = Math.ceil(itemCount / req.query.limit);
     res.render('category-view', {
-      listings
-    })
+      listings: results,
+      pageCount,
+      itemCount,
+      results,
+      pageno,
+      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+    });
   } catch (e) {
     res.send(e.message);
 

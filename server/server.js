@@ -27,6 +27,8 @@ index.setSettings({
     'info'
   ]
 });
+
+const paginate = require('express-paginate');
 const User = require('./models/user_model');
 const app = express();
 
@@ -34,6 +36,8 @@ mongoose.connect(db, {
   useNewUrlParser: true
 });
 
+// keep this before all routes that will use pagination
+app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname + '/views'))

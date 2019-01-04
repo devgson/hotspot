@@ -8,10 +8,13 @@ header.header_in.header-menu_fixed
       .col-lg-9.col-12
         ul#top_menu
           if !currentUser 
-            li
-              a#sign-in.login(href='#sign-in-dialog', title='Sign In') Sign In
-          //li
-            a.wishlist_bt_top(href='wishlist.html', title='Your wishlist') Your wishlist
+            li.d-flex
+              if !currentUser 
+                a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
+              else
+                a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
+          li
+            a.wishlist_bt_top(href='/', title='Your wishlist') Your wishlist
         // /top_menu
         a.btn_mobile(href='#menu')
           #hamburger.hamburger.hamburger--spin
@@ -25,12 +28,21 @@ header.header_in.header-menu_fixed
             li
               span
                 a(href='/listings') Listings
+<<<<<<< HEAD
             li
               span
                 if !currentUser 
                   a.login(href='#sign-in-dialog', title='Sign In') Sign In
                 else
                   a(href='/signout', title='Sign Out') Sign Out
+=======
+            //- li
+            //-   span
+            //-     if !currentUser 
+            //-       a.login(href='#sign-in-dialog', title='Sign In') Sign In
+            //-     else
+            //-       a(href='/signout', title='Sign Out') Sign Out
+>>>>>>> 734a8d45858c12fa541a57a06dc0ddc85e86eb8e
     // /row
     // /container
     // search_mobile
