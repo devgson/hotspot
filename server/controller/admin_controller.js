@@ -12,7 +12,7 @@ const {
   cloudinary,
   flat
 } = require("../helper/helper");
-const auth = require("../auth1.json");
+const auth = require("../auth.json");
 const scopes = "https://www.googleapis.com/auth/analytics.readonly";
 const jwt = new google.auth.JWT(
   auth.client_email,
