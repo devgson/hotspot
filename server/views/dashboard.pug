@@ -1,0 +1,53 @@
+extends admin-layout
+
+block append stylesheets
+  //link(rel="stylesheet", href="/admin_section/vendor/dropzone/dropzone.css")
+
+block content
+  include partials/admin-nav.pug
+  .content-wrapper
+    .container-fluid
+      include partials/bread-crumb.pug
+      .row
+        each field in Object.values(bigGuys)
+          .col-md-4.col-lg-4
+            .card.mb-3
+              .card-header
+                i.fa.fa-fw.fa-eye
+                |   #{field.header}
+              .card-body
+                if field.listings
+                  ul.links(style="padding-left : 1em; text-align : left")
+                    each listing in field.listings
+                      - const slashIndex = listing[0].lastIndexOf("/");
+                      - const getPathName = slashIndex > 0 ? listing[0].slice(slashIndex + 1) : "Index";
+                      li(style="font-size : 1rem")
+                        a(target="blank" href=listing[0])= getPathName[0].toUpperCase() + getPathName.slice(1)
+                        span  : #{listing[1]} visits
+                if field.browsers
+                  ul.links(style="padding-left : 1em; text-align : left")
+                    each browser in field.browsers
+                      li(style="font-size : 1rem")
+                        span= `${browser[0]} : ${browser[1]} visits`
+                if field.sources
+                  ul.links(style="padding-left : 1em; text-align : left")
+                    each source in field.sources
+                      li(style="font-size : 1rem")
+                        span= `${source[0]} : ${source[1]}`
+              .card-footer= field.name
+        each field in Object.values(data)
+          .col-md-3.col-lg-3
+            .card.mb-3
+              .card-header 
+                i.fa.fa-fw.fa-eye
+                if field.listings
+                  |   Top Listings
+                else 
+                  |   #{field.header}
+              .card-body.text-center
+                if field.views
+                  h1= field.views
+              .card-footer= field.name
+  include partials/admin-footer.pug
+  block append scripts
+    //script(src="/admin_section/vendor/dropzone/dropzone.js")

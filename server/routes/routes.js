@@ -43,6 +43,7 @@ router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
 router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
+router.get('/admin/dashboard', admin.isAdminLoggedIn, admin.dashboard);
 router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
 router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);
