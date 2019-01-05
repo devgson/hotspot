@@ -22,8 +22,9 @@ block content
               .col-lg-3
                 select.wide(name="category")
                   option(selected value="") All Categories
+                  - console.log(categories)
                   - categories.forEach( cat => {
-                    option(value=cat)= cat.slice(0,1).toUpperCase() + cat.slice(1)
+                      option(value=cat)= cat.slice(0,1).toUpperCase() + cat.slice(1)
                   - });
               .col-lg-2
                 input(type='submit', value='Search')

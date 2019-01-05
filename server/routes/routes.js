@@ -5,9 +5,7 @@ const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
 const review = require('../controller/review_controller');
 
-router.get('/', (req, res) => {
-  res.render('index.pug');
-})
+router.get('/', listing.index)
 
 router.get('/listings', (req, res) => {
   res.render('grid-search');
