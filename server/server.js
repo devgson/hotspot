@@ -12,10 +12,9 @@ const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const fileUpload = require('express-fileupload');
 const algoliasearch = require('algoliasearch');
+const isProd = true
+const db = process.env.NODE_ENV === 'production' || isProd ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
-
-const useProd = true;
-const db = process.env.NODE_ENV === 'production' || useProd ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 
 const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
 const index = client.initIndex('listings');

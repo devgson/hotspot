@@ -9,7 +9,7 @@ block content
         .container
           h3 Find what you need!
           p Discover top rated hotels, shops and restaurants around the world
-          form(method='post', action='/search')
+          form(method='post', action='/search-listings')
             .row.no-gutters.custom-search-input-2
               .col-lg-4
                 .form-group
@@ -33,11 +33,11 @@ block content
       .container
         ul.clearfix
           li
-            a(href='/category/shop')
+            a(href='/category/shops')
               i.icon-shop
               h3 Shops
           li
-            a(href='/category/hotel')
+            a(href='/category/hotels')
               i.icon-lodging
               h3 Hotels
           li
@@ -45,7 +45,7 @@ block content
               i.icon-restaurant
               h3 Restaurants
           li
-            a(href='/category/bar')
+            a(href='/category/shops')
               i.icon-bar
               h3 Bars
           li

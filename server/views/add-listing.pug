@@ -13,7 +13,7 @@ block content
           span Drag and drop
         button.btn.theme-btn#saveImage(type="submit") Upload Images
 
-      //.box_general.padding_bottom
+      .box_general.padding_bottom
         .header_box.version_2
           h2
             i.fa.fa-dollar
@@ -23,7 +23,7 @@ block content
             span Click to upload multiple images
         button.btn.btn-primary.btn_1.medium#saveImage(type="submit") Upload Images
 
-      //form.mb-5.header_image(action=`/admin/upload-header/${listing.slug}`, method="post" enctype="multipart/form-data")
+      form.mb-5.header_image(action=`/admin/upload-header/${listing.slug}`, method="post" enctype="multipart/form-data")
         .box_general.padding_bottom
           .header_box.version_2
             h2
@@ -66,11 +66,9 @@ block content
                 .styled-select
                   select(name="category" required value=listing.category)
                     option Hotel
-                    option Shop
+                    option Shops
                     option Restaurant
                     option Bar
-                    option Bookstore
-                    option NightClub
           .row
             .col-md-6
               .form-group
@@ -204,7 +202,7 @@ block content
           // /row
           // /row
           // /box_general
-        //.box_general.padding_bottom
+        .box_general.padding_bottom
           .header_box.version_2
             h2
               i.fa.fa-dollar
