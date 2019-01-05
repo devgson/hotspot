@@ -12,12 +12,12 @@ const {
   cloudinary,
   flat
 } = require("../helper/helper");
-const auth = require("../auth.json");
+
 const scopes = "https://www.googleapis.com/auth/analytics.readonly";
 const jwt = new google.auth.JWT(
-  auth.client_email,
+  process.env.CLIENT_EMAIL,
   null,
-  auth.private_key,
+  process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
   scopes
 );
 const view_id = "186345526";
