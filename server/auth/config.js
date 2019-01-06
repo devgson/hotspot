@@ -116,8 +116,8 @@ module.exports = function (passport) {
         profileFields: ['last_name', 'first_name', 'link', 'emails'],
         passReqToCallback: true
     },
-        function (req, accessToken, refreshToken, profile, done) {
-            User.findOne({ 'email': profile._json.email }, async function (err, user) {
+       async function (req, accessToken, refreshToken, profile, done) {
+           await User.findOne({ 'email': profile._json.email }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log(profile);
                 if (err)
@@ -134,7 +134,7 @@ module.exports = function (passport) {
                         'social_media_facebook_link': profile.link
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social_user = newUser;
+                    req.session.social_user = await newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
@@ -146,11 +146,12 @@ module.exports = function (passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CONSUMER_KEY,
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "/auth/google/callback"
+        callbackURL: "/auth/google/callback",
+        passReqToCallback: true
     },
-        function (req,token, tokenSecret, profile, done) {
+        async function (req,token, tokenSecret, profile, done) {
             console.log(profile._json.emails[0].value);
-            User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
+           await User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log("profile is ",profile);
                 if (err)
@@ -166,7 +167,7 @@ module.exports = function (passport) {
                         'social_media_google_link': profile._json.url
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social_user = newUser;
+                    req.session.social_user = await newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
