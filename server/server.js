@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const fileUpload = require('express-fileupload');
 const algoliasearch = require('algoliasearch');
-const isProd = false;
+const isProd = true
 const db = process.env.NODE_ENV === 'production' || isProd ? process.env.PRODUCTION_DB : process.env.DEV_DB;
 const path = require('path');
 require('./auth/config')(passport);
