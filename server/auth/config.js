@@ -162,7 +162,7 @@ module.exports = function (passport) {
                     var newUser =
                     {
                         'first_name': profile._json.name.givenName,
-                        'last_name': profile._json.familyName,
+                        'last_name': profile._json.name.familyName,
                         'email': profile._json.emails[0].value,
                         'social_media_google_link': profile._json.url
                     };
