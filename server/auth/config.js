@@ -150,7 +150,7 @@ module.exports = function (passport) {
     },
         function (token, tokenSecret, profile, done) {
             console.log(profile);
-            User.findOne({ 'email': profile._json.emails[0] }, async function (err, user) {
+            User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log("profile is ",profile);
                 if (err)
@@ -162,7 +162,7 @@ module.exports = function (passport) {
                     {
                         'first_name': profile._json.name.givenName,
                         'last_name': profile._json.familyName,
-                        'email': profile._json.emails[0],
+                        'email': profile._json.emails[0].value,
                         'social_media_google_link': profile._json.url
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
