@@ -1,0 +1,63 @@
+
+extends layout
+
+block content
+    include partials/header-search.pug
+    
+    .sub_header_in.mt-0.sticky_header
+      .container
+        h1 Bookmarks
+      // /container
+    // /sub_header
+    main
+      .container.margin_60_35
+        .row
+          if all_listings.length
+            each listing in all_listings
+              .col-xl-4.col-lg-6.col-md-6
+                .strip.grid
+                  figure
+                    a.wish_bt.liked(href='#0')
+                    a(href='/listings/#{listing.slug}')
+                      img.img-fluid(src=listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
+                      .read_more
+                        span Read more
+                    small Restaurant
+                  .wrapper
+                    h3
+                      a(href='detail.html') #{listing.title}
+                    small #{listing.info ?eval(JSON.stringify(listing.info.address)) : ''}
+                    p
+                      | #{listing.description ? listing.description : ''}
+                    a.address(href=`https://www.google.com/maps/dir//${listing.info ?eval(JSON.stringify(listing.info.address)) : ''}`, target='_blank') Get directions
+                  ul
+                    li
+                      span.loc_open Now Open
+                    li
+                      .score
+                        span
+                          | Superb
+                          em 350 Reviews
+                        strong 8.9
+          // /strip grid
+      .bg_color_1
+        .container.margin_60_35
+          .row
+            .col-lg-4
+              a.boxed_list(href='#0')
+                i.pe-7s-help2
+                h4 Need Help? Contact us
+                //- p Cum appareat maiestatis interpretaris et, et sit.
+            .col-lg-4
+              a.boxed_list(href='#0')
+                i.pe-7s-wallet
+                h4 Payments
+                //- p Qui ea nemore eruditi, magna prima possit eu mei.
+            .col-lg-4
+              a.boxed_list(href='#0')
+                i.pe-7s-note2
+                h4 Cancel Policy
+                //- p Hinc vituperata sed ut, pro laudem nonumes ex.
+    
+    //- include partials/paginate.pug
+    include partials/footer.pug

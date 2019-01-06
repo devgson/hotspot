@@ -15,10 +15,10 @@ router.get('/listings', (req, res) => {
 })
 
 /* User Authentication Routes */
-router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
+router.get('/register', user.isLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isLoggedIn, user.userProfile);
-router.post('/profile/:userId', user.isUserLoggedIn, user.updateUserProfile);
-router.get('/signout', user.isUserLoggedIn, user.signout);
+router.post('/profile/:userId', user.isLoggedIn, user.updateUserProfile);
+router.get('/signout', user.isLoggedIn, user.signout);
 
 router.get('/add-listing', (req, res) => {
   res.render('add-listing');
@@ -31,8 +31,10 @@ router.post('/search-listings', listing.findListings);
 router.get('/search-listings', listing.getfindListings);
 router.get('/category/:category', listing.getCategory);
 
+router.get('/bookmarks', listing.getBookmarks);
+
 router.get('/profile-social', (req, res) => {
-  res.render('profile-social' , {user : req.session.facebook_social})
+  res.render('profile-social', { user: req.session.facebook_social })
 });
 router.post('/signin', passport.authenticate('local-login', {
   successRedirect: '/profile', // redirect to the secure profile section
@@ -53,7 +55,21 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureFlash: true // allow flash messages
 }));
 
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] 
+}));
 
+router.get('/auth/google/callback', passport.authenticate('google', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/profile-social', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.redirect('/');
+//   });
 // router.get('/auth/facebook/callback', passport.authenticate('facebook-signup', {
 //   scope: ['email'],
 //   successRedirect: '/profile-social', // redirect to the secure profile section

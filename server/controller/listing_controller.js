@@ -7,9 +7,11 @@ const paginate = require('express-paginate');
 exports.getListing = async (req, res) => {
   try {
     const slug = req.params.slug;
+    console.log(slug);
     const listing = await Listing.findOne({
       slug
     }).populate('reviews');
+    console.log(listing);
     const reviewsInfo = await Review.aggregate(
       [{
         $match: {
@@ -129,6 +131,29 @@ exports.getfindListings = async (req, res) => {
   }
 }
 
+
+exports.getBookmarks = async (req, res) => {
+  try {
+    
+  const user = res.locals.currentUser;
+  const user_bookmarks = user.bookmarks;
+  var all_listings = [];
+  if(user_bookmarks){
+    for (var i = 0; i < user_bookmarks.length; i++) {
+      const listing = await Listing.findOne({ _id: user_bookmarks[i] });
+      all_listings.push(listing);
+      //Do something
+    }
+
+  }
+  console.log('all listings ', all_listings);
+    res.render('bookmarks', {all_listings});
+  }
+  catch (e) {
+    res.send(e.message);
+
+  }
+}
 exports.getCategory = async (req, res) => {
   try {
     const [results, itemCount] = await Promise.all([

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const FacebookStrategy = require('passport-facebook');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 const User = require('../models/user_model');
 
@@ -50,7 +51,7 @@ module.exports = function (passport) {
                         return done(err);
                     // check to see if theres already a user with that email
                     if (user) {
-                        console.log("error is new",err);
+                        console.log("error is new", err);
                         return done(null, false, req.flash('signupError', 'That email is already taken.'));
                     } else {
 
@@ -65,7 +66,7 @@ module.exports = function (passport) {
                         await newUser.save(function (err) {
                             if (err)
                                 throw err;
-                            return done(null, newUser,req.flash('succesfulSocial', 'Congrats!!, you have signed up succesfully'));
+                            return done(null, newUser, req.flash('succesfulSocial', 'Congrats!!, you have signed up succesfully'));
                         });
 
 
@@ -134,7 +135,40 @@ module.exports = function (passport) {
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
                     req.session.facebook_social = newUser;
-                    return done(null, false,req.flash('socialUser', 'Just One last step and you are good to go.'));
+                    return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
+                }
+                req.session.userId = user._id;
+                return done(null, user);
+            });
+        }
+    ));
+
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CONSUMER_KEY,
+        clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
+        callbackURL: "http://localhost:3000/auth/google/callback"
+    },
+        function (token, tokenSecret, profile, done) {
+            console.log(profile);
+            User.findOne({ 'email': profile._json.email }, async function (err, user) {
+                // if there are any errors, return the error
+                console.log(profile);
+                if (err)
+                    return done(err);
+                console.log(err);
+                // check to see if theres already a user with that email
+                if (!user) {
+                    var newUser =
+                    {
+                        'first_name': profile._json.first_name,
+                        'last_name': profile._json.last_name,
+                        'email': profile._json.email,
+                        'social_media.facebook.access_token': accessToken,
+                        'social_media.facebook.link': profile.link
+                    };
+                    console.log('new usewrr ' + JSON.stringify(newUser));
+                    req.session.facebook_social = newUser;
+                    return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
                 return done(null, user);

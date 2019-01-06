@@ -41,8 +41,8 @@ html(lang='en')
         p.mb-0 Error : #{flashes.signinError}
     form(action="/signin" method="post")
       .sign-in-wrapper
-        a.social_bt.facebook(href='/auth/facebook/callback') Login with Facebook
-        a.social_bt.google(href='#0') Login with Google
+        a.social_bt.facebook(href='/auth/facebook/callback') Login or Sign up with Facebook
+        a.social_bt.google(href='#') Login or Sign up with Google
         .divider
           span Or
         .form-group
@@ -97,3 +97,18 @@ html(lang='en')
         });
         
         document.getElementsByClassName('mfp-close').innerHTML = '';
+
+        
+      script.
+        $('.bookmark').on('click', function(evt){
+          evt.preventDefault();
+          var self = this;
+          $.ajax({
+            type : "POST",
+            url : evt.target.action,
+            success : function(data){
+              var bookmarked = document.querySelector('.bookmark').classList.toggle('btn_bookmark_selected');
+              bookmarked ? $('.bookmark button').text('Bookmarked') : $('.bookmark button').text('Bookmark')
+            }
+          })
+        })
