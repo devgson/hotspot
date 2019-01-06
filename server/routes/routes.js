@@ -54,7 +54,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }));
 
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] 
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.email'] 
 }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
