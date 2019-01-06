@@ -245,16 +245,3 @@ block content
   include partials/footer.pug
 block append scripts
   script(src='/js/analytics.js')
-  script.
-    $('.bookmark').on('submit', function(evt){
-      evt.preventDefault();
-      var self = this;
-      $.ajax({
-        type : "POST",
-        url : evt.target.action,
-        success : function(data){
-          var bookmarked = document.querySelector('.bookmark').classList.toggle('btn_bookmark_selected');
-          bookmarked ? $('.bookmark button').text('Bookmarked') : $('.bookmark button').text('Bookmark')
-        }
-      })
-    })

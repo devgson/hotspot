@@ -240,59 +240,7 @@ exports.getBookmarks = async (req, res) => {
   console.log('all listings ', all_listings);
     res.render('bookmarks', {all_listings});
   }
-  catch (e){
-    console.log(e);
-  }
-}
-
-
-exports.getfindListings = async (req, res) => {
-  try {
-
-    // req.session.category_search 
-    // req.session.category_search 
-    // req.session.category_search  
-    console.log(req.session);
-    var query = {
-      category: {
-        $regex: `.*` + req.session.category_search + `.*`,
-        $options: 'i'
-      },
-      title: {
-        $regex: `.*` + req.session.title_search + `.*`,
-        $options: 'i'
-      },
-      'info.address': {
-        $regex: `.*` + req.session.address_search + `.*`,
-        $options: 'i'
-      }
-    }
-
-    console.log(query);
-
-
-    const [results, itemCount] = await Promise.all([
-      Listing.find({ ...query
-      }).limit(req.query.limit).skip(req.skip).lean().exec(),
-      Listing.countDocuments({})
-    ]);
-
-
-    const pageno = req.query.page || 1;
-
-    const pageCount = Math.ceil(itemCount / req.query.limit);
-    res.render('category-view', {
-      listings: results,
-      pageCount,
-      itemCount,
-      results,
-      pageno,
-      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
-    });
-
-    // const listings = await Listing.find({...query})
-    // res.render('category-view', { listings })
-  } catch (e) {
+  catch (e) {
     res.send(e.message);
 
   }
