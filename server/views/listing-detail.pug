@@ -1,5 +1,9 @@
 extends layout
 
+block prepend stylesheets
+  script(async src="https://www.googletagmanager.com/gtag/js?id=UA-130675440-1")
+  script(src='/js/gtag.js')
+
 block content
   include partials/navbar.pug
   main
@@ -22,7 +26,7 @@ block content
             - const changeIdToString = currentUser.bookmarks.map( _id => _id.toString() );
             - const userBookmarked = changeIdToString.includes( listing._id.toString() );
             - const formClass = userBookmarked ? 'btn_bookmark_selected' : '';
-            li.bookmark.float-right(class=(formClass) name="bookmarks" style="margin-left:auto")
+            li.bookmark.d-block.float-right(class=(formClass) name="bookmarks" style="margin-left:auto")
               form(action=`/api/bookmark/${listing._id}` method="POST")
                 a.icon-bookmark-2()
                 button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
@@ -224,6 +228,7 @@ block content
                 i.ti-pencil
               .form-group
                 input#submit-contact-detail.add_top_30.btn_1.full-width.purchase(type='submit', value='Contact us')
+              
           ul.share-buttons
             if listing.social_media.facebook
               li
@@ -240,16 +245,3 @@ block content
   include partials/footer.pug
 block append scripts
   script(src='/js/analytics.js')
-  script.
-    $('.bookmark').on('submit', function(evt){
-      evt.preventDefault();
-      var self = this;
-      $.ajax({
-        type : "POST",
-        url : evt.target.action,
-        success : function(data){
-          var bookmarked = document.querySelector('.bookmark').classList.toggle('btn_bookmark_selected');
-          bookmarked ? $('.bookmark button').text('Bookmarked') : $('.bookmark button').text('Bookmark')
-        }
-      })
-    })

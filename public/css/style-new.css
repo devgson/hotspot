@@ -3216,7 +3216,7 @@ a.box_feat h3 {
 }
 
 .strip {
-    height: 31em;
+    height: auto;
     background-color: #fff;
     display: block;
     position: relative;
@@ -8558,10 +8558,10 @@ a.social_bt.google:before {
   }
   
   .bookmark {
-    border-radius: 4px;
-    background: black;
-    border: 1px red;
     padding: .3em;
+    border-radius: 5em;
+    border: 1px solid #fff;
+    background-color: transparent;
   }
   
   .bookmark a {

@@ -40,12 +40,12 @@ const UserSchema = new Schema({
   },
   social_media: {
     twitter: {
-      type: String,
-      trim: true
+      access_token : String,
+      link : String
     },
     facebook: {
-      type: String,
-      trim: true
+      access_token : String,
+      link : String
     }
   },
   photo: {

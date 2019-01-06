@@ -7,14 +7,13 @@ header.header_in.header-menu_fixed
             h3.text-dark Hotspot
       .col-lg-9.col-12
         ul#top_menu
-          if !currentUser 
-            li.d-flex
-              if !currentUser 
-                a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
-              else
-                a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
+          li.d-flex
+            if !currentUser 
+              a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
+            else
+              a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
           li
-            a.wishlist_bt_top(href='/', title='Your wishlist') Your wishlist
+            a.wishlist_bt_top(href='/bookmarks', title='Your wishlist') Your bookmarks
         // /top_menu
         a.btn_mobile(href='#menu')
           #hamburger.hamburger.hamburger--spin
@@ -28,6 +27,14 @@ header.header_in.header-menu_fixed
             li
               span
                 a(href='/listings') Listings
+            li
+              span
+                if !currentUser 
+                  a.d-md-none.login(href='#sign-in-dialog', title='Sign In') Sign In
+                else
+                  a.d-md-none(href='/signout', title='Sign Out') Sign Out
+            li
+              a.d-md-none(href='/bookmarks', title='Your wishlist') Bookmarks
             //- li
             //-   span
             //-     if !currentUser 

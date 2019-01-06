@@ -251,7 +251,7 @@ body.fixed-nav {
 
 @media (min-width: 992px) {
   #mainNav.fixed-top .navbar-sidenav {
-    height: calc(100vh - 111px);
+    height: calc(100vh - 11px);
   }
 
   #mainNav.fixed-top .sidenav-toggler {

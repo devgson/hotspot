@@ -1,13 +1,12 @@
 const router = require('express').Router();
 
+const passport = require('passport');
 const user = require('../controller/user_controller');
 const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
 const review = require('../controller/review_controller');
 
-router.get('/', (req, res) => {
-  res.render('index.pug');
-})
+router.get('/', listing.index)
 
 router.get('/listings', (req, res) => {
   res.render('grid-search');
@@ -15,9 +14,9 @@ router.get('/listings', (req, res) => {
 
 /* User Authentication Routes */
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
-router.get('/profile', user.isUserLoggedIn, user.userProfile);
-router.post('/profile/:userId', user.isUserLoggedIn, user.updateUserProfile);
-router.get('/signout', user.isUserLoggedIn, user.signout);
+router.get('/profile', user.isLoggedIn, user.userProfile);
+router.post('/profile/:userId', user.isLoggedIn, user.updateUserProfile);
+router.get('/signout', user.isLoggedIn, user.signout);
 
 router.get('/add-listing', (req, res) => {
   res.render('add-listing');
@@ -30,8 +29,51 @@ router.post('/search-listings', listing.findListings);
 router.get('/search-listings', listing.getfindListings);
 router.get('/category/:category', listing.getCategory);
 
-router.post('/signin', user.redirectIfLoggedIn, user.signin);
-router.post('/signup', user.redirectIfLoggedIn, user.signup);
+router.get('/bookmarks',  user.isLoggedIn, listing.getBookmarks);
+
+router.get('/profile-social', (req, res) => {
+  res.render('profile-social', { user: req.session.facebook_social })
+});
+router.post('/signin', passport.authenticate('local-login', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/?showdefaultmodal=true', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/register', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  scope: ['email'],
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/profile-social', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] 
+}));
+
+router.get('/auth/google/callback', passport.authenticate('google', {
+  successRedirect: '/profile', // redirect to the secure profile section
+  failureRedirect: '/profile-social', // redirect back to the signup page if there is an error
+  failureFlash: true // allow flash messages
+}));
+
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     res.redirect('/');
+//   });
+// router.get('/auth/facebook/callback', passport.authenticate('facebook-signup', {
+//   scope: ['email'],
+//   successRedirect: '/profile-social', // redirect to the secure profile section
+//   failureRedirect: '/?showdefaultmodal=true', // redirect back to the signup page if there is an error
+//   failureFlash: true // allow flash messages
+// }));
 
 router.get('/messages', (req, res) => {
   res.render('messages');
@@ -47,6 +89,7 @@ router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
 router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
+router.get('/admin/dashboard', admin.isAdminLoggedIn, admin.dashboard);
 router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
 router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);

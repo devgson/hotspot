@@ -1,13 +1,230 @@
-const Listing = require('../models/listing_model');
-const Admin = require('../models/admin_model');
+const Listing = require("../models/listing_model");
+const Admin = require("../models/admin_model");
 const fetch = require("node-fetch");
-const algoliasearch = require('algoliasearch');
+const algoliasearch = require("algoliasearch");
+const {
+  google
+} = require("googleapis");
+
 var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
-var index = client.initIndex('listings');
+var index = client.initIndex("listings");
 const {
   cloudinary,
   flat
-} = require('../helper/helper');
+} = require("../helper/helper");
+
+const scopes = "https://www.googleapis.com/auth/analytics.readonly";
+const jwt = new google.auth.JWT(
+  process.env.CLIENT_EMAIL,
+  null,
+  process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+  scopes
+);
+const view_id = "186345526";
+
+function getDaysAgo() {
+  const startDate = new Date("10/10/2018");
+  const endDate = new Date();
+  const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+  const daysAgo = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  return daysAgo;
+}
+
+// Number of pageviews in the last 30 days
+async function numberOfPageviewsInLast30Days() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": "30daysAgo",
+    "end-date": "today",
+    metrics: "ga:pageviews"
+  });
+  return {
+    name: "Pageviews in the last 30 days",
+    header: "Pageviews",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Number of pageviews
+async function numberOfPageviews() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    metrics: "ga:pageviews"
+  });
+  return {
+    name: "Total Pageviews",
+    header: "Pageviews",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Number of unique pageviews in the last 30 days
+async function numberOfUniquePageviewsInLast30Days() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": "30daysAgo",
+    "end-date": "today",
+    metrics: "ga:uniquePageviews"
+  });
+  return {
+    name: "Unique Pageviews in the last 30 days",
+    header: "Unique Pageviews",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Number of unique pageviews
+async function numberOfUniquePageviews() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    metrics: "ga:uniquePageviews"
+  });
+  return {
+    name: "Number of Unique Pageviews",
+    header: "Unique Pageviews",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Top browsers users visit from
+async function topBrowsers() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    dimensions: "ga:browser",
+    metrics: "ga:sessions"
+  });
+  if (!result.data.rows || result.data.rows.length <= 0) return [];
+  const sortedBrowsers = result.data.rows.sort((a, b) => b[1] - a[1]);
+  const sortedBrowsersInObject = sortedBrowsers.map(browser => {
+    return {
+      [browser[0]]: browser[1]
+    };
+  });
+  return {
+    name: "Top Browsers users visit the site from",
+    header: "Browsers",
+    browsers: sortedBrowsers,
+  }
+}
+
+// Top 5 listings viewed
+async function topListings() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    metrics: "ga:pageviews",
+    dimensions: "ga:pagePath"
+  });
+  if (!result.data.rows || result.data.rows.length <= 0) return [];
+  const sortedListings = result.data.rows.sort((a, b) => b[1] - a[1]);
+  /*const sortedListingsInObject = sortedListings.map(listing => {
+    /*const slashIndex = listing[0].lastIndexOf("/");
+    const getPathName =
+      slashIndex > 0 ? listing[0].slice(slashIndex + 1) : listing[0];*/
+  /*return {
+      [listing[0]]: listing[1]
+    };
+  });*/
+  return {
+    name: "Top Listings users visit",
+    header: "Listings",
+    listings: sortedListings,
+  }
+}
+
+// NUmber of todays session
+async function numberOfTodaysSession() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `today`,
+    "end-date": "today",
+    metrics: "ga:sessions"
+  });
+  return {
+    name: "Number of Sessions Today",
+    header: "Sessions",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+async function numberOfYesterdaysSession() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `yesterday`,
+    "end-date": "yesterday",
+    metrics: "ga:sessions"
+  });
+  return {
+    name: "Number of Sessions Yesterday",
+    header: "Sessions",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Total number of sessions
+async function totalSessions() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    metrics: "ga:sessions"
+  });
+  return {
+    name: "Total User Sessions",
+    header: "Sessions",
+    views: result.data.rows ? result.data.rows[0][0] : '0',
+  }
+}
+
+// Number of pageviews by traffic source
+async function pageViewsTrafficSource() {
+  const response = await jwt.authorize();
+  const result = await google.analytics("v3").data.ga.get({
+    auth: jwt,
+    ids: "ga:" + view_id,
+    "start-date": `${getDaysAgo()}daysAgo`,
+    "end-date": "today",
+    metrics: "ga:pageviews",
+    dimensions: "ga:source"
+  });
+  if (!result.data.rows || result.data.rows.length <= 0) return [];
+  const sortedSources = result.data.rows.sort((a, b) => b[1] - a[1]);
+  /*const sortedSourcesInObject = sortedSources.map(source => {
+    return {
+      [source[0]]: source[1]
+    };
+  });*/
+  return {
+    name: "Where users visit from",
+    header: "Traffic Sources",
+    sources: sortedSources
+  }
+}
 
 function upload(image) {
   return new Promise((resolve, reject) => {
@@ -26,53 +243,97 @@ function deleteUpload(image) {
   });
 }
 
+exports.dashboard = async (req, res, next) => {
+  try {
+    const [
+      pageviewsInLast30Days,
+      pageviews,
+      uniquePageviewsInLast30Days,
+      uniquePageviews,
+      browsers,
+      listings,
+      todaysSessions,
+      yesterdaysSessions,
+      sessions,
+      trafficSource
+    ] = await Promise.all([
+      numberOfPageviewsInLast30Days(),
+      numberOfPageviews(),
+      numberOfUniquePageviewsInLast30Days(),
+      numberOfUniquePageviews(),
+      topBrowsers(),
+      topListings(),
+      numberOfTodaysSession(),
+      numberOfYesterdaysSession(),
+      totalSessions(),
+      pageViewsTrafficSource()
+    ])
+    res.render('dashboard', {
+      bigGuys: {
+        browsers,
+        listings,
+        trafficSource
+      },
+      data: {
+        pageviewsInLast30Days,
+        pageviews,
+        uniquePageviewsInLast30Days,
+        uniquePageviews,
+        todaysSessions,
+        yesterdaysSessions,
+        sessions
+      }
+    })
+  } catch (error) {
+    res.send(error.message)
+  }
+}
+
 exports.redirectIfLoggedIn = (req, res, next) => {
   if (req.session && req.session.adminId) {
-    res.redirect('/admin')
+    res.redirect("/admin");
   } else {
     next();
   }
-}
+};
 
 exports.isAdminLoggedIn = (req, res, next) => {
   if (req.session && req.session.adminId) {
     next();
   } else {
-    res.redirect('/admin/login');
+    res.redirect("/admin/login");
   }
-}
+};
 
 exports.getAddListing = async (req, res, next) => {
   try {
-    res.render('add-listing', {
-      title: 'Add Listing',
+    res.render("add-listing", {
+      title: "Add Listing",
       listing: {}
     });
   } catch (error) {
     res.send(error.message);
   }
-}
-
+};
 
 exports.getEditListing = async (req, res, next) => {
   try {
     const listing = await Listing.findOne({
       slug: req.params.listing
-    })
-    res.render('edit-listing', {
+    });
+    res.render("edit-listing", {
       listing,
-      title: 'Edit Listing'
+      title: "Edit Listing"
     });
   } catch (error) {
     res.send("error is ", error.message);
   }
-}
-
+};
 
 exports.postAddListing = async (req, res, next) => {
   try {
     //req.body.owner = req.session.userID;
-    const tags = req.body.tags.split(',');
+    const tags = req.body.tags.split(",");
     req.body.tags = tags;
     const listing = await new Listing(req.body).save();
     res.redirect('/admin/listings');
@@ -81,17 +342,18 @@ exports.postAddListing = async (req, res, next) => {
   }
 };
 
-
 exports.editListing = async (req, res, next) => {
   try {
     const updatedListing = req.body;
-    updatedListing.tags ? updatedListing.tags = updatedListing.tags.split(',') : '';
+    updatedListing.tags ?
+      (updatedListing.tags = updatedListing.tags.split(",")) :
+      "";
     const listing = await Listing.findOneAndUpdate({
       slug: req.params.listing
     }, updatedListing, {
-        new: true,
-        runValidators: true
-      });
+      new: true,
+      runValidators: true
+    });
     res.render('edit-listing', {
       listing
     });
@@ -106,17 +368,16 @@ exports.DeleteListing = async (req, res, next) => {
     await Listing.findOneAndDelete({
       slug: listing
     });
-    res.redirect('/admin/listings');
+    res.redirect("/admin/listings");
   } catch (error) {
     res.send(error.message);
   }
 };
 
-
 exports.getAllListings = async (req, res, next) => {
   try {
     const listings = await Listing.find();
-    res.render('admin-listings', {
+    res.render("admin-listings", {
       listings
     });
   } catch (error) {
@@ -126,7 +387,9 @@ exports.getAllListings = async (req, res, next) => {
 
 exports.addListingfromGoogle = async (req, res, next) => {
   try {
-    url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Lagos&fields=rating,formatted_phone_number,address_component,opening_hours,formatted_phone_number,opening_hours,website,restaurant,opening_hours,night_club,shopping_mall,museum,supermarket,bowling_alley,bar&key=" + process.env.GOOGLE_KEY;
+    url =
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Lagos&fields=rating,formatted_phone_number,address_component,opening_hours,formatted_phone_number,opening_hours,website,restaurant,opening_hours,night_club,shopping_mall,museum,supermarket,bowling_alley,bar&key=" +
+      process.env.GOOGLE_KEY;
     const response = await fetch(url);
     const json = await response.json();
     req.listings = json;
@@ -139,19 +402,19 @@ exports.addListingfromGoogle = async (req, res, next) => {
 exports.signout = async (req, res, next) => {
   try {
     await req.session.destroy();
-    res.redirect('/admin');
+    res.redirect("/admin");
   } catch (error) {
     res.send(error.message);
   }
-}
+};
 
 exports.getSignIn = async (req, res, next) => {
   try {
-    res.render('admin-login');
+    res.render("admin-login");
   } catch (error) {
     res.send(error.message);
   }
-}
+};
 
 exports.postSignIn = async (req, res, next) => {
   try {
@@ -166,27 +429,27 @@ exports.postSignIn = async (req, res, next) => {
       const isValidPassword = await admin.validatePassword(password);
       if (isValidPassword) {
         req.session.adminId = admin._id;
-        return res.redirect('/admin/listings');
+        return res.redirect("/admin/listings");
       } else {
-        req.flash('signinError', 'Wrong Email Address or Password');
-        res.redirect('back');
+        req.flash("signinError", "Wrong Email Address or Password");
+        res.redirect("back");
       }
     } else {
-      req.flash('signinError', 'Wrong Email Address or Password');
-      res.redirect('back');
+      req.flash("signinError", "Wrong Email Address or Password");
+      res.redirect("back");
     }
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.createSuperadmin = async (req, res, next) => {
   try {
     let body = {};
-    body.email = 'admin@hotspot.com';
-    body.password = 'password';
+    body.email = "admin@hotspot.com";
+    body.password = "password";
     const adminUser = await new Admin(body).save();
-    res.send('saved');
+    res.send("saved");
   } catch (error) {
     res.send(error.message);
   }
@@ -196,7 +459,7 @@ exports.addListingtodb = async (req, res, next) => {
   try {
     let body = {};
     const listings = req.listings.results;
-    console.log("length is", listings.length)
+    console.log("length is", listings.length);
     for (var i = 0; i < listings.length; i++) {
       var element = listings[i];
       body.title = element.name;
@@ -204,8 +467,8 @@ exports.addListingtodb = async (req, res, next) => {
       body.category = element.types[0];
       body.info = {
         address: element.formatted_address,
-        country: 'Nigeria',
-        state: 'Lagos',
+        country: "Nigeria",
+        state: "Lagos",
         coordinates: {
           lat: element.geometry.location.lat,
           lon: element.geometry.location.lng
@@ -214,7 +477,7 @@ exports.addListingtodb = async (req, res, next) => {
       console.log("lat is ", element.geometry.location.lat);
       const store = await new Listing(body).save();
     }
-    res.send('limit reached');
+    res.send("limit reached");
   } catch (error) {
     console.log(error);
   }
@@ -239,13 +502,16 @@ exports.uploadHeader = async (req, res, next) => {
         secure_url: image.secure_url
       }
     });
-    req.flash('uploadHeaderSuccess', 'Header Image has been successfully uploaded');
-    return res.redirect('back');
+    req.flash(
+      "uploadHeaderSuccess",
+      "Header Image has been successfully uploaded"
+    );
+    return res.redirect("back");
   } catch (error) {
-    req.flash('uploadHeaderError', 'Error occured, please try again');
-    return res.redirect('back');
+    req.flash("uploadHeaderError", "Error occured, please try again");
+    return res.redirect("back");
   }
-}
+};
 
 exports.uploadImages = async (req, res, next) => {
   try {
@@ -258,7 +524,9 @@ exports.uploadImages = async (req, res, next) => {
       } else {
         const result = await upload(req.files[image]);
         if (result.public_id == null || result.url == null) {
-          return res.status(401).send("Error uploading images, please try again");
+          return res
+            .status(401)
+            .send("Error uploading images, please try again");
         }
         await listing.update({
           $push: {
@@ -268,14 +536,14 @@ exports.uploadImages = async (req, res, next) => {
               secure_url: result.secure_url
             }
           }
-        })
+        });
       }
     }
-    res.send('Upload Complete');
+    res.send("Upload Complete");
   } catch (error) {
     res.status(401).send("Error occured, please retry");
   }
-}
+};
 
 exports.deleteImage = async (req, res, next) => {
   try {
@@ -284,7 +552,7 @@ exports.deleteImage = async (req, res, next) => {
       slug: req.params.slug
     });
     if (id) {
-      await deleteUpload(id)
+      await deleteUpload(id);
     } else {
       return res.status(401).send("Error no ID provided");
     }
@@ -294,19 +562,19 @@ exports.deleteImage = async (req, res, next) => {
           public_id: id
         }
       }
-    })
-    res.status(200).send('Delete Successful')
+    });
+    res.status(200).send("Delete Successful");
   } catch (error) {
     res.status(500).send(error.message);
   }
-}
+};
 
 exports.addListingtoAlgolia = async (req, res, next) => {
   try {
     const listings = await Listing.find();
     index.addObjects(listings);
-    res.send('done');
+    res.send("done");
   } catch (error) {
     res.send(error.message);
   }
-}
+};

@@ -23,7 +23,7 @@ block content
               each listing in listings
                 li
                   figure
-                    img(src='img/item_1.jpg', alt='')
+                    img(src= listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                   small #{listing.category}
                   h4 #{listing.title}
                   p

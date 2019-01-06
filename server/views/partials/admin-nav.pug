@@ -1,25 +1,29 @@
 nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
-  a.navbar-brand(href='index.html')
-    img(src='/admin_section/img/logo.png', data-retina='true', alt='', width='165', height='36')
+  a.navbar-brand(href='/')
+    h3.text-light Hotspot
   button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarResponsive.collapse.navbar-collapse
     ul#exampleAccordion.navbar-nav.navbar-sidenav
       li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
-        a.nav-link(href='index.html')
+        a.nav-link(href='/admin/dashboard')
           i.fa.fa-fw.fa-dashboard
-          span.nav-link-text Dashboard
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='Messages')
+          span.nav-link-text  Dashboard
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
+        a.nav-link(href='/admin/listings')
+          i.fa.fa-fw.fa-list
+          span.nav-link-text  Listings
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Messages')
         a.nav-link(href='messages.html')
           i.fa.fa-fw.fa-envelope-open
           span.nav-link-text Messages
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='', data-original-title='Bookings')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='', data-original-title='Bookings')
         a.nav-link(href='bookings.html')
           i.fa.fa-fw.fa-calendar-check-o
           span.nav-link-text
             | Bookings 
             span.badge.badge-pill.badge-primary 6 New
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='My listings')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='My listings')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseMylistings', data-parent='#mylistings')
           i.fa.fa-fw.fa-list
           span.nav-link-text My listings
@@ -36,11 +40,11 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             a(href='listings.html')
               | Expired 
               span.badge.badge-pill.badge-danger 6
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='Reviews')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Reviews')
         a.nav-link(href='reviews.html')
           i.fa.fa-fw.fa-star
           span.nav-link-text Reviews
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='Bookmarks')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Bookmarks')
         a.nav-link(href='bookmarks.html')
           i.fa.fa-fw.fa-heart
           span.nav-link-text Bookmarks
@@ -48,11 +52,11 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
         a.nav-link(href='/admin/add-listing')
           i.fa.fa-fw.fa-plus-circle
           span.nav-link-text  Add listing
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='My profile')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='My profile')
         a.nav-link(href='user-profile.html')
           i.fa.fa-fw.fa-user
           span.nav-link-text My Profile
-      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseComponents', data-parent='#Components')
           i.fa.fa-fw.fa-gear
           span.nav-link-text Components
@@ -61,12 +65,12 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             a(href='charts.html') Charts
           li
             a(href='tables.html') Tables
-    ul.navbar-nav.sidenav-toggler
+    //ul.navbar-nav.sidenav-toggler
       li.nav-item
         a#sidenavToggler.nav-link.text-center
           i.fa.fa-fw.fa-angle-left
     ul.navbar-nav.ml-auto
-      li.nav-item.dropdown
+      //li.nav-item.dropdown
         a#messagesDropdown.nav-link.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-fw.fa-envelope
           span.d-lg-none

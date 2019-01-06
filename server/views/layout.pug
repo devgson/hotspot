@@ -1,17 +1,16 @@
 doctype html
 html(lang='en')
   head
-  -var algoliaid = process.env.ALGOLIA_ID
-  -var searchkey = process.env.ALGOLIA_SEARCH
+  -var algoliaid = process.env.ALGOLIA_ID;
+  -var searchkey = process.env.ALGOLIA_SEARCH;
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description', content='Hotspot - Find the Hottest places in Lagos')
     meta(name='author', content='Hotspot')
     title Hotspot
-    // Favicons
-    link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700', rel='stylesheet')
     block stylesheets
+      link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700', rel='stylesheet')
       link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.css')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
       link(href='/css/style-new.css', rel='stylesheet')
@@ -41,8 +40,8 @@ html(lang='en')
         p.mb-0 Error : #{flashes.signinError}
     form(action="/signin" method="post")
       .sign-in-wrapper
-        a.social_bt.facebook(href='#0') Login with Facebook
-        a.social_bt.google(href='#0') Login with Google
+        a.social_bt.facebook(href='/auth/facebook/callback') Login or Sign up with Facebook
+        a.social_bt.google(href='#') Login or Sign up with Google
         .divider
           span Or
         .form-group
@@ -59,7 +58,7 @@ html(lang='en')
               | Remember me 
               input(type='checkbox')
               span.checkmark
-          .float-right.mt-1
+          //.float-right.mt-1
             a#forgot(href='javascript:void(0);') Forgot Password?
         .text-center
           input.btn_1.full-width(type='submit', value='Log In')
@@ -89,8 +88,26 @@ html(lang='en')
             // You may add options here, they're exactly the same as for $.fn.magnificPopup call
             // Note that some settings that rely on click event (like disableOn or midClick) will not work here
           });
+          document.getElementsByClassName('mfp-close').innerHTML = '';
         $('.launch-signin').magnificPopup({
             type: 'image',
             preloader: false,
             focus: '#email'
         });
+        
+        document.getElementsByClassName('mfp-close').innerHTML = '';
+
+        
+      script.
+        $('.bookmark').on('click', function(evt){
+          evt.preventDefault();
+          var self = this;
+          $.ajax({
+            type : "POST",
+            url : evt.target.action,
+            success : function(data){
+              var bookmarked = document.querySelector('.bookmark').classList.toggle('btn_bookmark_selected');
+              bookmarked ? $('.bookmark button').text('Bookmarked') : $('.bookmark button').text('Bookmark')
+            }
+          })
+        })
