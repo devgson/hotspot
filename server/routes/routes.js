@@ -32,7 +32,7 @@ router.get('/category/:category', listing.getCategory);
 router.get('/bookmarks',  user.isLoggedIn, listing.getBookmarks);
 
 router.get('/profile-social', (req, res) => {
-  res.render('profile-social', { user: req.session.social })
+  res.render('profile-social', { user: req.session.social_user })
 });
 router.post('/signin', passport.authenticate('local-login', {
   successRedirect: '/profile', // redirect to the secure profile section

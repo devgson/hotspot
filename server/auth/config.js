@@ -134,7 +134,7 @@ module.exports = function (passport) {
                         'social_media_facebook_link': profile.link
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social = newUser;
+                    req.session.social_user = newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
@@ -166,7 +166,7 @@ module.exports = function (passport) {
                         'social_media_google_link': profile._json.url
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social = newUser;
+                    req.session.social_user = newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
