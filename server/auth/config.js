@@ -148,7 +148,7 @@ module.exports = function (passport) {
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
         callbackURL: "/auth/google/callback"
     },
-        function (token, tokenSecret, profile, done) {
+        function (req,token, tokenSecret, profile, done) {
             console.log(profile._json.emails[0].value);
             User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
                 // if there are any errors, return the error
