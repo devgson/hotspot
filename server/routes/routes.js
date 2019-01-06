@@ -13,7 +13,7 @@ router.get('/listings', (req, res) => {
 })
 
 /* User Authentication Routes */
-router.get('/register', user.isLoggedIn, user.userSignupLogin);
+router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isLoggedIn, user.userProfile);
 router.post('/profile/:userId', user.isLoggedIn, user.updateUserProfile);
 router.get('/signout', user.isLoggedIn, user.signout);
