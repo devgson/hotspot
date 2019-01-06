@@ -27,6 +27,12 @@ header.header_in.header-menu_fixed
             li
               span
                 a(href='/listings') Listings
+            li
+              span
+                if !currentUser 
+                  a.login(href='#sign-in-dialog', title='Sign In') Sign In
+                else
+                  a(href='/signout', title='Sign Out') Sign Out
             //- li
             //-   span
             //-     if !currentUser 

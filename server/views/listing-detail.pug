@@ -1,5 +1,9 @@
 extends layout
 
+block prepend stylesheets
+  script(async src="https://www.googletagmanager.com/gtag/js?id=UA-130675440-1")
+  script(src='/js/gtag.js')
+
 block content
   include partials/navbar.pug
   main

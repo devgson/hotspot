@@ -6,9 +6,7 @@ const admin = require('../controller/admin_controller');
 const listing = require('../controller/listing_controller');
 const review = require('../controller/review_controller');
 
-router.get('/', (req, res) => {
-  res.render('index.pug');
-})
+router.get('/', listing.index)
 
 router.get('/listings', (req, res) => {
   res.render('grid-search');
@@ -91,6 +89,7 @@ router.post('/review/:listing', user.isUserLoggedIn, review.addReview);
 router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
+router.get('/admin/dashboard', admin.isAdminLoggedIn, admin.dashboard);
 router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
 router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);

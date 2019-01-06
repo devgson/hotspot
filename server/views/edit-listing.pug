@@ -146,6 +146,7 @@ block content
             h2 
               i.fa.fa-clock-o
               |Hours
+          if listing.hours
           - const day = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
           each days in day
             .row
@@ -155,7 +156,7 @@ block content
                 .form-group
                   .styled-select
                     select(name=`hours[${days}]` required)
-                      option(selected)= listing.hours[days][0]
+                      option(selected)= listing.hours ? listing.hours[days][0] : ''
                       option Opening Time
                       option Closed
                       option 1 AM
@@ -186,7 +187,7 @@ block content
                 .form-group
                   .styled-select
                     select(name=`hours[${days}]` required)
-                      option(selected)= listing.hours[days][1]
+                      option(selected)= listing.hours ? listing.hours[days][1] : ''
                       option Closing Time
                       option Closed
                       option 1 AM
