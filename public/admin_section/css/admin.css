@@ -1312,7 +1312,7 @@ label.fix_spacing {
 .dz-default {
   border: 1px solid rgba(0, 0, 0, 0.1);
   /*padding: 20px;*/
-}
+/* } */
 
 .strip {
   background-color: #fff;
