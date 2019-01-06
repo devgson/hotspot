@@ -240,6 +240,9 @@ exports.getBookmarks = async (req, res) => {
   console.log('all listings ', all_listings);
     res.render('bookmarks', {all_listings});
   }
+  catch (e){
+    console.log(e);
+  }
 }
 
 
