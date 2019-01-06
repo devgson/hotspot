@@ -29,7 +29,7 @@ router.post('/search-listings', listing.findListings);
 router.get('/search-listings', listing.getfindListings);
 router.get('/category/:category', listing.getCategory);
 
-router.get('/bookmarks', listing.getBookmarks);
+router.get('/bookmarks',  user.isLoggedIn, listing.getBookmarks);
 
 router.get('/profile-social', (req, res) => {
   res.render('profile-social', { user: req.session.facebook_social })

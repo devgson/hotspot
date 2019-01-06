@@ -226,9 +226,10 @@ exports.getBookmarks = async (req, res) => {
   try {
     
   const user = res.locals.currentUser;
-  const user_bookmarks = user.bookmarks;
+  // const user_bookmarks = user.bookmarks;
   var all_listings = [];
-  if(user_bookmarks){
+  if(user.bookmarks){
+    const user_bookmarks = user.bookmarks;
     for (var i = 0; i < user_bookmarks.length; i++) {
       const listing = await Listing.findOne({ _id: user_bookmarks[i] });
       all_listings.push(listing);

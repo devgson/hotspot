@@ -30,9 +30,11 @@ header.header_in.header-menu_fixed
             li
               span
                 if !currentUser 
-                  a.login(href='#sign-in-dialog', title='Sign In') Sign In
+                  a.d-md-none.login(href='#sign-in-dialog', title='Sign In') Sign In
                 else
-                  a(href='/signout', title='Sign Out') Sign Out
+                  a.d-md-none(href='/signout', title='Sign Out') Sign Out
+            li
+              a.d-md-none(href='/bookmarks', title='Your wishlist') Bookmarks
             //- li
             //-   span
             //-     if !currentUser 

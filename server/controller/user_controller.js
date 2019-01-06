@@ -4,7 +4,8 @@ exports.isUserLoggedIn = async (req, res, next) => {
   if (req.session && req.session.userId) {
     next();
   } else {
-    res.redirect('/');
+    req.flash('signinError', 'Please Sign in');
+    res.redirect('/?showdefaultmodal=true');
   }
 
 }
@@ -16,7 +17,8 @@ exports.isLoggedIn= async (req, res, next) => {
       return next();
 
   // if they aren't redirect them to the home page
-  res.redirect('/');
+    req.flash('signinError', 'Please Sign in');
+    res.redirect('/?showdefaultmodal=true');
 }
 
 exports.redirectIfLoggedIn = (req, res, next) => {
