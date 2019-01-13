@@ -5,8 +5,6 @@ require('dotenv').config({
 //var index = client.initIndex('listings');
 const express = require("express");
 const bodyParser = require('body-parser');
-
-var http = require('http');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const session = require('express-session');
@@ -41,7 +39,7 @@ mongoose.connect(db, {
 });
 
 // keep this before all routes that will use pagination
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+app.use(enforce.HTTPS({ trustProtoHeader: true,  trustXForwardedHostHeader: true }))
 app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
@@ -102,7 +100,6 @@ app.use((error, req, res) => {
   })
 })
 
-// http.createServer(app).listen(app.get('port'), function() {
-  http.createServer(app).listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server listening at port 3000 ");
 });
