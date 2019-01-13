@@ -42,7 +42,9 @@ module.exports = function (passport) {
             // asynchronous
             // User.findOne wont fire unless data is sent back
             process.nextTick(function () {
+                try {
 
+                
                 // find a user whose email is the same as the forms email
                 // we are checking to see if the user trying to login already exists
                 User.findOne({ 'email': req.body.email }, async function (err, user) {
@@ -74,6 +76,10 @@ module.exports = function (passport) {
                     }
 
                 });
+            }
+            catch(e){
+                return done(e);
+            }
             });
 
         }));
@@ -86,7 +92,7 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
         function (req, email, password, done) { // callback with email and password from our form
-
+            try {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
             User.findOne({ 'email': req.body.email }, function (err, user) {
@@ -106,7 +112,10 @@ module.exports = function (passport) {
                 req.session.userId = user._id;
                 return done(null, user);
             });
-
+        }
+        catch(e){
+            return done(e);
+        }
         }));
 
     passport.use(new FacebookStrategy({
@@ -117,6 +126,9 @@ module.exports = function (passport) {
         passReqToCallback: true
     },
        async function (req, accessToken, refreshToken, profile, done) {
+           try{
+
+           
            await User.findOne({ 'email': profile._json.email }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log(profile);
@@ -141,6 +153,10 @@ module.exports = function (passport) {
                 return done(null, user);
             });
         }
+        catch(e) {
+            return done(e);
+        }
+    }
     ));
 
     passport.use(new GoogleStrategy({
@@ -150,6 +166,7 @@ module.exports = function (passport) {
         passReqToCallback: true
     },
         async function (req,token, tokenSecret, profile, done) {
+            try{
             console.log(profile._json.emails[0].value);
            await User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
                 // if there are any errors, return the error
@@ -174,50 +191,10 @@ module.exports = function (passport) {
                 return done(null, user);
             });
         }
+        catch(e){
+            console.log(e);
+        }
+        }
     ));
-
-
-    // passport.use('facebook-signup', new FacebookStrategy({
-    //     clientID: process.env.FACEBOOK_APP_ID,
-    //     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    //     callbackURL: "http://localhost:3000/auth/facebook/callback",
-    //     profileFields: ['last_name', 'first_name', 'link', 'email']
-    // },
-    //     function (accessToken, refreshToken, profile, done) {
-    //         User.findOne({ 'email': profile.email }, async function (err, user) {
-    //             // if there are any errors, return the error
-    //             console.log(profile);
-    //             if (err)
-    //                 return done(err);
-    //             console.log(err);
-    //             // check to see if theres already a user with that email
-    //             if (user) {
-    //                 return done(null, false, req.flash('signinError', 'A User is already associated with that account'));
-    //             } else {
-    //                 console.log('profile name ', profile);
-    //                 // if there is no user with that email
-    //                 // create the user
-    //                 var newUser =
-    //                 {
-    //                     'first_name': profile._json.first_name,
-    //                     'last_name': profile._json.last_name,
-    //                     'email': profile._json.email,
-    //                     'social_media.facebook.access_token': accessToken,
-    //                     'social_media.facebook.link': profile.link
-    //                 };
-
-    //                 // set the user's local credentials
-    //                 // newUser.password = newUser.hashNewPassword(req.body.password);
-
-    //                 // save the user
-
-
-
-    //                 return done(null, newUser);
-    //             }
-
-    //         });
-    //     }
-    // ));
 
 };
