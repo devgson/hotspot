@@ -4,22 +4,19 @@ require("dotenv").config({
 //var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
 //var index = client.initIndex('listings');
 const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const moment = require("moment");
-const session = require("express-session");
-var passport = require("passport");
-const flash = require("connect-flash");
-const mongoStore = require("connect-mongo")(session);
-const fileUpload = require("express-fileupload");
-const algoliasearch = require("algoliasearch");
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const moment = require('moment');
+const session = require('express-session');
+var passport = require('passport');
+const flash = require('connect-flash');
+const mongoStore = require('connect-mongo')(session);
+const fileUpload = require('express-fileupload');
+const algoliasearch = require('algoliasearch');
 const isProd = true;
-const db =
-  process.env.NODE_ENV === "production" || isProd
-    ? process.env.PRODUCTION_DB
-    : process.env.DEV_DB;
-const path = require("path");
-require("./auth/config")(passport);
+const db = process.env.NODE_ENV === 'production' || isProd ? process.env.PRODUCTION_DB : process.env.DEV_DB;
+const path = require('path');
+require('./auth/config')(passport);
 
 const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
 const index = client.initIndex("listings");
@@ -64,7 +61,19 @@ app.use(
   bodyParser.urlencoded({
     extended: true
   })
+<<<<<<< HEAD
 );
+=======
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+>>>>>>> a21da95531e593f55d86a2aee90ca40207c8744d
 app.use(bodyParser.json());
 app.use(flash());
 app.use(async (req, res, next) => {

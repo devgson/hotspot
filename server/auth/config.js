@@ -112,12 +112,12 @@ module.exports = function (passport) {
     passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        callbackURL: "/auth/facebook/callback",
         profileFields: ['last_name', 'first_name', 'link', 'emails'],
         passReqToCallback: true
     },
-        function (req, accessToken, refreshToken, profile, done) {
-            User.findOne({ 'email': profile._json.email }, async function (err, user) {
+       async function (req, accessToken, refreshToken, profile, done) {
+           await User.findOne({ 'email': profile._json.email }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log(profile);
                 if (err)
@@ -130,11 +130,19 @@ module.exports = function (passport) {
                         'first_name': profile._json.first_name,
                         'last_name': profile._json.last_name,
                         'email': profile._json.email,
+<<<<<<< HEAD
                         'social_media.facebook.access_token': accessToken,
                         'social_media.facebook.link': profile.link
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
                     req.session.facebook_social = newUser;
+=======
+                        'social_media_token': accessToken,
+                        'social_media_facebook_link': profile.link
+                    };
+                    console.log('new usewrr ' + JSON.stringify(newUser));
+                    req.session.social_user = await newUser;
+>>>>>>> a21da95531e593f55d86a2aee90ca40207c8744d
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
@@ -146,13 +154,14 @@ module.exports = function (passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CONSUMER_KEY,
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/callback"
+        callbackURL: "/auth/google/callback",
+        passReqToCallback: true
     },
-        function (token, tokenSecret, profile, done) {
-            console.log(profile);
-            User.findOne({ 'email': profile._json.email }, async function (err, user) {
+        async function (req,token, tokenSecret, profile, done) {
+            console.log(profile._json.emails[0].value);
+           await User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
                 // if there are any errors, return the error
-                console.log(profile);
+                console.log("profile is ",profile);
                 if (err)
                     return done(err);
                 console.log(err);
@@ -160,14 +169,13 @@ module.exports = function (passport) {
                 if (!user) {
                     var newUser =
                     {
-                        'first_name': profile._json.first_name,
-                        'last_name': profile._json.last_name,
-                        'email': profile._json.email,
-                        'social_media.facebook.access_token': accessToken,
-                        'social_media.facebook.link': profile.link
+                        'first_name': profile._json.name.givenName,
+                        'last_name': profile._json.familyName,
+                        'email': profile._json.emails[0].value,
+                        'social_media_google_link': profile._json.url
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.facebook_social = newUser;
+                    req.session.social_user = await newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
