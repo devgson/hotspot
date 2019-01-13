@@ -41,7 +41,7 @@ html(lang='en')
         p.mb-0 Error : #{flashes.signinError}
     form(action="/signin" method="post")
       .sign-in-wrapper
-        a.social_bt.facebook(href='https://herokuapp/auth/facebook/callback') Login or Sign up with Facebook
+        a.social_bt.facebook(href='/auth/facebook/callback') Login or Sign up with Facebook
         a.social_bt.google(href='/auth/google') Login or Sign up with Google
         .divider
           span Or
