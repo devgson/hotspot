@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const session = require('express-session');
-var enforce = require('express-sslify');
+var secure = require('ssl-express-www');
 var passport = require('passport');
 const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
@@ -39,12 +39,12 @@ mongoose.connect(db, {
 });
 
 // keep this before all routes that will use pagination
-app.use(enforce.HTTPS({trustXForwardedHostHeader: true }))
 app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname + '/views'))
 app.use(fileUpload());
+app.use(secure);
 app.use(express.static(path.join(__dirname + '/../public')));
 app.use(session({
   secret: "testing",
