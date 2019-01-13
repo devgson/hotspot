@@ -39,7 +39,7 @@ mongoose.connect(db, {
 });
 
 // keep this before all routes that will use pagination
-app.use(enforce.HTTPS({ trustProtoHeader: true,  trustXForwardedHostHeader: true }))
+app.use(enforce.HTTPS({trustXForwardedHostHeader: true }))
 app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
 app.set('view engine', 'pug');
