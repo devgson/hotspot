@@ -11,7 +11,9 @@ router.get('/', listing.index)
 router.get('/listings', (req, res) => {
   res.render('grid-search');
 })
-
+router.get(".well-known/acme-challenge/erJmIeTmCIAOe3Sagg9mjRXdU5l7aQzplDDbYb37X54", (req, res) => {
+  res.sendFile(__dirname + '/.well-known/acme-challenge/4cLGz2Nkl4gvYna-NlmTZVX87QAC5lDfUdJeTf62Cb8')
+})
 /* User Authentication Routes */
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isLoggedIn, user.userProfile);
