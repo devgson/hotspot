@@ -39,9 +39,9 @@ mongoose.connect(db, {
 
 // keep this before all routes that will use pagination
 
-app.get("/.well-known", (req, res) => {
-  // console.log(__dirname);
-  res.sendFile(path.join(__dirname + "/.well-known/acme-challenge/xhxsA35j6tS8Eu3wQa3q9xo1WBEVNJJNcA_KMmUzvJs"));
+app.get("/well-known", (req, res) => {
+  console.log("hit " ,__dirname);
+  res.sendFile(path.join(__dirname + "/.well-known/acme-challenge/t8fdTRyqWPF2sRUn35n99PJDaQTcvYXWLgOR9fZje9U"));
 })
 
 app.use(paginate.middleware(9, 50));
