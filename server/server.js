@@ -5,7 +5,6 @@ require('dotenv').config({
 //var index = client.initIndex('listings');
 const express = require("express");
 const bodyParser = require('body-parser');
-var secure = require('ssl-express-www');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const session = require('express-session');
@@ -33,18 +32,12 @@ index.setSettings({
 const paginate = require('express-paginate');
 const User = require('./models/user_model');
 const app = express();
-app.use(secure);
 
 mongoose.connect(db, {
   useNewUrlParser: true
 });
 
 // keep this before all routes that will use pagination
-
-app.get("/well-known", (req, res) => {
-  console.log("hit " ,__dirname);
-  res.sendFile(path.join(__dirname + "/.well-known/acme-challenge/t8fdTRyqWPF2sRUn35n99PJDaQTcvYXWLgOR9fZje9U"));
-})
 
 app.use(paginate.middleware(9, 50));
 app.set('json spaces', 3);
