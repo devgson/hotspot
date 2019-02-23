@@ -5,6 +5,7 @@ require('dotenv').config({
 //var index = client.initIndex('listings');
 const express = require("express");
 const bodyParser = require('body-parser');
+var secure = require('ssl-express-www');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const session = require('express-session');
@@ -32,6 +33,7 @@ index.setSettings({
 const paginate = require('express-paginate');
 const User = require('./models/user_model');
 const app = express();
+app.use(secure);
 
 mongoose.connect(db, {
   useNewUrlParser: true
