@@ -11,10 +11,9 @@ router.get('/', listing.index)
 router.get('/listings', (req, res) => {
   res.render('grid-search');
 })
-router.get(".well-known/acme-challenge/erJmIeTmCIAOe3Sagg9mjRXdU5l7aQzplDDbYb37X54", (req, res) => {
-  res.sendFile(__dirname + '/.well-known/acme-challenge/4cLGz2Nkl4gvYna-NlmTZVX87QAC5lDfUdJeTf62Cb8')
-})
+
 /* User Authentication Routes */
+
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isLoggedIn, user.userProfile);
 router.post('/profile/:userId', user.isLoggedIn, user.updateUserProfile);
@@ -34,7 +33,7 @@ router.get('/category/:category', listing.getCategory);
 router.get('/bookmarks',  user.isLoggedIn, listing.getBookmarks);
 
 router.get('/profile-social', (req, res) => {
-  res.render('profile-social', { user: req.session.social_user })
+  res.render('profile-social', { user: req.session.facebook_social })
 });
 router.post('/signin', passport.authenticate('local-login', {
   successRedirect: '/profile', // redirect to the secure profile section
@@ -56,7 +55,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }));
 
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.email'] 
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] 
 }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
@@ -81,9 +80,15 @@ router.get('/messages', (req, res) => {
   res.render('messages');
 })
 
+router.post('/verify',user.isUserLoggedIn, user.VerifyProcess)
+
+
+router.post('/verify-upload/:listingid',user.isUserLoggedIn, user.uploadVerification)
+
 /* Listing Routes */
 router.get('/listing/:slug', listing.getListing);
 router.post('/api/bookmark/:listingId', user.bookmarkListing);
+router.post('/api/verify/:listingid', user.isUserLoggedIn, user.claimListing);
 
 /* Review Routes */
 router.get('/review', review.getReview);

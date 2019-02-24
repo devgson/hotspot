@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local');
 const FacebookStrategy = require('passport-facebook');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const User = require('../models/user_model');
+const User = require('../models/user_model');   
 
 module.exports = function (passport) {
 
@@ -42,9 +42,7 @@ module.exports = function (passport) {
             // asynchronous
             // User.findOne wont fire unless data is sent back
             process.nextTick(function () {
-                try {
-
-                
+                try{
                 // find a user whose email is the same as the forms email
                 // we are checking to see if the user trying to login already exists
                 User.findOne({ 'email': req.body.email }, async function (err, user) {
@@ -78,7 +76,7 @@ module.exports = function (passport) {
                 });
             }
             catch(e){
-                return done(e);
+                
             }
             });
 
@@ -92,7 +90,7 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
         function (req, email, password, done) { // callback with email and password from our form
-            try {
+
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
             User.findOne({ 'email': req.body.email }, function (err, user) {
@@ -112,24 +110,18 @@ module.exports = function (passport) {
                 req.session.userId = user._id;
                 return done(null, user);
             });
-        }
-        catch(e){
-            return done(e);
-        }
+
         }));
 
     passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "/auth/facebook/callback",
+        callbackURL: "http://localhost:3000/auth/facebook/callback",
         profileFields: ['last_name', 'first_name', 'link', 'emails'],
         passReqToCallback: true
     },
-       async function (req, accessToken, refreshToken, profile, done) {
-           try{
-
-           
-           await User.findOne({ 'email': profile._json.email }, async function (err, user) {
+        function (req, accessToken, refreshToken, profile, done) {
+            User.findOne({ 'email': profile._json.email }, async function (err, user) {
                 // if there are any errors, return the error
                 console.log(profile);
                 if (err)
@@ -142,35 +134,29 @@ module.exports = function (passport) {
                         'first_name': profile._json.first_name,
                         'last_name': profile._json.last_name,
                         'email': profile._json.email,
-                        'social_media_token': accessToken,
-                        'social_media_facebook_link': profile.link
+                        'social_media.facebook.access_token': accessToken,
+                        'social_media.facebook.link': profile.link
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social_user = await newUser;
+                    req.session.facebook_social = newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
                 return done(null, user);
             });
         }
-        catch(e) {
-            return done(e);
-        }
-    }
     ));
 
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CONSUMER_KEY,
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "/auth/google/callback",
-        passReqToCallback: true
+        callbackURL: "http://localhost:3000/auth/google/callback"
     },
-        async function (req,token, tokenSecret, profile, done) {
-            try{
-            console.log(profile._json.emails[0].value);
-           await User.findOne({ 'email': profile._json.emails[0].value }, async function (err, user) {
+        function (token, tokenSecret, profile, done) {
+            console.log(profile);
+            User.findOne({ 'email': profile._json.email }, async function (err, user) {
                 // if there are any errors, return the error
-                console.log("profile is ",profile);
+                console.log(profile);
                 if (err)
                     return done(err);
                 console.log(err);
@@ -178,23 +164,64 @@ module.exports = function (passport) {
                 if (!user) {
                     var newUser =
                     {
-                        'first_name': profile._json.name.givenName,
-                        'last_name': profile._json.name.familyName,
-                        'email': profile._json.emails[0].value,
-                        'social_media_google_link': profile._json.url
+                        'first_name': profile._json.first_name,
+                        'last_name': profile._json.last_name,
+                        'email': profile._json.email,
+                        'social_media.facebook.access_token': accessToken,
+                        'social_media.facebook.link': profile.link
                     };
                     console.log('new usewrr ' + JSON.stringify(newUser));
-                    req.session.social_user = await newUser;
+                    req.session.facebook_social = newUser;
                     return done(null, false, req.flash('socialUser', 'Just One last step and you are good to go.'));
                 }
                 req.session.userId = user._id;
                 return done(null, user);
             });
         }
-        catch(e){
-            console.log(e);
-        }
-        }
     ));
+
+
+    // passport.use('facebook-signup', new FacebookStrategy({
+    //     clientID: process.env.FACEBOOK_APP_ID,
+    //     clientSecret: process.env.FACEBOOK_APP_SECRET,
+    //     callbackURL: "http://localhost:3000/auth/facebook/callback",
+    //     profileFields: ['last_name', 'first_name', 'link', 'email']
+    // },
+    //     function (accessToken, refreshToken, profile, done) {
+    //         User.findOne({ 'email': profile.email }, async function (err, user) {
+    //             // if there are any errors, return the error
+    //             console.log(profile);
+    //             if (err)
+    //                 return done(err);
+    //             console.log(err);
+    //             // check to see if theres already a user with that email
+    //             if (user) {
+    //                 return done(null, false, req.flash('signinError', 'A User is already associated with that account'));
+    //             } else {
+    //                 console.log('profile name ', profile);
+    //                 // if there is no user with that email
+    //                 // create the user
+    //                 var newUser =
+    //                 {
+    //                     'first_name': profile._json.first_name,
+    //                     'last_name': profile._json.last_name,
+    //                     'email': profile._json.email,
+    //                     'social_media.facebook.access_token': accessToken,
+    //                     'social_media.facebook.link': profile.link
+    //                 };
+
+    //                 // set the user's local credentials
+    //                 // newUser.password = newUser.hashNewPassword(req.body.password);
+
+    //                 // save the user
+
+
+
+    //                 return done(null, newUser);
+    //             }
+
+    //         });
+    //     }
+    // ));
 
 };

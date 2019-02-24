@@ -1,4 +1,10 @@
 const User = require('../models/user_model');
+const VerifiedListing = require('../models/verify_user_model');
+const Listing = require('../models/listing_model');
+const {
+  cloudinary,
+  flat, upload, deleteUpload
+} = require("../helper/helper");
 
 exports.isUserLoggedIn = async (req, res, next) => {
   if (req.session && req.session.userId) {
@@ -119,6 +125,75 @@ exports.updateUserProfile = async (req, res, next) => {
   } catch (error) {
     req.flash('profileEditError', 'Error occured, please try again');
     res.redirect('back');
+  }
+}
+
+exports.VerifyProcess = async (req, res, next) => {
+  try {
+    var listingid = req.body.listingid;
+    var listing = await Listing.findById(listingid);
+    const user = res.locals.currentUser;
+    console.log("verify listing ",listing)
+    res.render('verify-listing', { listingid, user, listing })
+
+  }
+  catch (e) {
+    console.log("error");
+  }
+}
+
+exports.uploadVerification = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.listingid)
+    console.log("listing is", listing)
+    const user = res.locals.currentUser
+    var listing_details = { listing_name: listing.title, listing_id: listing._id, owner: user._id, verification_documents: [] }
+    for (const image in req.files) {
+
+      const result = await upload(req.files[image]);
+      if (result.public_id == null || result.url == null) {
+        return res
+          .status(401)
+          .send("Error uploading images, please try again");
+      }
+      console.log("picture result is", result);
+      var documents = {
+        public_id: result.public_id,
+        url: result.url,
+        secure_url: result.secure_url
+      }
+      listing_details.verification_documents.push(documents)
+
+    }
+    console.log(listing_details);
+    await new VerifiedListing(listing_details).save();
+    res.send("Upload Complete");
+  } catch (error) {
+    console.log("error is ", error.message)
+  }
+}
+
+exports.claimListing = async (req, res, next) => {
+  try {
+    var exists = await VerifiedListing.findOne({ listing_id: req.params.listingid });
+    console.log("body is",req.body);
+    console.log("exist", exists);
+    if (exists) {
+      console.log(exists);
+     var listing= await VerifiedListing.findOneAndUpdate({ listing_id: req.params.listingid },
+        { $set: req.body }
+      )
+      
+    req.flash('successVerify', 'Your verification Request has been sent Successfully');
+    res.redirect('/profile');
+    } else {
+      console.log("doesnt exists");
+      await new VerifiedListing(req.body).save()
+    }
+
+  }
+  catch (e) {
+    console.log(error.message);
   }
 }
 

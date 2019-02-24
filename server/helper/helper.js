@@ -36,4 +36,31 @@ exports.cloudinary = () => {
   return cloud;
 }
 
+function cloudinary () {
+  const cloud = require('cloudinary');
+  cloud.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET
+  });
+  return cloud;
+}
+
 exports.flat = require('flat');
+
+exports.upload = (image) => {
+  return new Promise((resolve, reject) => {
+     cloudinary()
+      .uploader.upload_stream(result => resolve(result))
+      .end(image.data);
+  });
+}
+
+exports.deleteUpload = (image) => {
+  return new Promise((resolve, reject) => {
+    cloudinary().v2.uploader.destroy(image, (error, result) => {
+      if (error) reject(error);
+      resolve(result);
+    });
+  });
+}

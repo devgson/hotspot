@@ -60,7 +60,7 @@ block content
                 label 
                   i(class="icon-facebook-7")
                   |  Facebook Link
-                input.form-control(type='text', name='social_media.facebook', value=user.social_media_facebook_link ? user.social_media.facebook_link : '')
+                input.form-control(type='text', name='social_media.facebook', value=user.social_media ? user.social_media.facebook : '')
               .form-group.col-md-6.col-12
                 label
                   i(class="icon-twitter-7")
@@ -82,7 +82,7 @@ block content
                   |  Confirm new password
                 input.form-control(type='password', name='confirm_password')
               .form-group.text-center.mt-3.col-md-12.col-12
-                input.mx-auto.btn_1.half-width.form-control(type='submit' value="Create Account")
+                input.mx-auto.btn_1.half-width.form-control(type='submit' value="Update")
 
 
               //hr
