@@ -116,7 +116,7 @@ module.exports = function (passport) {
     passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        callbackURL: "/auth/facebook/callback",
         profileFields: ['last_name', 'first_name', 'link', 'emails'],
         passReqToCallback: true
     },
@@ -150,7 +150,7 @@ module.exports = function (passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CONSUMER_KEY,
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/callback"
+        callbackURL: "/auth/google/callback"
     },
         function (token, tokenSecret, profile, done) {
             console.log(profile);
