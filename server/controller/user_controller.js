@@ -1,4 +1,5 @@
 const User = require('../models/user_model');
+const VerifyListing = require('../models/verify_user_model');
 
 exports.isUserLoggedIn = async (req, res, next) => {
   if (req.session && req.session.userId) {
@@ -119,6 +120,63 @@ exports.updateUserProfile = async (req, res, next) => {
   } catch (error) {
     req.flash('profileEditError', 'Error occured, please try again');
     res.redirect('back');
+  }
+}
+
+exports.VerifyProcess = async (req, res, next) => {
+  try {
+    var listing = req.body.listing
+    const user = res.locals.currentUser;
+    res.render('verify-listing', { listing, user })
+
+  }
+  catch (e) {
+    console.log("error");
+  }
+}
+
+exports.uploadVerification = async (req, res, next) => {
+  try {
+    console.log("entered");
+    const listing = req.params.listing;
+    const user = res.locals.currentUser
+    var listing_details = { listing_name: listing.title, listing_id: listing._id, owner: user._id }
+    for (const image in req.files) {
+      if (listing.images.length >= 5) {
+        return res.status(401).send('Error : Maximum Images reached, delete some');
+      } else {
+        const result = await upload(req.files[image]);
+        if (result.public_id == null || result.url == null) {
+          return res
+            .status(401)
+            .send("Error uploading images, please try again");
+        }
+
+        var documents = {
+          public_id: result.public_id,
+          url: result.url,
+          secure_url: result.secure_url
+        }
+        listing_details.verification_documents.push(documents)
+      }
+    }
+
+    await new VerifyListing(listing_details).save();
+    res.send("Upload Complete");
+  } catch (error) {
+    console.log("error is ",error)
+  }
+}
+
+exports.claimListing = async (req, res, next) => {
+  try {
+    var listing = req.params.listing
+    res.locals.currentUser
+    var verify = { listing_name: listing.title, listing_id: listing._id, }
+
+  }
+  catch (e) {
+
   }
 }
 

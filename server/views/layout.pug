@@ -15,6 +15,7 @@ html(lang='en')
       link(href='/css/bootstrap.min.css', rel='stylesheet')
       link(href='/css/style-new.css', rel='stylesheet')
       link(href='/css/vendors.css', rel='stylesheet')
+      link(href='/admin_section/vendor/dropzone.css', rel='stylesheet')
   body
     #page
       block content
@@ -30,6 +31,7 @@ html(lang='en')
       script(src='/js/functions.js')
       script(src='/js/animated_canvas.min.js')
       script(src='/assets/validate.js')
+      //- script(src="/admin_section/vendor/dropzone/dropzone.js")
 
 
   #sign-in-dialog.zoom-anim-dialog.mfp-hide
@@ -111,3 +113,31 @@ html(lang='en')
             }
           })
         })
+
+        Dropzone.options.verifyImage = {
+          autoProcessQueue : false,
+          acceptedFiles : '.png,.jpg.jpeg',
+          uploadMultiple : true,
+          maxFilesize : 5,
+          maxFiles : 5,
+          addRemoveLinks : true,
+          init : function(){
+            $('#saveImage').on('click', function(e){
+              e.preventDefault();
+              $('#verifyImage').get(0).dropzone.processQueue();
+            })
+
+            this.on('successmultiple', function(file,response){
+              console.log(this.files);
+              console.log(response);
+            })
+
+            this.on("maxfilesexceeded", function(file) {
+              this.removeFile(file); 
+            });
+
+            this.on("error", function(error) {
+              console.log(error)
+            })
+          }
+        }

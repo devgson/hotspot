@@ -40,17 +40,18 @@ const UserSchema = new Schema({
   },
   social_media: {
     twitter: {
-      access_token : String,
-      link : String
+      access_token: String,
+      link: String
     },
     facebook: {
-      access_token : String,
-      link : String
+      access_token: String,
+      link: String
     }
   },
   photo: {
     type: String
-  },
+  }
+  ,
   bookmarks: [{
     type: Schema.Types.ObjectId,
     ref: "listing"

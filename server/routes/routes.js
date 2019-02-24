@@ -13,6 +13,7 @@ router.get('/listings', (req, res) => {
 })
 
 /* User Authentication Routes */
+
 router.get('/register', user.redirectIfLoggedIn, user.userSignupLogin);
 router.get('/profile', user.isLoggedIn, user.userProfile);
 router.post('/profile/:userId', user.isLoggedIn, user.updateUserProfile);
@@ -79,9 +80,20 @@ router.get('/messages', (req, res) => {
   res.render('messages');
 })
 
+
+router.get('/verify', (req, res) => {
+  res.render('verify-listing');
+})
+
+router.post('/verify',user.isUserLoggedIn, user.VerifyProcess)
+
+
+router.post('/verify-upload/:listing',user.isUserLoggedIn, user.uploadVerification)
+
 /* Listing Routes */
 router.get('/listing/:slug', listing.getListing);
 router.post('/api/bookmark/:listingId', user.bookmarkListing);
+router.post('/api/verify/:listing', user.claimListing);
 
 /* Review Routes */
 router.get('/review', review.getReview);
