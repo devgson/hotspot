@@ -80,20 +80,15 @@ router.get('/messages', (req, res) => {
   res.render('messages');
 })
 
-
-router.get('/verify', (req, res) => {
-  res.render('verify-listing');
-})
-
 router.post('/verify',user.isUserLoggedIn, user.VerifyProcess)
 
 
-router.post('/verify-upload/:listing',user.isUserLoggedIn, user.uploadVerification)
+router.post('/verify-upload/:listingid',user.isUserLoggedIn, user.uploadVerification)
 
 /* Listing Routes */
 router.get('/listing/:slug', listing.getListing);
 router.post('/api/bookmark/:listingId', user.bookmarkListing);
-router.post('/api/verify/:listing', user.claimListing);
+router.post('/api/verify/:listingid', user.isUserLoggedIn, user.claimListing);
 
 /* Review Routes */
 router.get('/review', review.getReview);

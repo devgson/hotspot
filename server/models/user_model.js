@@ -50,8 +50,11 @@ const UserSchema = new Schema({
   },
   photo: {
     type: String
-  }
-  ,
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: "user"
+  },
   bookmarks: [{
     type: Schema.Types.ObjectId,
     ref: "listing"

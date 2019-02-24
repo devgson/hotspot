@@ -3,6 +3,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const VerifiedListingSchema = new Schema({
+    owner_first_name: {
+        type: String
+
+    },
+    owner_last_name: {
+        type: String
+
+    },
     listing_name: {
         type: String
     },
@@ -15,7 +23,7 @@ const VerifiedListingSchema = new Schema({
         type: Date
     },
     verification_status: String,
-    owner:{
+    owner: {
         type: Schema.Types.ObjectId,
         ref: "user"
     }
@@ -25,13 +33,13 @@ const VerifiedListingSchema = new Schema({
 VerifiedListingSchema.pre('find', function (next) {
     this.populate('user');
     next();
-  })
-  
-  VerifiedListingSchema.pre('findOne', function (next) {
+})
+
+VerifiedListingSchema.pre('findOne', function (next) {
     this.populate('user');
     next();
-  })
-  
-  const VerifiedListing = mongoose.model("review", VerifiedListingSchema);
-  
-  module.exports = VerifiedListing;
+})
+
+const VerifiedListing = mongoose.model("VerifiedListing", VerifiedListingSchema);
+
+module.exports = VerifiedListing;

@@ -31,10 +31,9 @@ block content
                 a.icon-bookmark-2()
                 button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
 
-          li.d-block.float-right(class=(formClass) name="verify" style="margin-left:auto")
+          li.d-block.float-right(class=(formClass) name="verify")
               form(action=`/verify` method="POST")
-                a.icon-bookmark-2()
-                input(type="text" value=`${listing}` name="listing" hidden)
+                input(type="text" value=`${listing._id}` name="listingid" hidden)
                 button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") Claim Listing
     .container.margin_60_35
       .row
