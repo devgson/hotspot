@@ -133,7 +133,7 @@ exports.VerifyProcess = async (req, res, next) => {
     var listingid = req.body.listingid;
     var listing = await Listing.findById(listingid);
     const user = res.locals.currentUser;
-    console.log("verify listing ",listing)
+    console.log("verify listing ", listing)
     res.render('verify-listing', { listingid, user, listing })
 
   }
@@ -156,7 +156,6 @@ exports.uploadVerification = async (req, res, next) => {
           .status(401)
           .send("Error uploading images, please try again");
       }
-      console.log("picture result is", result);
       var documents = {
         public_id: result.public_id,
         url: result.url,
@@ -175,25 +174,40 @@ exports.uploadVerification = async (req, res, next) => {
 
 exports.claimListing = async (req, res, next) => {
   try {
+
+    var user = res.locals.currentUser
+    // const user_listings = user.listings[0]]
+    console.log("bosy ",req.body);
+    var current_listing = { listing_id: req.params.listingid, status: false, listing_title: req.body.listing_name, category: req.body.listing_category, listing_image: req.body.listing_image }
+    var listing_exists = user.listings.filter(x => x.listing_id === req.params.listingid);
+    if (listing_exists.length === 0) {
+      var Updateuser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $addToSet: { listings: current_listing } }
+      );
+    }
+
     var exists = await VerifiedListing.findOne({ listing_id: req.params.listingid });
-    console.log("body is",req.body);
-    console.log("exist", exists);
+    req.body['verification_status'] = false;
     if (exists) {
-      console.log(exists);
-     var listing= await VerifiedListing.findOneAndUpdate({ listing_id: req.params.listingid },
+      var listing = await VerifiedListing.findOneAndUpdate({ listing_id: req.params.listingid },
         { $set: req.body }
       )
-      
-    req.flash('successVerify', 'Your verification Request has been sent Successfully');
-    res.redirect('/profile');
+
+      req.flash('successVerify', 'Your verification Request has been sent Successfully');
+      res.redirect('/profile');
+      console.log("entered 1")
     } else {
-      console.log("doesnt exists");
-      await new VerifiedListing(req.body).save()
+      console.log("entered 2")
+      console.log(req.body);
+      await new VerifiedListing(req.body).save();
+      req.flash('successVerify', 'Your verification Request has been sent Successfully');
+      res.redirect('/profile');
     }
 
   }
   catch (e) {
-    console.log(error.message);
+    console.log(e.message);
   }
 }
 

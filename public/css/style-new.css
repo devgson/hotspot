@@ -8678,3 +8678,11 @@ padding: 0;
     height: 3em;
     width: 2.5em;
 }
+
+.img-container{
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 99;
+    background-color: rgba(216, 214, 214, 0.24);
+}

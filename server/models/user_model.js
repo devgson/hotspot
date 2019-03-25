@@ -51,10 +51,23 @@ const UserSchema = new Schema({
   photo: {
     type: String
   },
-  user_id: {
-    type: Schema.Types.ObjectId,
-    ref: "user"
-  },
+  listings: [{
+    listing_id: {
+      type: String
+    },
+    listing_title: {
+      type: String
+    },
+    category: {
+      type: String
+    },
+    listing_image: {
+      type: String
+    },
+    status: {
+      type: String
+    }
+  }],
   bookmarks: [{
     type: Schema.Types.ObjectId,
     ref: "listing"

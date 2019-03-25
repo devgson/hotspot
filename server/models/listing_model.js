@@ -87,6 +87,9 @@ const ListingSchema = new Schema({
     type: Date,
     default: Date.now,
     algoliaIndex: true
+  },
+  owner: {
+    type: String
   }
 });
 

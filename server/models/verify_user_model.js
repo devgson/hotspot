@@ -14,6 +14,9 @@ const VerifiedListingSchema = new Schema({
     listing_name: {
         type: String
     },
+    listing_image: {
+        type: String
+    },
     listing_id: {
         type: Schema.Types.ObjectId,
         ref: "listing"
@@ -37,6 +40,12 @@ VerifiedListingSchema.pre('find', function (next) {
 
 VerifiedListingSchema.pre('findOne', function (next) {
     this.populate('user');
+    next();
+})
+
+VerifiedListingSchema.pre('save', function (next) {
+    this.populate('user');
+    this.populate('listing');
     next();
 })
 

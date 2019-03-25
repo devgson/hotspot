@@ -30,7 +30,7 @@ router.post('/search-listings', listing.findListings);
 router.get('/search-listings', listing.getfindListings);
 router.get('/category/:category', listing.getCategory);
 
-router.get('/bookmarks',  user.isLoggedIn, listing.getBookmarks);
+router.get('/bookmarks', user.isLoggedIn, listing.getBookmarks);
 
 router.get('/profile-social', (req, res) => {
   res.render('profile-social', { user: req.session.facebook_social })
@@ -55,8 +55,9 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
 }));
 
 router.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] 
-}));
+  passport.authenticate('google', {
+    scope: ['https://www.googleapis.com/auth/plus.login']
+  }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
   successRedirect: '/profile', // redirect to the secure profile section
@@ -80,10 +81,10 @@ router.get('/messages', (req, res) => {
   res.render('messages');
 })
 
-router.post('/verify',user.isUserLoggedIn, user.VerifyProcess)
+router.post('/verify', user.isLoggedIn, user.VerifyProcess)
 
 
-router.post('/verify-upload/:listingid',user.isUserLoggedIn, user.uploadVerification)
+router.post('/verify-upload/:listingid', user.isUserLoggedIn, user.uploadVerification)
 
 /* Listing Routes */
 router.get('/listing/:slug', listing.getListing);
@@ -97,10 +98,13 @@ router.get('/review/delete/:reviewId', review.deleteReview);
 
 /* Admin Routes */
 router.get('/admin/dashboard', admin.isAdminLoggedIn, admin.dashboard);
+router.get('/admin/verification', admin.isAdminLoggedIn, admin.getVerifiedListings);
+router.get('/admin/verification/:id', admin.isAdminLoggedIn, admin.getVerifiedListing);
 router.get('/admin/add-listing', admin.isAdminLoggedIn, admin.getAddListing);
 router.get('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.getEditListing);
 router.post('/admin/add-listing', admin.isAdminLoggedIn, admin.postAddListing);
 router.post('/admin/edit-listing/:listing', admin.isAdminLoggedIn, admin.editListing);
+router.post('/admin/update-verification/:verificationid', admin.isAdminLoggedIn, admin.updateVerification);
 
 router.post('/admin/upload-header/:slug', admin.uploadHeader);
 router.post('/admin/upload-image/:slug', admin.uploadImages);

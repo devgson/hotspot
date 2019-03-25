@@ -1,5 +1,7 @@
 const Listing = require("../models/listing_model");
+const User = require("../models/user_model");
 const Admin = require("../models/admin_model");
+const Verify = require("../models/verify_user_model");
 const fetch = require("node-fetch");
 const algoliasearch = require("algoliasearch");
 const {
@@ -351,9 +353,9 @@ exports.editListing = async (req, res, next) => {
     const listing = await Listing.findOneAndUpdate({
       slug: req.params.listing
     }, updatedListing, {
-      new: true,
-      runValidators: true
-    });
+        new: true,
+        runValidators: true
+      });
     res.render('edit-listing', {
       listing
     });
@@ -454,6 +456,7 @@ exports.createSuperadmin = async (req, res, next) => {
     res.send(error.message);
   }
 };
+
 
 exports.addListingtodb = async (req, res, next) => {
   try {
@@ -578,3 +581,52 @@ exports.addListingtoAlgolia = async (req, res, next) => {
     res.send(error.message);
   }
 };
+
+
+exports.getVerifiedListings = async (req, res, next) => {
+  try {
+    const verifications = await Verify.find();
+    res.render('admin-verify', { verifications })
+  }
+  catch (e) {
+    console.log(e.message)
+  }
+}
+
+exports.getVerifiedListing = async (req, res, next) => {
+  try {
+    var id = req.params.id
+    const verification = await Verify.findOne({ _id: id });
+    const listing = await Listing.findOne({ _id: verification.listing_id })
+    // console.log("verification is ", listing)
+    res.render('verify-details', { verification, listing })
+  }
+  catch (e) {
+    console.log(e.message)
+  }
+}
+
+exports.updateVerification = async (req, res, next) => {
+  try {
+    var verificationid = req.params.verificationid;
+    var verify = await Verify.findByIdAndUpdate(verificationid, req.body);
+
+    var listingid = verify.listing_id;
+    var owner_id = verify.owner;
+    let user = await User.findById(owner_id);
+    var listing_exists = user.listings.filter(x => x.listing_id.toString() === listingid.toString() ? x.status = true : "");
+    console.log("listing ",listing_exists)
+    if (listing_exists != undefined && listing_exists.length > 0) {
+      console.log("true")
+      await User.findByIdAndUpdate(user._id, user);
+      req.flash("successVerified", "You have successfully verified");
+      res.redirect("back");
+    } else {
+      req.flash("errorverifying", "There was an error verifying. Try again later");
+      res.redirect("back");
+    }
+  }
+  catch (e) {
+    console.log(e.message)
+  }
+}
