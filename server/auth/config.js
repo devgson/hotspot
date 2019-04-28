@@ -44,43 +44,47 @@ module.exports = function(passport) {
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
-          // find a user whose email is the same as the forms email
-          // we are checking to see if the user trying to login already exists
-          User.findOne({ email: req.body.email }, async function(err, user) {
-            // if there are any errors, return the error
-            if (err) return done(err);
-            // check to see if theres already a user with that email
-            if (user) {
-              console.log("error is new", err);
-              return done(
-                null,
-                false,
-                req.flash("signupError", "That email is already taken.")
-              );
-            } else {
-              // if there is no user with that email
-              // create the user
-              var newUser = new User(req.body);
-
-              // set the user's local credentials
-              // newUser.password = newUser.hashNewPassword(req.body.password);
-
-              // save the user
-              await newUser.save(function(err) {
-                if (err) throw err;
+          try {
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            User.findOne({ email: req.body.email }, async function(err, user) {
+              // if there are any errors, return the error
+              if (err) return done(err);
+              // check to see if theres already a user with that email
+              if (user) {
+                console.log("error is new", err);
                 return done(
                   null,
-                  newUser,
-                  req.flash(
-                    "succesfulSocial",
-                    "Congrats!!, you have signed up succesfully"
-                  )
+                  false,
+                  req.flash("signupError", "That email is already taken.")
                 );
-              });
+              } else {
+                // if there is no user with that email
+                // create the user
+                var newUser = new User(req.body);
 
-              req.session.userId = newUser._id;
-            }
-          });
+                // set the user's local credentials
+                // newUser.password = newUser.hashNewPassword(req.body.password);
+
+                // save the user
+                await newUser.save(function(err) {
+                  if (err) throw err;
+                  return done(
+                    null,
+                    newUser,
+                    req.flash(
+                      "succesfulSocial",
+                      "Congrats!!, you have signed up succesfully"
+                    )
+                  );
+                });
+
+                req.session.userId = newUser._id;
+              }
+            });
+          } catch (e) {
+            return done(e);
+          }
         });
       }
     )
@@ -97,33 +101,36 @@ module.exports = function(passport) {
       },
       function(req, email, password, done) {
         // callback with email and password from our form
+        try {
+          // find a user whose email is the same as the forms email
+          // we are checking to see if the user trying to login already exists
+          User.findOne({ email: req.body.email }, function(err, user) {
+            // if there are any errors, return the error before anything else
+            if (err) return done(err);
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ email: req.body.email }, function(err, user) {
-          // if there are any errors, return the error before anything else
-          if (err) return done(err);
+            // if no user is found, return the message
+            if (!user)
+              return done(
+                null,
+                false,
+                req.flash("signinError", "User does not exist.")
+              ); // req.flash is the way to set flashdata using connect-flash
 
-          // if no user is found, return the message
-          if (!user)
-            return done(
-              null,
-              false,
-              req.flash("signinError", "User does not exist.")
-            ); // req.flash is the way to set flashdata using connect-flash
+            // if the user is found but the password is wrong
+            if (!user.validatePassword(password))
+              return done(
+                null,
+                false,
+                req.flash("signinError", "Oops! Wrong password.")
+              ); // create the loginMessage and save it to session as flashdata
 
-          // if the user is found but the password is wrong
-          if (!user.validatePassword(password))
-            return done(
-              null,
-              false,
-              req.flash("signinError", "Oops! Wrong password.")
-            ); // create the loginMessage and save it to session as flashdata
-
-          // all is well, return successful user
-          req.session.userId = user._id;
-          return done(null, user);
-        });
+            // all is well, return successful user
+            req.session.userId = user._id;
+            return done(null, user);
+          });
+        } catch (e) {
+          return done(e);
+        }
       }
     )
   );
@@ -138,65 +145,23 @@ module.exports = function(passport) {
         passReqToCallback: true
       },
       async function(req, accessToken, refreshToken, profile, done) {
-        await User.findOne({ email: profile._json.email }, async function(
-          err,
-          user
-        ) {
-          // if there are any errors, return the error
-          console.log(profile);
-          if (err) return done(err);
-          console.log(err);
-          // check to see if theres already a user with that email
-          if (!user) {
-            var newUser = {
-              first_name: profile._json.first_name,
-              last_name: profile._json.last_name,
-              email: profile._json.email,
-              "social_media.facebook.access_token": accessToken,
-              "social_media.facebook.link": profile.link
-            };
-            console.log("new usewrr " + JSON.stringify(newUser));
-            req.session.facebook_social = newUser;
-            return done(
-              null,
-              false,
-              req.flash(
-                "socialUser",
-                "Just One last step and you are good to go."
-              )
-            );
-          }
-          req.session.userId = user._id;
-          return done(null, user);
-        });
-      }
-    )
-  );
-
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.GOOGLE_CONSUMER_KEY,
-        clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "/auth/google/callback",
-        passReqToCallback: true
-      },
-      async function(req, token, tokenSecret, profile, done) {
-        console.log(profile._json.emails[0].value);
-        await User.findOne(
-          { email: profile._json.emails[0].value },
-          async function(err, user) {
+        try {
+          await User.findOne({ email: profile._json.email }, async function(
+            err,
+            user
+          ) {
             // if there are any errors, return the error
-            console.log("profile is ", profile);
+            console.log(profile);
             if (err) return done(err);
             console.log(err);
             // check to see if theres already a user with that email
             if (!user) {
               var newUser = {
-                first_name: profile._json.name.givenName,
-                last_name: profile._json.familyName,
-                email: profile._json.emails[0].value,
-                social_media_google_link: profile._json.url
+                first_name: profile._json.first_name,
+                last_name: profile._json.last_name,
+                email: profile._json.email,
+                social_media_token: accessToken,
+                social_media_facebook_link: profile.link
               };
               console.log("new usewrr " + JSON.stringify(newUser));
               req.session.social_user = await newUser;
@@ -211,50 +176,59 @@ module.exports = function(passport) {
             }
             req.session.userId = user._id;
             return done(null, user);
-          }
-        );
+          });
+        } catch (e) {
+          return done(e);
+        }
       }
     )
   );
 
-  // passport.use('facebook-signup', new FacebookStrategy({
-  //     clientID: process.env.FACEBOOK_APP_ID,
-  //     clientSecret: process.env.FACEBOOK_APP_SECRET,
-  //     callbackURL: "http://localhost:3000/auth/facebook/callback",
-  //     profileFields: ['last_name', 'first_name', 'link', 'email']
-  // },
-  //     function (accessToken, refreshToken, profile, done) {
-  //         User.findOne({ 'email': profile.email }, async function (err, user) {
-  //             // if there are any errors, return the error
-  //             console.log(profile);
-  //             if (err)
-  //                 return done(err);
-  //             console.log(err);
-  //             // check to see if theres already a user with that email
-  //             if (user) {
-  //                 return done(null, false, req.flash('signinError', 'A User is already associated with that account'));
-  //             } else {
-  //                 console.log('profile name ', profile);
-  //                 // if there is no user with that email
-  //                 // create the user
-  //                 var newUser =
-  //                 {
-  //                     'first_name': profile._json.first_name,
-  //                     'last_name': profile._json.last_name,
-  //                     'email': profile._json.email,
-  //                     'social_media.facebook.access_token': accessToken,
-  //                     'social_media.facebook.link': profile.link
-  //                 };
-
-  //                 // set the user's local credentials
-  //                 // newUser.password = newUser.hashNewPassword(req.body.password);
-
-  //                 // save the user
-
-  //                 return done(null, newUser);
-  //             }
-
-  //         });
-  //     }
-  // ));
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CONSUMER_KEY,
+        clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
+        callbackURL: "/auth/google/callback",
+        passReqToCallback: true
+      },
+      async function(req, token, tokenSecret, profile, done) {
+        try {
+          console.log(profile._json.emails[0].value);
+          await User.findOne(
+            { email: profile._json.emails[0].value },
+            async function(err, user) {
+              // if there are any errors, return the error
+              console.log("profile is ", profile);
+              if (err) return done(err);
+              console.log(err);
+              // check to see if theres already a user with that email
+              if (!user) {
+                var newUser = {
+                  first_name: profile._json.name.givenName,
+                  last_name: profile._json.name.familyName,
+                  email: profile._json.emails[0].value,
+                  social_media_google_link: profile._json.url
+                };
+                console.log("new usewrr " + JSON.stringify(newUser));
+                req.session.social_user = await newUser;
+                return done(
+                  null,
+                  false,
+                  req.flash(
+                    "socialUser",
+                    "Just One last step and you are good to go."
+                  )
+                );
+              }
+              req.session.userId = user._id;
+              return done(null, user);
+            }
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    )
+  );
 };
