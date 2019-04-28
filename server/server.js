@@ -13,7 +13,7 @@ const flash = require("connect-flash");
 const mongoStore = require("connect-mongo")(session);
 const fileUpload = require("express-fileupload");
 const algoliasearch = require("algoliasearch");
-const isProd = true;
+const isProd = false;
 const db =
   process.env.NODE_ENV === "production" || isProd
     ? process.env.PRODUCTION_DB
@@ -105,5 +105,6 @@ app.use((error, req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
+  console.log("path is",path.join(__dirname));
   console.log("Server listening at port 3000 ");
 });

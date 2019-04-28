@@ -1,0 +1,54 @@
+extends admin-layout
+
+block content
+  include partials/admin-nav.pug  
+  .content-wrapper
+    .container-fluid
+      // Breadcrumbs
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#') Dashboard
+        li.breadcrumb-item.active Verify Listings
+      .box_general
+        .header_box
+          h2.d-inline-block Listings
+          .filter
+            select.selectbox(name='orderby')
+              option(value='Any time') Any time
+              option(value='Latest') Latest
+              option(value='Oldest') Oldest
+        .list_general
+          ul
+            if verifications
+              each verification in verifications
+                li
+                  figure
+                    img(src= verification.listing_image ? verification.listing_image : '/img/blog-3.jpg', alt='')
+                  //- small #{listing.category}
+                  h4 #{verification.listing_name}
+
+                  p
+                    a.btn_1.gray(href=`/admin/verification/${verification._id}`)
+                      i.fa.fa-fw.fa-eye
+                      |  View Listing
+                  ul.buttons
+                    li.mr-2
+                      a.btn_1.red.delete(href=`/verification/delete-verification/${verification._id}` onclick="return confirm('Are you sure?')")
+                        i.fa.fa-fw.fa-trash
+                        | Delete Listing
+          // /box_general
+      nav(aria-label='...')
+        ul.pagination.pagination-sm.add_bottom_30
+          li.page-item.disabled
+            a.page-link(href='#', tabindex='-1') Previous
+          li.page-item
+            a.page-link(href='#') 1
+          li.page-item
+            a.page-link(href='#') 2
+          li.page-item
+            a.page-link(href='#') 3
+          li.page-item
+            a.page-link(href='#') Next
+      // /pagination
+      // /container-fluid
+  include partials/admin-footer.pug

@@ -82,6 +82,63 @@ module.exports = function(passport) {
                 req.session.userId = newUser._id;
               }
             });
+          } catch (e) {}
+        });
+      }
+    )
+  );
+
+  passport.use(
+    "local-login",
+    new LocalStrategy(
+      {
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: "email",
+        passwordField: "password",
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+      },
+      function(req, email, password, done) {
+        // asynchronous
+        // User.findOne wont fire unless data is sent back
+        process.nextTick(function() {
+          try {
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            User.findOne({ email: req.body.email }, async function(err, user) {
+              // if there are any errors, return the error
+              if (err) return done(err);
+              // check to see if theres already a user with that email
+              if (user) {
+                console.log("error is new", err);
+                return done(
+                  null,
+                  false,
+                  req.flash("signupError", "That email is already taken.")
+                );
+              } else {
+                // if there is no user with that email
+                // create the user
+                var newUser = new User(req.body);
+
+                // set the user's local credentials
+                // newUser.password = newUser.hashNewPassword(req.body.password);
+
+                // save the user
+                await newUser.save(function(err) {
+                  if (err) throw err;
+                  return done(
+                    null,
+                    newUser,
+                    req.flash(
+                      "succesfulSocial",
+                      "Congrats!!, you have signed up succesfully"
+                    )
+                  );
+                });
+
+                req.session.userId = newUser._id;
+              }
+            });
           } catch (e) {
             return done(e);
           }
