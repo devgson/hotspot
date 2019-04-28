@@ -114,31 +114,3 @@ html(lang='en')
             }
           })
         })
-
-        Dropzone.options.verifyImage = {
-          autoProcessQueue : false,
-          acceptedFiles : '.png,.jpg.jpeg',
-          uploadMultiple : true,
-          maxFilesize : 5,
-          maxFiles : 5,
-          addRemoveLinks : true,
-          init : function(){
-            $('#saveImage').on('click', function(e){
-              e.preventDefault();
-              $('#verifyImage').get(0).dropzone.processQueue();
-            })
-
-            this.on('successmultiple', function(file,response){
-              console.log(this.files);
-              console.log(response);
-            })
-
-            this.on("maxfilesexceeded", function(file) {
-              this.removeFile(file); 
-            });
-
-            this.on("error", function(error) {
-              console.log(error)
-            })
-          }
-        }

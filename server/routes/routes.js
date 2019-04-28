@@ -65,23 +65,14 @@ router.get('/auth/google/callback', passport.authenticate('google', {
   failureFlash: true // allow flash messages
 }));
 
-// app.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     res.redirect('/');
-//   });
-// router.get('/auth/facebook/callback', passport.authenticate('facebook-signup', {
-//   scope: ['email'],
-//   successRedirect: '/profile-social', // redirect to the secure profile section
-//   failureRedirect: '/?showdefaultmodal=true', // redirect back to the signup page if there is an error
-//   failureFlash: true // allow flash messages
-// }));
 
 router.get('/messages', (req, res) => {
   res.render('messages');
 })
 
-router.post('/verify', user.isLoggedIn, user.VerifyProcess)
+router.get('/mylistings', user.isLoggedIn, user.getUserListings );
+
+router.post('/verify', user.isLoggedIn, user.VerifyProcess);
 
 
 router.post('/verify-upload/:listingid', user.isUserLoggedIn, user.uploadVerification)

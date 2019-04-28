@@ -8686,3 +8686,8 @@ padding: 0;
     z-index: 99;
     background-color: rgba(216, 214, 214, 0.24);
 }
+.img-listings{
+    width: auto;
+    height: 6em;
+    object-fit: cover;
+}
