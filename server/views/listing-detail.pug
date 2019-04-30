@@ -10,10 +10,11 @@ block content
     .hero_in.shop_detail
       .wrapper
         span.magnific-gallery
-          a.btn_photos(href='', title='Photo title', data-effect='mfp-zoom-in') View photos
           if listing.images && listing.images.length > 0
-            each image in listing.images
-              a(href=image.secure_url, title='Photo title', data-effect='mfp-zoom-in')
+            a.btn_photos(href=listing.images[0].secure_url, title='Photo title') View photos
+              each image in listing.images.slice(1)
+                a(href=image.secure_url, title='Photo title', data-effect='mfp-zoom-in')
+
     // /hero_in
     nav.secondary_nav.sticky_horizontal_2
       .container
@@ -41,7 +42,7 @@ block content
           section#description
             .detail_title_1
               h1= listing.title
-              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361')= listing.info.address
+              a.address(href=`https://maps.google.com/?q=${listing.info.address}` target="blank")= listing.info.address
             p= listing.description
             h5.add_bottom_15 Tags
             .row.add_bottom_30
@@ -57,27 +58,27 @@ block content
                 h3.icon_clock_alt.mr-2.d-inline-block
                 h4.d-inline-block Opening Hours
               .row
-              if listing.hours
-                - var hours3 = Object.entries( listing.hours ).slice(0 ,4);
-                - var hours4 = Object.entries( listing.hours ).slice(4);
-                .col-md-6
-                  each hour in hours3
-                    ul
-                      li
-                        | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
-                          span Closed
-                        else  
-                          span #{hour[1][0]} - #{hour[1][1]}
-                .col-md-6
-                  each hour in hours4
-                    ul
-                      li
-                        | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
-                          span Closed
-                        else  
-                          span #{hour[1][0]} - #{hour[1][1]}
+                if listing.hours
+                  - var hours3 = Object.entries( listing.hours ).slice(0 ,4);
+                  - var hours4 = Object.entries( listing.hours ).slice(4);
+                  .col-md-6
+                    each hour in hours3
+                      ul
+                        li
+                          | #{hour[0].toUpperCase()}
+                          if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
+                            span Closed
+                          else  
+                            span #{hour[1][0]} - #{hour[1][1]}
+                  .col-md-6
+                    each hour in hours4
+                      ul
+                        li
+                          | #{hour[0].toUpperCase()}
+                          if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
+                            span Closed
+                          else  
+                            span #{hour[1][0]} - #{hour[1][1]}
             hr
             h3 Location
             #map.map.map_single.add_bottom_45
@@ -182,7 +183,7 @@ block content
                       h5.d-inline Rate and Write Reviews
                     h3
                       p(style="font-weight:lighter") You need to log in to write reviews
-                    a#submit-contact-detail.add_top_30.btn_1.half-width.purchase(href="/register")
+                    a#submit-contact-detail.btn_1.half-width.purchase(href="/register")
                       | Log In
                 else
                   .add-review
@@ -250,3 +251,15 @@ block content
   include partials/footer.pug
 block append scripts
   script(src='/js/analytics.js')
+  script.
+    console.log(magnificPopup)
+    $('.magnific-gallery').magnificPopup({
+      type: 'image',
+      delegate : 'a',
+      gallery : { enabled : true },
+      callbacks: {
+        beforeOpen : function(){
+          console.log("Here")
+        }
+      }  
+    });
