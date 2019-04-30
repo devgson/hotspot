@@ -10,62 +10,51 @@ const ListingSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    algoliaIndex: true
+    text: true
   },
   description: {
     type: String,
     trim: true,
-    algoliaIndex: true
+    text: true
   },
   slug: {
-    type: String,
-    algoliaIndex: true
+    type: String
   },
   info: {
     number: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     email: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     website: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     state: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     country: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     address: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     coordinates: {
       lat: {
-        type: Number,
-        algoliaIndex: true
+        type: Number
       },
       lon: {
-        type: Number,
-        algoliaIndex: true
+        type: Number
       }
     },
-    type: Object,
-    algoliaIndex: true,
+    type: Object
   },
   category: {
     type: String,
-    lowercase: true,
-    algoliaIndex: true
+    lowercase: true
   },
   tags: [String],
   images: [],
@@ -85,12 +74,17 @@ const ListingSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    algoliaIndex: true
+    default: Date.now
   },
   owner: {
     type: String
   }
+});
+
+
+ListingSchema.index({
+  title: 'text',
+  description: 'text'
 });
 
 ListingSchema.virtual("reviews", {
@@ -123,12 +117,6 @@ ListingSchema.pre('save', async function (next) {
   }
   next();
 });
-
-ListingSchema.plugin(mongoolia, {
-  appId: process.env.ALGOLIA_ID,
-  apiKey: process.env.ALGOLIA_ADMIN,
-  indexName: 'listings'
-})
 
 const Listing = mongoose.model("listing", ListingSchema);
 
