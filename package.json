@@ -28,6 +28,7 @@
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.3",
+    "dompurify": "^1.0.10",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0",
@@ -52,5 +53,10 @@
     "ssl-express-www": "^3.0.3",
     "uuid": "^3.3.2",
     "validator": "^10.8.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/preset-env": "^7.4.4",
+    "babel-core": "^6.26.3"
   }
 }

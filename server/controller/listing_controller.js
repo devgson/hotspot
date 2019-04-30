@@ -121,56 +121,55 @@ exports.findListings = async (req, res) => {
   }
 };
 
-/*exports.getfindListings = async (req, res) => {
-  try {
-    // req.session.category_search
-    // req.session.category_search
-    // req.session.category_search
-    console.log(req.session);
-    var query = {
-      category: {
-        $regex: `.*` + req.session.category_search + `.*`,
-        $options: "i"
-      },
-      title: {
-        $regex: `.*` + req.session.title_search + `.*`,
-        $options: "i"
-      },
-      "info.address": {
-        $regex: `.*` + req.session.address_search + `.*`,
-        $options: "i"
-      }
-    };
+// exports.getfindListings = async (req, res) => {
+//   try {
 
-    console.log(query);
+//     // req.session.category_search
+//     // req.session.category_search
+//     // req.session.category_search
+//     console.log(req.session);
+//     var query = {
+//       category: {
+//         $regex: `.*` + req.session.category_search + `.*`,
+//         $options: 'i'
+//       },
+//       title: {
+//         $regex: `.*` + req.session.title_search + `.*`,
+//         $options: 'i'
+//       },
+//       'info.address': {
+//         $regex: `.*` + req.session.address_search + `.*`,
+//         $options: 'i'
+//       }
+//     }
 
-    const [results, itemCount] = await Promise.all([
-      Listing.find({ ...query })
-        .limit(req.query.limit)
-        .skip(req.skip)
-        .lean()
-        .exec(),
-      Listing.countDocuments({})
-    ]);
+//     console.log(query);
 
-    const pageno = req.query.page || 1;
+//     const [results, itemCount] = await Promise.all([
+//       Listing.find({ ...query
+//       }).limit(req.query.limit).skip(req.skip).lean().exec(),
+//       Listing.countDocuments({})
+//     ]);
 
-    const pageCount = Math.ceil(itemCount / req.query.limit);
-    res.render("category-view", {
-      listings: results,
-      pageCount,
-      itemCount,
-      results,
-      pageno,
-      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
-    });
+//     const pageno = req.query.page || 1;
 
-    // const listings = await Listing.find({...query})
-    // res.render('category-view', { listings })
-  } catch (e) {
-    res.send(e.message);
-  }
-};*/
+//     const pageCount = Math.ceil(itemCount / req.query.limit);
+//     res.render('category-view', {
+//       listings: results,
+//       pageCount,
+//       itemCount,
+//       results,
+//       pageno,
+//       pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+//     });
+
+//     // const listings = await Listing.find({...query})
+//     // res.render('category-view', { listings })
+//   } catch (e) {
+//     res.send(e.message);
+
+//   }
+// }
 
 exports.getfindListings = async (req, res) => {
   try {
@@ -270,4 +269,22 @@ exports.getCategory = async (req, res) => {
   } catch (e) {
     res.send(e.message);
   }
+};
+
+exports.autoSearch = async (req, res) => {
+  const listings = await Listing.find(
+    {
+      $text: {
+        $search: req.query.q
+      }
+    },
+    {
+      score: { $meta: "textScore" }
+    }
+  ).sort({
+    score: {
+      $meta: "textScore"
+    }
+  });
+  res.json(listings);
 };

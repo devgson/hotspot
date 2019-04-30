@@ -20,9 +20,10 @@ block content
               // /open search panel
               .row.no-gutters.custom-search-input-2.inner
                 .col-lg-4
-                  .form-group
-                    input.form-control(type='text', name='title' id='search-field' placeholder='What are you looking for...')
+                  .form-group.search-div
+                    input.form-control(type='text', name='title' id='search-field' autocomplete="off" placeholder='What are you looking for...')
                     i.icon_search
+                    .search__results
                 .col-lg-4
                   .form-group
                     input.form-control(type='text', name='location' placeholder='Where')
