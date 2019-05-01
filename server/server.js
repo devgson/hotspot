@@ -31,10 +31,15 @@ const paginate = require("express-paginate");
 const User = require("./models/user_model");
 const app = express();
 
-mongoose.connect(db, {
-  useNewUrlParser: true
-});
-
+mongoose
+  .connect(db, {
+    useCreateIndex: true,
+    useNewUrlParser: true
+  })
+  .then(() => console.log("Connected Successfully"))
+  .catch(err => {
+    throw new Error(err);
+  });
 // keep this before all routes that will use pagination
 
 app.use(paginate.middleware(9, 50));
@@ -101,7 +106,7 @@ app.use((error, req, res) => {
   });
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log("path is", path.join(__dirname));
-  console.log("Server listening at port 3000 ");
+  console.log("Server listening at port 8080 ");
 });

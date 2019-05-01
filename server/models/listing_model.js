@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const mongoolia = require('mongoolia').default;
+const mongoolia = require("mongoolia").default;
 const validator = require("validator");
-const slug = require('slugs');
+const slug = require("slugs");
 
 const Schema = mongoose.Schema;
 
@@ -9,6 +9,7 @@ const ListingSchema = new Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     text: true
   },
@@ -50,6 +51,7 @@ const ListingSchema = new Schema({
         type: Number
       }
     },
+    price: Number,
     type: Object
   },
   category: {
@@ -81,10 +83,9 @@ const ListingSchema = new Schema({
   }
 });
 
-
 ListingSchema.index({
-  title: 'text',
-  description: 'text'
+  title: "text",
+  description: "text"
 });
 
 ListingSchema.virtual("reviews", {
@@ -93,22 +94,22 @@ ListingSchema.virtual("reviews", {
   foreignField: "listing"
 });
 
-ListingSchema.pre('find', function (next) {
-  this.populate('reviews');
+ListingSchema.pre("find", function(next) {
+  this.populate("reviews");
   next();
-})
+});
 
-ListingSchema.pre('findOne', function (next) {
-  this.populate('reviews');
+ListingSchema.pre("findOne", function(next) {
+  this.populate("reviews");
   next();
-})
+});
 
-ListingSchema.pre('save', async function (next) {
-  if (!this.isModified('title')) {
+ListingSchema.pre("save", async function(next) {
+  if (!this.isModified("title")) {
     return next();
   }
   this.slug = slug(this.title);
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i");
   const listingWithSlug = await this.constructor.find({
     slug: slugRegEx
   });

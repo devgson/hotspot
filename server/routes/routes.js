@@ -8,15 +8,9 @@ const review = require("../controller/review_controller");
 
 router.get("/", listing.index);
 
-<<<<<<< HEAD
-router.get("/listings", (req, res) => {
-  res.render("grid-search");
-});
-=======
 // router.get('/listings', (req, res) => {
 //   res.render('grid-search');
 // })
->>>>>>> a9c407ab3aff1de2321a619d93e594f5ff1797b2
 
 router.get("/listings", listing.getfindListings);
 router.get("/api/search", listing.autoSearch);

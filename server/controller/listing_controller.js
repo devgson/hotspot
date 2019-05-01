@@ -2,6 +2,7 @@ const Listing = require("../models/listing_model");
 const User = require("../models/user_model");
 const Review = require("../models/review_model");
 const helper = require("../helper/helper");
+const paginate = require("express-paginate");
 const lodash = require("lodash");
 
 exports.index = async (req, res) => {
@@ -24,16 +25,13 @@ exports.index = async (req, res) => {
     res.send(error.message);
   }
 };
-const paginate = require("express-paginate");
 
 exports.getListing = async (req, res) => {
   try {
     const slug = req.params.slug;
-    console.log(slug);
     const listing = await Listing.findOne({
       slug
     }).populate("reviews");
-    console.log(listing);
     const reviewsInfo = await Review.aggregate([
       {
         $match: {
@@ -75,7 +73,6 @@ exports.findListings = async (req, res) => {
     req.session.category_search = req.body.category;
     req.session.title_search = req.body.title;
     req.session.address_search = req.body.location;
-    console.log(req.body);
     var query = {
       category: {
         $regex: `.*` + req.body.category + `.*`,
@@ -90,9 +87,6 @@ exports.findListings = async (req, res) => {
         $options: "i"
       }
     };
-
-    console.log(query);
-
     const [results, itemCount] = await Promise.all([
       Listing.find({ ...query })
         .limit(req.query.limit)
@@ -113,9 +107,6 @@ exports.findListings = async (req, res) => {
       pageno,
       pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
     });
-
-    // const listings = await Listing.find({...query})
-    // res.render('category-view', { listings })
   } catch (e) {
     res.send(e.message);
   }
@@ -176,7 +167,6 @@ exports.getfindListings = async (req, res) => {
     // req.session.category_search
     // req.session.category_search
     // req.session.category_search
-    console.log(req.session);
     var query = {
       category: {
         $regex: `.*` + req.session.category_search + `.*`,
@@ -191,8 +181,6 @@ exports.getfindListings = async (req, res) => {
         $options: "i"
       }
     };
-
-    console.log(query);
 
     const [results, itemCount] = await Promise.all([
       Listing.find({ ...query })
@@ -235,7 +223,6 @@ exports.getBookmarks = async (req, res) => {
         //Do something
       }
     }
-    console.log("all listings ", all_listings);
     res.render("bookmarks", { all_listings });
   } catch (e) {
     res.send(e.message);

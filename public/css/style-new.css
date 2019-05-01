@@ -42,7 +42,7 @@
     color: #fff;
     padding: 0 8px 15px 8px;
     font-size: 14px;
-    font-size: 0.875rem;
+    font-size: 1.1rem;
     font-weight: 500;
   }
   .main-menu > ul > li span:hover > a {
@@ -3196,6 +3196,54 @@ a.box_feat h3 {
   display: inline-block;
 }
 
+.score strong.poor {
+  background-color: #c70505;
+  color: #fff;
+  line-height: 1;
+  -webkit-border-radius: 5px 5px 5px 0;
+  -moz-border-radius: 5px 5px 5px 0;
+  -ms-border-radius: 5px 5px 5px 0;
+  border-radius: 5px 5px 5px 0;
+  padding: 10px;
+  display: inline-block;
+}
+
+.score strong.fair {
+  background-color: #c55134b4;
+  color: #fff;
+  line-height: 1;
+  -webkit-border-radius: 5px 5px 5px 0;
+  -moz-border-radius: 5px 5px 5px 0;
+  -ms-border-radius: 5px 5px 5px 0;
+  border-radius: 5px 5px 5px 0;
+  padding: 10px;
+  display: inline-block;
+}
+
+.score strong.good {
+  background-color: #7dcaa2;
+  color: #fff;
+  line-height: 1;
+  -webkit-border-radius: 5px 5px 5px 0;
+  -moz-border-radius: 5px 5px 5px 0;
+  -ms-border-radius: 5px 5px 5px 0;
+  border-radius: 5px 5px 5px 0;
+  padding: 10px;
+  display: inline-block;
+}
+
+.score strong.superb {
+  background-color: #32a067;
+  color: #fff;
+  line-height: 1;
+  -webkit-border-radius: 5px 5px 5px 0;
+  -moz-border-radius: 5px 5px 5px 0;
+  -ms-border-radius: 5px 5px 5px 0;
+  border-radius: 5px 5px 5px 0;
+  padding: 10px;
+  display: inline-block;
+}
+
 .score span {
   display: inline-block;
   position: relative;
@@ -4656,6 +4704,50 @@ section#reviews {
 }
 
 #review_summary {
+  text-align: center;
+  background-color: #32a067;
+  color: #fff;
+  padding: 20px 10px;
+  -webkit-border-radius: 3px 3px 3px 0;
+  -moz-border-radius: 3px 3px 3px 0;
+  -ms-border-radius: 3px 3px 3px 0;
+  border-radius: 3px 3px 3px 0;
+}
+
+#review_summary.poor {
+  text-align: center;
+  background-color: #cc1111;
+  color: #fff;
+  padding: 20px 10px;
+  -webkit-border-radius: 3px 3px 3px 0;
+  -moz-border-radius: 3px 3px 3px 0;
+  -ms-border-radius: 3px 3px 3px 0;
+  border-radius: 3px 3px 3px 0;
+}
+
+#review_summary.fair {
+  text-align: center;
+  background-color: #cc7161;
+  color: #fff;
+  padding: 20px 10px;
+  -webkit-border-radius: 3px 3px 3px 0;
+  -moz-border-radius: 3px 3px 3px 0;
+  -ms-border-radius: 3px 3px 3px 0;
+  border-radius: 3px 3px 3px 0;
+}
+
+#review_summary.good {
+  text-align: center;
+  background-color: #ffffff;
+  color: #fff;
+  padding: 20px 10px;
+  -webkit-border-radius: 3px 3px 3px 0;
+  -moz-border-radius: 3px 3px 3px 0;
+  -ms-border-radius: 3px 3px 3px 0;
+  border-radius: 3px 3px 3px 0;
+}
+
+#review_summary.superb {
   text-align: center;
   background-color: #32a067;
   color: #fff;

@@ -32,10 +32,6 @@ block content
                 a.icon-bookmark-2()
                 button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
 
-          li.d-block.float-right(class=(formClass) name="verify")
-              form(action=`/verify` method="POST")
-                input(type="text" value=`${listing._id}` name="listingid" hidden)
-                button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") Claim Listing
     .container.margin_60_35
       .row
         .col-lg-8
@@ -43,6 +39,12 @@ block content
             .detail_title_1
               h1= listing.title
               a.address(href=`https://maps.google.com/?q=${listing.info.address}` target="blank")= listing.info.address
+            if listing.info.price
+              .detail_title_1.price
+                h5 Price
+                - for( var i = 0 ; i < listing.info.price; i++){
+                  span(style="color:#32a067") $
+                - }
             p= listing.description
             h5.add_bottom_15 Tags
             .row.add_bottom_30
@@ -82,7 +84,8 @@ block content
             hr
             h3 Location
             #map.map.map_single.add_bottom_45
-              img(style="width : 100%" src=`https://maps.googleapis.com/maps/api/staticmap?center=${listing.info.address}&zoom=16&maptype=roadmap&format=png&size=900x400&key=${process.env.GOOGLE_KEY}&markers=${listing.info.address}&scale=1`)
+              a.address(href=`https://maps.google.com/?q=${listing.info.address}` target="blank")
+                img(style="width : 100%" src=`https://maps.googleapis.com/maps/api/staticmap?center=${listing.info.address}&zoom=16&maptype=roadmap&format=png&size=900x400&key=${process.env.GOOGLE_KEY}&markers=${listing.info.address}&scale=1`)
             // End Map
             // /section
             section#reviews
@@ -91,12 +94,23 @@ block content
               .reviews-container.add_bottom_30
                 .row
                   .col-lg-3
-                    #review_summary
-                      if reviewsInfo
-                        strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2} / 10
+                    if reviewsInfo
+                      - const reviewNumber = parseInt((reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2);
+                      - let reviewClass = "";
+                      if reviewNumber <= 3
+                        - reviewClass = "poor";
+                      else if reviewNumber > 3 && reviewNumber <= 5
+                        - reviewClass = "fair";
+                      else if reviewNumber > 5 && reviewNumber <= 7
+                        - reviewClass = "good";
+                      else if reviewNumber > 7 && reviewNumber <= 10
+                        - reviewClass = "superb";
+                      #review_summary(class=reviewClass)
+                        strong #{reviewNumber} / 10
                         //em Superb
                         small Based on #{reviewsInfo.numberOfReviews} reviews
-                      else 
+                    else
+                      #review_summary
                         strong 0 / 10
                   .col-lg-9
                     .row
@@ -142,7 +156,7 @@ block content
                             | #{numberOfReviewsPerRating[1]}
                       .col-lg-2.col-3
                         small
-                          strong 1 stars
+                          strong 1 star
                     // /row
                     // /row
                 each review in listing.reviews
@@ -207,20 +221,36 @@ block content
                           input#submit-review.btn_1(type='submit', value='Submit')
         // /col
         aside#sidebar.col-lg-4
+          if currentUser
+            .box_detail.booking
+              form(action=`/verify` target="_blank" method="POST")
+                .form-group
+                  p Are you affiliated with this Listing?, Please click below to claim it.
+                .form-group
+                  input(type="text" value=`${listing._id}` name="listingid" hidden)
+                  input.btn_1(type='submit', value='Claim')
           .box_detail.booking
             .price
               h5.d-inline Contact us
               if reviewsInfo
+                - const review = parseInt((reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2);
+                - let className = "";
                 .score
                   span
-                    | Good
+                    if review <= 3
+                      - className = "poor";
+                      | Poor
+                    else if review > 3 && review <= 5
+                      - className = "fair";
+                      | Fair
+                    else if review > 5 && review <= 7
+                      - className = "good";
+                      | Good
+                    else if review > 7 && review <= 10
+                      - className = "superb";
+                      | Superb
                     em #{reviewsInfo.numberOfReviews} Reviews
-                  strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2}
-              else
-                .score
-                  span
-                    em 0 Reviews
-                  strong 0.0
+                  strong(class=className) #{review}
             #message-contact-detail
             form#contact_detail(method='post', action='', autocomplete='off')
               .form-group
@@ -252,7 +282,7 @@ block content
 block append scripts
   script(src='/js/analytics.js')
   script.
-    console.log(magnificPopup)
+    //console.log(magnificPopup)
     $('.magnific-gallery').magnificPopup({
       type: 'image',
       delegate : 'a',

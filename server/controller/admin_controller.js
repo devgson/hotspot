@@ -381,6 +381,7 @@ exports.editListing = async (req, res, next) => {
       updatedListing.info.state
     );
     if (typeof coordinates !== "object") throw new Error(error);
+    updatedListing.info.coordinates = {};
     updatedListing.info.coordinates.lat = coordinates.lat;
     updatedListing.info.coordinates.lon = coordinates.lon;
     updatedListing.info.address = coordinates.formatedAddress;
@@ -494,27 +495,28 @@ exports.createSuperadmin = async (req, res, next) => {
 
 exports.addListingtodb = async (req, res, next) => {
   try {
-    let body = {};
     const listings = req.listings.results;
-    console.log("length is", listings.length);
-    for (var i = 0; i < listings.length; i++) {
-      var element = listings[i];
-      body.title = element.name;
-      body.tags = element.types;
-      body.category = element.types[0];
-      body.info = {
-        address: element.formatted_address,
-        country: "Nigeria",
-        state: "Lagos",
-        coordinates: {
-          lat: element.geometry.location.lat,
-          lon: element.geometry.location.lng
-        }
-      };
-      console.log("lat is ", element.geometry.location.lat);
-      const store = await new Listing(body).save();
-    }
-    res.send("limit reached");
+    await Promise.all(
+      listings.map(async listing => {
+        return await new Listing({
+          title: listing.name,
+          tags: listing.types,
+          category: listing.types[0],
+          info: {
+            address: listing.formatted_address,
+            price: listing.price_level || 0,
+            country: "Nigeria",
+            state: "Lagos",
+            coordinates: {
+              lat: listing.geometry.location.lat,
+              lon: listing.geometry.location.lng
+            }
+          }
+        }).save();
+      })
+    );
+    console.log("Listings added");
+    res.redirect("/listings");
   } catch (error) {
     console.log(error);
   }
@@ -632,7 +634,6 @@ exports.getVerifiedListing = async (req, res, next) => {
     var id = req.params.id;
     const verification = await Verify.findOne({ _id: id });
     const listing = await Listing.findOne({ _id: verification.listing_id });
-    // console.log("verification is ", listing)
     res.render("verify-details", { verification, listing });
   } catch (e) {
     console.log(e.message);

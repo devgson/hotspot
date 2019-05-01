@@ -10,11 +10,7 @@ block content
           .row
             .col-lg-3.col-md-4.col-10
               h4
-                if listings.length
-                  strong #{listings.length}
-                  |   Results found
-                else
-                  strong 0 Results found
+                strong #{itemCount} Results Found
             .col-lg-9.col-md-8.col-2
               a.side_panel.btn_search_mobile(href='#0')
               // /open search panel
@@ -144,7 +140,7 @@ block content
             .col-xl-4.col-lg-6.col-md-6
               .strip.grid
                 figure
-                  a.wish_bt.bookmark(href='#0')
+                  //a.wish_bt.bookmark(href='#0')
                   a(href=`/listing/${listing.slug}`)
                     img.img-fluid(src= listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                     .read_more
@@ -153,21 +149,38 @@ block content
                 .wrapper
                   h3
                     a(href=`/listing/${listing.slug}`) #{listing.title}
-                  small #{listing.info ?eval(JSON.stringify(listing.info.address)) : ''}
-                  p #{listing.description ? listing.description : ''}
-                  a.address(href='', target='_blank') Get directions
+                  small #{listing.info ? listing.info.address : ''}
+                  p #{listing.description ? `${listing.description.slice(0,25)}...` : ''}
+                  a.address(href=`https://maps.google.com/?q=${listing.info.address || ''}`, target='_blank') Get directions
                 ul
                   li
-                    span.loc_open Now Open
+                    //- listing.price = 3
+                    if listing.info.price
+                      - for( var i = 0 ; i < listing.info.price; i++){
+                        span(style="color:#32a067") $
+                      - }
                   li
                     .score
                       if listing.reviews.length > 0
-                        - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val)
+                        - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val);
                         - const getAverage = ((getRating * 2)/listing.reviews.length).toFixed(1);
+                        - const review = parseInt(getAverage);
+                        - let className = "";
                         span
-                          | Superb 
+                          if review <= 3
+                            - className = "poor";
+                            | Poor
+                          else if review > 3 && review <= 5
+                            - className = "fair";
+                            | Fair
+                          else if review > 5 && review <= 7
+                            - className = "good";
+                            | Good
+                          else if review > 7 && review <= 10
+                            - className = "superb";
+                            | Superb
                           em #{listing.reviews.length} Reviews
-                        strong #{getAverage}
+                        strong(class=className) #{getAverage}
                       //else
                         span
                           | 
