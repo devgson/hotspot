@@ -23,7 +23,7 @@ block content
             a.active(href='#description') Description
           li
             a(href='#reviews') Reviews
-          if currentUser
+          if currentUser && currentUser.bookmarks
             - const changeIdToString = currentUser.bookmarks.map( _id => _id.toString() );
             - const userBookmarked = changeIdToString.includes( listing._id.toString() );
             - const formClass = userBookmarked ? 'btn_bookmark_selected' : '';
