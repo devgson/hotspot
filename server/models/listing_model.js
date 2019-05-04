@@ -9,6 +9,7 @@ const ListingSchema = new Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     text: true
   },
@@ -53,6 +54,7 @@ const ListingSchema = new Schema({
         type: Number
       }
     },
+    price: Number,
     type: Object
   },
   category: {
@@ -103,7 +105,7 @@ ListingSchema.virtual("reviews", {
   foreignField: "listing"
 });
 
-ListingSchema.pre("find", async function(next) {
+ListingSchema.pre("find", function(next) {
   this.populate("reviews");
   next();
 });

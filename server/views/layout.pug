@@ -1,6 +1,7 @@
 doctype html
 html(lang='en')
   head
+    meta(name='google-site-verification', content='AnbUVdzTElbbqaEbaPN2YMmDJPxDK-kfkPEe6amoHao')
   -var algoliaid = process.env.ALGOLIA_ID;
   -var searchkey = process.env.ALGOLIA_SEARCH;
     meta(charset='utf-8')
@@ -47,7 +48,11 @@ html(lang='en')
     form(action="/signin" method="post")
       .sign-in-wrapper
         a.social_bt.facebook(href='/auth/facebook/callback') Login or Sign up with Facebook
+<<<<<<< HEAD
         a.social_bt.google(href='/auth/google/') Login or Sign up with Google
+=======
+        a.social_bt.google(href='/auth/google') Login or Sign up with Google
+>>>>>>> 62144160033087af030e49ba84a1ddeb9f59c288
         .divider
           span Or
         .form-group

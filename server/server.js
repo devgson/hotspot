@@ -13,7 +13,7 @@ const flash = require("connect-flash");
 const mongoStore = require("connect-mongo")(session);
 const fileUpload = require("express-fileupload");
 const algoliasearch = require("algoliasearch");
-const isProd = false;
+const isProd = true;
 const db =
   process.env.NODE_ENV === "production" || isProd
     ? process.env.PRODUCTION_DB
@@ -31,13 +31,15 @@ const paginate = require("express-paginate");
 const User = require("./models/user_model");
 const app = express();
 
-mongoose.connect(
-  db,
-  {
+mongoose
+  .connect(db, {
+    useCreateIndex: true,
     useNewUrlParser: true
-  }
-);
-
+  })
+  .then(() => console.log("Connected Successfully"))
+  .catch(err => {
+    throw new Error(err);
+  });
 // keep this before all routes that will use pagination
 
 app.use(paginate.middleware(9, 50));
@@ -65,6 +67,7 @@ app.use(
     extended: true
   })
 );
+
 app.use(bodyParser.json());
 app.use(flash());
 app.use(async (req, res, next) => {
@@ -103,7 +106,7 @@ app.use((error, req, res) => {
   });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("path is",path.join(__dirname));
-  console.log("Server listening at port 3000 ");
+app.listen(process.env.PORT || 8080, () => {
+  console.log("path is", path.join(__dirname));
+  console.log("Server listening at port 8080 ");
 });

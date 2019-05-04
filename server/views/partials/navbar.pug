@@ -1,20 +1,8 @@
 header.header.menu_fixed
-  #logo
-    a.d-flex(href='/', title='Hotspot - Find the hottest places in Lagos')
-      img.mt-2.mt-md-0.img-nav.mr-2(src='/img/flame.png')
-      h3.mt-2.mb-0.text-light.logo-text.profile-custom Hotspot
-  ul#top_menu
-    li.d-flex
-      if !currentUser 
-        a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
-        a.wishlist_bt_top.profile-custom(href='/bookmarks', title='Your wishlist') Your bookmarks
-      else
-        a.sign-out.profile-custom(href='/mylistings', title='mylistings') My Listings
-        a.sign-out.profile-custom(href='/signout', title='Sign Out') Sign Out
-        a.wishlist_bt_top.profile-custom(href='/bookmarks', title='Your wishlist') Your bookmarks
-    //- li
-    //-   a.wishlist_bt_top.profile-custom(href='/bookmarks', title='Your wishlist') Your bookmarks
-  // /top_menu
+  #logo.mb-1
+    a(href='/', title='Hotspot - Find the hottest places in Lagos')
+      img(src='/img/flame.png' style="vertical-align:middle").mt-2.mt-md-0.img-nav.mr-2
+      h3(style="vertical-align:middle; color:black").d-inline-block.mt-2.mb-0.text-light.logo-text.profile-custom Hotspot
   a.btn_mobile(href='#menu')
     #hamburger.hamburger.hamburger--spin
       .hamburger-box
@@ -23,20 +11,36 @@ header.header.menu_fixed
     ul
       li
         span
-          a.profile-custom(href='/') Home
-      //- li
-      //-   span
-      //-     if !currentUser 
-      //-       a(href='/', title='Sign In') Sign In
-      //-     else
-      //-       a(href='/signout', title='Sign Out') Sign Out
-      li
-        span
           a.profile-custom(href='/listings') Listings
       li
         span
+          a.profile-custom(href='/explore') Explore
+      if currentUser
+        li
+          span
+            a#alertsDropdown.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+              img(src="img/avatar.png" class="mr-2 img-responsive img-circle avater-img" style="width:38px; height:38px; vertical-align:middle; border-radius:50%; border:2px solid #d54e0d" alt="")
+              span.profile_custom= currentUser.first_name
+            .dropdown-menu(aria-labelledby='alertsDropdown')
+              a.dropdown-item(href='/mylistings')
+                span(style="color:black") My Listings
+              .dropdown-divider
+              a.dropdown-item(href='/profile')
+                span(style="color:black") Profile
+              .dropdown-divider
+              a.dropdown-item(href='/bookmarks')
+                span(style="color:black") Bookmarks
+              .dropdown-divider
+              a.dropdown-item(href='/signout')
+                span(style="color:black") Sign Out
+      else
+        li
+          span
+            a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
+      //li
+        span
           a.d-md-none.profile-custom(href='/bookmarks') Bookmarks
-      li
+      //li
         span
           if !currentUser 
             a.login.d-md-none(href='#sign-in-dialog', title='Sign In') Sign In
