@@ -25,11 +25,19 @@ router.get("/add-listing", (req, res) => {
   res.render("add-listing");
 });
 
-router.post("/search-listings", listing.findListings);
+router.post("/search-home-listings", listing.findListings);
+router.get("/search-home-listings", listing.getHomeListings);
 
+router.post("/api/filter", listing.filterSearch);
+router.get("/api/filter", listing.getFilters);
+
+router.post("/search-listings", listing.findListings);
 router.get("/search-listings", listing.getfindListings);
 router.get("/category/:category", listing.getCategory);
 
+
+router.post("/api/update/:slug", user.isLoggedIn, listing.updateListing);
+router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
 router.get("/bookmarks", user.isLoggedIn, listing.getBookmarks);
 
 router.get("/profile-social", (req, res) => {
@@ -83,6 +91,7 @@ router.get("/messages", (req, res) => {
   res.render("messages");
 });
 
+
 router.get("/mylistings", user.isLoggedIn, user.getUserListings);
 
 router.post("/verify", user.isLoggedIn, user.VerifyProcess);
@@ -97,6 +106,7 @@ router.post(
 router.get("/listing/:slug", listing.getListing);
 router.post("/api/bookmark/:listingId", user.bookmarkListing);
 router.post("/api/verify/:listingid", user.isUserLoggedIn, user.claimListing);
+
 
 /* Review Routes */
 router.get("/review", review.getReview);
@@ -127,6 +137,7 @@ router.post(
   admin.isAdminLoggedIn,
   admin.editListing
 );
+
 router.post(
   "/admin/update-verification/:verificationid",
   admin.isAdminLoggedIn,

@@ -66,6 +66,9 @@ const UserSchema = new Schema({
     },
     status: {
       type: String
+    },
+    listing_slug: {
+      type: String
     }
   }],
   bookmarks: [{

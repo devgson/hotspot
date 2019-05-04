@@ -177,7 +177,8 @@ exports.claimListing = async (req, res, next) => {
       status: false,
       listing_title: req.body.listing_name,
       category: req.body.listing_category,
-      listing_image: req.body.listing_image
+      listing_image: req.body.listing_image,
+      listing_slug: req.body.listing_slug
     };
     var listing_exists = user.listings.filter(
       x => x.listing_id === req.params.listingid
@@ -208,6 +209,8 @@ exports.claimListing = async (req, res, next) => {
     } else {
       console.log("entered 2");
       console.log(req.body);
+      req.body.listing_id = req.params.listingid;
+      req.body.owner = user._id;
       await new VerifiedListing(req.body).save();
       req.flash(
         "successVerify",
@@ -224,9 +227,10 @@ exports.getUserListings = async (req, res, next) => {
   try {
     const user = res.locals.currentUser;
     var user_listings = user.listings;
-    res.render('mylistings',{user_listings})
+    console.log(user_listings);
+    res.render("mylistings", { user_listings });
   } catch (e) {
-    console.log("error")
+    console.log("error");
   }
 };
 

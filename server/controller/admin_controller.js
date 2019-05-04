@@ -462,12 +462,13 @@ exports.addListingtodb = async (req, res, next) => {
   try {
     let body = {};
     const listings = req.listings.results;
-    console.log("length is", listings.length);
+    console.log("list is ", listings);
     for (var i = 0; i < listings.length; i++) {
       var element = listings[i];
       body.title = element.name;
       body.tags = element.types;
       body.category = element.types[0];
+      body.priceLevel = element.price_level;
       body.info = {
         address: element.formatted_address,
         country: "Nigeria",
@@ -597,12 +598,12 @@ exports.getVerifiedListing = async (req, res, next) => {
   try {
     var id = req.params.id
     const verification = await Verify.findOne({ _id: id });
-    const listing = await Listing.findOne({ _id: verification.listing_id })
+    const listing = await Listing.findOne({ _id: verification.listing_id });
     // console.log("verification is ", listing)
-    res.render('verify-details', { verification, listing })
+    res.render('verify-details', { verification, listing });
   }
   catch (e) {
-    console.log(e.message)
+    console.log(e.message);
   }
 }
 

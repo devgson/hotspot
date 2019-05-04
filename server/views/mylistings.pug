@@ -4,7 +4,7 @@ block content
     include partials/header-search.pug
     .sub_header_in.sticky_header.mt-0
         .container
-            h1 Bookings
+            h1 My Listings
     main
         .container.margin_60_35
             .box_booking
@@ -25,7 +25,7 @@ block content
                             .col-lg-2.col-md-2
                                 .booking_buttons
                                     if(listing.status === 'true')
-                                        a.btn_2(href='#0') Edit
+                                        a.btn_2(href=`/update/listing/${listing.listing_slug}`) Edit
                                     a.btn_3(href='#0') Cancel
     
             p.text-right
