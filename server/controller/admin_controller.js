@@ -1,23 +1,20 @@
 const Listing = require("../models/listing_model");
+const User = require("../models/user_model");
 const Admin = require("../models/admin_model");
+const Verify = require("../models/verify_user_model");
 const fetch = require("node-fetch");
 const algoliasearch = require("algoliasearch");
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
 
 var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
 var index = client.initIndex("listings");
-const {
-  cloudinary,
-  flat
-} = require("../helper/helper");
+const { cloudinary, flat } = require("../helper/helper");
 
 const scopes = "https://www.googleapis.com/auth/analytics.readonly";
 const jwt = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
   null,
-  process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+  process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
   scopes
 );
 const view_id = "186345526";
@@ -43,8 +40,8 @@ async function numberOfPageviewsInLast30Days() {
   return {
     name: "Pageviews in the last 30 days",
     header: "Pageviews",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Number of pageviews
@@ -60,8 +57,8 @@ async function numberOfPageviews() {
   return {
     name: "Total Pageviews",
     header: "Pageviews",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Number of unique pageviews in the last 30 days
@@ -77,8 +74,8 @@ async function numberOfUniquePageviewsInLast30Days() {
   return {
     name: "Unique Pageviews in the last 30 days",
     header: "Unique Pageviews",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Number of unique pageviews
@@ -94,8 +91,8 @@ async function numberOfUniquePageviews() {
   return {
     name: "Number of Unique Pageviews",
     header: "Unique Pageviews",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Top browsers users visit from
@@ -119,8 +116,8 @@ async function topBrowsers() {
   return {
     name: "Top Browsers users visit the site from",
     header: "Browsers",
-    browsers: sortedBrowsers,
-  }
+    browsers: sortedBrowsers
+  };
 }
 
 // Top 5 listings viewed
@@ -147,8 +144,8 @@ async function topListings() {
   return {
     name: "Top Listings users visit",
     header: "Listings",
-    listings: sortedListings,
-  }
+    listings: sortedListings
+  };
 }
 
 // NUmber of todays session
@@ -164,8 +161,8 @@ async function numberOfTodaysSession() {
   return {
     name: "Number of Sessions Today",
     header: "Sessions",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 async function numberOfYesterdaysSession() {
@@ -180,8 +177,8 @@ async function numberOfYesterdaysSession() {
   return {
     name: "Number of Sessions Yesterday",
     header: "Sessions",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Total number of sessions
@@ -197,8 +194,8 @@ async function totalSessions() {
   return {
     name: "Total User Sessions",
     header: "Sessions",
-    views: result.data.rows ? result.data.rows[0][0] : '0',
-  }
+    views: result.data.rows ? result.data.rows[0][0] : "0"
+  };
 }
 
 // Number of pageviews by traffic source
@@ -223,7 +220,7 @@ async function pageViewsTrafficSource() {
     name: "Where users visit from",
     header: "Traffic Sources",
     sources: sortedSources
-  }
+  };
 }
 
 function upload(image) {
@@ -267,8 +264,8 @@ exports.dashboard = async (req, res, next) => {
       numberOfYesterdaysSession(),
       totalSessions(),
       pageViewsTrafficSource()
-    ])
-    res.render('dashboard', {
+    ]);
+    res.render("dashboard", {
       bigGuys: {
         browsers,
         listings,
@@ -283,11 +280,11 @@ exports.dashboard = async (req, res, next) => {
         yesterdaysSessions,
         sessions
       }
-    })
+    });
   } catch (error) {
-    res.send(error.message)
+    res.send(error.message);
   }
-}
+};
 
 exports.redirectIfLoggedIn = (req, res, next) => {
   if (req.session && req.session.adminId) {
@@ -330,13 +327,44 @@ exports.getEditListing = async (req, res, next) => {
   }
 };
 
+async function getCoordinates(address, state, country = "Nigeria") {
+  try {
+    const url =
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address},${state}&key=` +
+      process.env.GOOGLE_KEY;
+    const response = await fetch(url);
+    const json = await response.json();
+    if (json.status === "ZERO_RESULTS")
+      return "The address passed along does not exist, please pass a valid address";
+    if (json.status !== "OK")
+      return `An error : ${
+        json.status
+      } occured while trying to parse the listing address`;
+    const coordinates = json.results[0].geometry.location;
+    return {
+      lat: coordinates.lat,
+      lon: coordinates.lng,
+      formatedAddress: json.results[0].formatted_address
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 exports.postAddListing = async (req, res, next) => {
   try {
     //req.body.owner = req.session.userID;
-    const tags = req.body.tags.split(",");
-    req.body.tags = tags;
-    const listing = await new Listing(req.body).save();
-    res.redirect('/admin/listings');
+    const coordinates = await getCoordinates(
+      req.body.info.address,
+      req.body.info.state
+    );
+    if (typeof coordinates !== "object") throw new Error(error);
+    req.body.info.coordinates.lat = coordinates.lat;
+    req.body.info.coordinates.lon = coordinates.lon;
+    req.body.info.address = coordinates.formatedAddress;
+    req.body.tags = req.body.tags.split(",");
+    await new Listing(req.body).save();
+    res.redirect("/admin/listings");
   } catch (error) {
     res.send(error.message);
   }
@@ -345,16 +373,29 @@ exports.postAddListing = async (req, res, next) => {
 exports.editListing = async (req, res, next) => {
   try {
     const updatedListing = req.body;
-    updatedListing.tags ?
-      (updatedListing.tags = updatedListing.tags.split(",")) :
-      "";
-    const listing = await Listing.findOneAndUpdate({
-      slug: req.params.listing
-    }, updatedListing, {
-      new: true,
-      runValidators: true
-    });
-    res.render('edit-listing', {
+    updatedListing.tags
+      ? (updatedListing.tags = updatedListing.tags.split(","))
+      : [];
+    const coordinates = await getCoordinates(
+      updatedListing.info.address,
+      updatedListing.info.state
+    );
+    if (typeof coordinates !== "object") throw new Error(error);
+    updatedListing.info.coordinates = {};
+    updatedListing.info.coordinates.lat = coordinates.lat;
+    updatedListing.info.coordinates.lon = coordinates.lon;
+    updatedListing.info.address = coordinates.formatedAddress;
+    const listing = await Listing.findOneAndUpdate(
+      {
+        slug: req.params.listing
+      },
+      updatedListing,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+    res.render("edit-listing", {
       listing
     });
   } catch (error) {
@@ -418,10 +459,7 @@ exports.getSignIn = async (req, res, next) => {
 
 exports.postSignIn = async (req, res, next) => {
   try {
-    const {
-      email,
-      password
-    } = req.body;
+    const { email, password } = req.body;
     const admin = await Admin.findOne({
       email
     });
@@ -457,27 +495,28 @@ exports.createSuperadmin = async (req, res, next) => {
 
 exports.addListingtodb = async (req, res, next) => {
   try {
-    let body = {};
     const listings = req.listings.results;
-    console.log("length is", listings.length);
-    for (var i = 0; i < listings.length; i++) {
-      var element = listings[i];
-      body.title = element.name;
-      body.tags = element.types;
-      body.category = element.types[0];
-      body.info = {
-        address: element.formatted_address,
-        country: "Nigeria",
-        state: "Lagos",
-        coordinates: {
-          lat: element.geometry.location.lat,
-          lon: element.geometry.location.lng
-        }
-      };
-      console.log("lat is ", element.geometry.location.lat);
-      const store = await new Listing(body).save();
-    }
-    res.send("limit reached");
+    await Promise.all(
+      listings.map(async listing => {
+        return await new Listing({
+          title: listing.name,
+          tags: listing.types,
+          category: listing.types[0],
+          info: {
+            address: listing.formatted_address,
+            price: listing.price_level || 0,
+            country: "Nigeria",
+            state: "Lagos",
+            coordinates: {
+              lat: listing.geometry.location.lat,
+              lon: listing.geometry.location.lng
+            }
+          }
+        }).save();
+      })
+    );
+    console.log("Listings added");
+    res.redirect("/listings");
   } catch (error) {
     console.log(error);
   }
@@ -520,7 +559,9 @@ exports.uploadImages = async (req, res, next) => {
     });
     for (const image in req.files) {
       if (listing.images.length >= 5) {
-        return res.status(401).send('Error : Maximum Images reached, delete some');
+        return res
+          .status(401)
+          .send("Error : Maximum Images reached, delete some");
       } else {
         const result = await upload(req.files[image]);
         if (result.public_id == null || result.url == null) {
@@ -576,5 +617,54 @@ exports.addListingtoAlgolia = async (req, res, next) => {
     res.send("done");
   } catch (error) {
     res.send(error.message);
+  }
+};
+
+exports.getVerifiedListings = async (req, res, next) => {
+  try {
+    const verifications = await Verify.find();
+    res.render("admin-verify", { verifications });
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+exports.getVerifiedListing = async (req, res, next) => {
+  try {
+    var id = req.params.id;
+    const verification = await Verify.findOne({ _id: id });
+    const listing = await Listing.findOne({ _id: verification.listing_id });
+    res.render("verify-details", { verification, listing });
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+exports.updateVerification = async (req, res, next) => {
+  try {
+    var verificationid = req.params.verificationid;
+    var verify = await Verify.findByIdAndUpdate(verificationid, req.body);
+
+    var listingid = verify.listing_id;
+    var owner_id = verify.owner;
+    let user = await User.findById(owner_id);
+    var listing_exists = user.listings.filter(x =>
+      x.listing_id.toString() === listingid.toString() ? (x.status = true) : ""
+    );
+    console.log("listing ", listing_exists);
+    if (listing_exists != undefined && listing_exists.length > 0) {
+      console.log("true");
+      await User.findByIdAndUpdate(user._id, user);
+      req.flash("successVerified", "You have successfully verified");
+      res.redirect("back");
+    } else {
+      req.flash(
+        "errorverifying",
+        "There was an error verifying. Try again later"
+      );
+      res.redirect("back");
+    }
+  } catch (e) {
+    console.log(e.message);
   }
 };

@@ -11,7 +11,10 @@ const VerifiedListingSchema = new Schema({
         type: String
 
     },
-    listing_name: {
+    title: {
+        type: String
+    },
+    listing_image: {
         type: String
     },
     listing_id: {
@@ -37,6 +40,12 @@ VerifiedListingSchema.pre('find', function (next) {
 
 VerifiedListingSchema.pre('findOne', function (next) {
     this.populate('user');
+    next();
+})
+
+VerifiedListingSchema.pre('save', function (next) {
+    this.populate('user');
+    this.populate('listing');
     next();
 })
 

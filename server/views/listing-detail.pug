@@ -10,10 +10,11 @@ block content
     .hero_in.shop_detail
       .wrapper
         span.magnific-gallery
-          a.btn_photos(href='', title='Photo title', data-effect='mfp-zoom-in') View photos
           if listing.images && listing.images.length > 0
-            each image in listing.images
-              a(href=image.secure_url, title='Photo title', data-effect='mfp-zoom-in')
+            a.btn_photos(href=listing.images[0].secure_url, title='Photo title') View photos
+              each image in listing.images.slice(1)
+                a(href=image.secure_url, title='Photo title', data-effect='mfp-zoom-in')
+
     // /hero_in
     nav.secondary_nav.sticky_horizontal_2
       .container
@@ -22,7 +23,7 @@ block content
             a.active(href='#description') Description
           li
             a(href='#reviews') Reviews
-          if currentUser
+          if currentUser && currentUser.bookmarks
             - const changeIdToString = currentUser.bookmarks.map( _id => _id.toString() );
             - const userBookmarked = changeIdToString.includes( listing._id.toString() );
             - const formClass = userBookmarked ? 'btn_bookmark_selected' : '';
@@ -31,17 +32,19 @@ block content
                 a.icon-bookmark-2()
                 button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
 
-          li.d-block.float-right(class=(formClass) name="verify")
-              form(action=`/verify` method="POST")
-                input(type="text" value=`${listing._id}` name="listingid" hidden)
-                button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") Claim Listing
     .container.margin_60_35
       .row
         .col-lg-8
           section#description
             .detail_title_1
               h1= listing.title
-              a.address(href='https://www.google.com/maps/dir//Assistance+–+Hôpitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+Hôpitaux+de+Paris+(AP-HP)+-+Siège!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361')= listing.info.address
+              a.address(href=`https://maps.google.com/?q=${listing.info.address}` target="blank")= listing.info.address
+            if listing.info.price
+              .detail_title_1.price
+                h5 Price
+                - for( var i = 0 ; i < listing.info.price; i++){
+                  span(style="color:#32a067") $
+                - }
             p= listing.description
             h5.add_bottom_15 Tags
             .row.add_bottom_30
@@ -57,31 +60,32 @@ block content
                 h3.icon_clock_alt.mr-2.d-inline-block
                 h4.d-inline-block Opening Hours
               .row
-              if listing.hours
-                - var hours3 = Object.entries( listing.hours ).slice(0 ,4);
-                - var hours4 = Object.entries( listing.hours ).slice(4);
-                .col-md-6
-                  each hour in hours3
-                    ul
-                      li
-                        | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
-                          span Closed
-                        else  
-                          span #{hour[1][0]} - #{hour[1][1]}
-                .col-md-6
-                  each hour in hours4
-                    ul
-                      li
-                        | #{hour[0].toUpperCase()}
-                        if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
-                          span Closed
-                        else  
-                          span #{hour[1][0]} - #{hour[1][1]}
+                if listing.hours
+                  - var hours3 = Object.entries( listing.hours ).slice(0 ,4);
+                  - var hours4 = Object.entries( listing.hours ).slice(4);
+                  .col-md-6
+                    each hour in hours3
+                      ul
+                        li
+                          | #{hour[0].toUpperCase()}
+                          if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
+                            span Closed
+                          else  
+                            span #{hour[1][0]} - #{hour[1][1]}
+                  .col-md-6
+                    each hour in hours4
+                      ul
+                        li
+                          | #{hour[0].toUpperCase()}
+                          if ( hour[1][0].includes('Open') || hour[1][1].includes('Clos') )
+                            span Closed
+                          else  
+                            span #{hour[1][0]} - #{hour[1][1]}
             hr
             h3 Location
             #map.map.map_single.add_bottom_45
-              img(style="width : 100%" src=`https://maps.googleapis.com/maps/api/staticmap?center=${listing.info.address}&zoom=16&maptype=roadmap&format=png&size=900x400&key=${process.env.GOOGLE_KEY}&markers=${listing.info.address}&scale=1`)
+              a.address(href=`https://maps.google.com/?q=${listing.info.address}` target="blank")
+                img(style="width : 100%" src=`https://maps.googleapis.com/maps/api/staticmap?center=${listing.info.address}&zoom=16&maptype=roadmap&format=png&size=900x400&key=${process.env.GOOGLE_KEY}&markers=${listing.info.address}&scale=1`)
             // End Map
             // /section
             section#reviews
@@ -90,12 +94,23 @@ block content
               .reviews-container.add_bottom_30
                 .row
                   .col-lg-3
-                    #review_summary
-                      if reviewsInfo
-                        strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2} / 10
+                    if reviewsInfo
+                      - const reviewNumber = parseInt((reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2);
+                      - let reviewClass = "";
+                      if reviewNumber <= 3
+                        - reviewClass = "poor";
+                      else if reviewNumber > 3 && reviewNumber <= 5
+                        - reviewClass = "fair";
+                      else if reviewNumber > 5 && reviewNumber <= 7
+                        - reviewClass = "good";
+                      else if reviewNumber > 7 && reviewNumber <= 10
+                        - reviewClass = "superb";
+                      #review_summary(class=reviewClass)
+                        strong #{reviewNumber} / 10
                         //em Superb
                         small Based on #{reviewsInfo.numberOfReviews} reviews
-                      else 
+                    else
+                      #review_summary
                         strong 0 / 10
                   .col-lg-9
                     .row
@@ -141,7 +156,7 @@ block content
                             | #{numberOfReviewsPerRating[1]}
                       .col-lg-2.col-3
                         small
-                          strong 1 stars
+                          strong 1 star
                     // /row
                     // /row
                 each review in listing.reviews
@@ -182,7 +197,7 @@ block content
                       h5.d-inline Rate and Write Reviews
                     h3
                       p(style="font-weight:lighter") You need to log in to write reviews
-                    a#submit-contact-detail.add_top_30.btn_1.half-width.purchase(href="/register")
+                    a#submit-contact-detail.btn_1.half-width.purchase(href="/register")
                       | Log In
                 else
                   .add-review
@@ -206,20 +221,36 @@ block content
                           input#submit-review.btn_1(type='submit', value='Submit')
         // /col
         aside#sidebar.col-lg-4
+          if currentUser
+            .box_detail.booking
+              form(action=`/verify` target="_blank" method="POST")
+                .form-group
+                  p Are you affiliated with this Listing?, Please click below to claim it.
+                .form-group
+                  input(type="text" value=`${listing._id}` name="listingid" hidden)
+                  input.btn_1(type='submit', value='Claim')
           .box_detail.booking
             .price
               h5.d-inline Contact us
               if reviewsInfo
+                - const review = parseInt((reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2);
+                - let className = "";
                 .score
                   span
-                    | Good
+                    if review <= 3
+                      - className = "poor";
+                      | Poor
+                    else if review > 3 && review <= 5
+                      - className = "fair";
+                      | Fair
+                    else if review > 5 && review <= 7
+                      - className = "good";
+                      | Good
+                    else if review > 7 && review <= 10
+                      - className = "superb";
+                      | Superb
                     em #{reviewsInfo.numberOfReviews} Reviews
-                  strong #{(reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2}
-              else
-                .score
-                  span
-                    em 0 Reviews
-                  strong 0.0
+                  strong(class=className) #{review}
             #message-contact-detail
             form#contact_detail(method='post', action='', autocomplete='off')
               .form-group
@@ -250,3 +281,15 @@ block content
   include partials/footer.pug
 block append scripts
   script(src='/js/analytics.js')
+  script.
+    //console.log(magnificPopup)
+    $('.magnific-gallery').magnificPopup({
+      type: 'image',
+      delegate : 'a',
+      gallery : { enabled : true },
+      callbacks: {
+        beforeOpen : function(){
+          console.log("Here")
+        }
+      }  
+    });

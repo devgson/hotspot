@@ -1,0 +1,179 @@
+extends admin-layout
+
+block append stylesheets
+  link(rel="stylesheet", href="/admin_section/vendor/dropzone/dropzone.css")
+
+block content
+  include partials/admin-nav.pug
+  .content-wrapper
+    .container-fluid
+      include partials/bread-crumb.pug
+      if verification && verification.verification_documents.length > 0
+        .box_general.padding_bottom
+          .header_box.version_2
+            h2
+              i.fa.fa-clock
+              | View Documents
+          .row
+            each document, i in verification.verification_documents
+              .col-md-2
+                  a(href=document.secure_url target="blank") Document #{i + 1}
+                  //- ul.border.border-danger
+                  //-   li
+                  //-     a#delete-image(title="Delete Image" href=`/admin/delete-image/${listing.slug}` data-id=image.public_id  onclick='return confirm("Are you sure you want to delete?")')
+                  //-       span.loc_closed Delete
+
+      .box_general.padding_bottom
+        .header_box.version_2
+          h2
+            i.fa.fa-file
+            | Listing Details
+        .row
+          .col-md-6
+            .form-group
+              bold(style="color:red") * 
+              label Listing Title
+              - console.log(listing)
+              input.form-control(type='text', value=listing.title, name='title', placeholder='Hotel Mariott' disabled)
+          .col-md-6
+            .form-group
+              bold(style="color:red") * 
+              label Category
+              .styled-select
+                select(name="category" required value=listing.category disabled)
+                  option Hotel
+                  option Shops
+                  option Restaurant
+                  option Bar
+        .row
+          .col-md-6
+            .form-group
+              bold(style="color:red") * 
+              label Tags
+              if listing.slug
+                -var tag_listings = listing.tags.toString();
+              input.form-control(type='text', value= tag_listings placeholder='Tags MUST be separated by commas' name='tags' disabled)
+        .row
+          .col-md-12
+            .form-group
+              bold(style="color:red") * 
+              label Description
+              .editor
+                textarea.form-control.note-codable(role='textbox', aria-multiline='true' name="description" rows="5" required disabled) #{listing.description}
+        .row
+          .col-md-4
+            .form-group
+              bold(style="color:red") * 
+              label Phone Number
+              input.form-control(type='text' name='info[number]' value=listing.info.number disabled)
+          .col-md-4
+            .form-group
+              label Web site
+              input.form-control(type='text' name='info[website]' value=listing.info.website disabled)
+          .col-md-4
+            .form-group
+              bold(style="color:red") * 
+              label Email
+              input.form-control(type='text' name='info[email]' value=listing.info.email disabled)
+        .row
+          .col-md-4
+            .form-group
+              label Facebook link (Optional)
+              input.form-control(type='text' name='social_media[facebook]' value=listing.social_media.facebook disabled)
+          .col-md-4
+            .form-group
+              label Twitter link (Optional)
+              input.form-control(type='text' name='social_media[twitter]' value=listing.social_media.twitter disabled)
+
+      .box_general.padding_bottom
+        .header_box.version_2
+          h2
+            i.fa.fa-map-marker
+            |Location
+        .row
+          .col-md-6
+            .form-group
+              bold(style="color:red") * 
+              label Select State
+              .styled-select
+                select(name="info[state]" value=listing.info.state required disabled)
+                  option Lagos
+                  option Abuja
+          .col-md-6
+            .form-group
+              bold(style="color:red") * 
+              label Address
+              input.form-control(type='text', value=listing.info.address placeholder='ex. 250, Fifth Avenue...' name='info[address]' required disabled)
+      form.mb-3(action=`/admin/update-verification/${verification._id}` id="approvelisting" method="post")
+        .box_general.padding_bottom
+          .header_box.version_2
+            h2
+              i.fa.fa-map-marker
+              |Verify Listing ?
+          .row
+            .col-md-6
+              ul.d-flex.pl-0(style="list-style: none")
+                li.pr-3
+                label(for="approve-box")
+                  a(class="btn_1 gray width-approve mr-2 approve approve-btn pr-5")
+                    i(class="fa fa-fw fa-check-circle-o") Approve
+                input(type="text" id="approved" name="verification_status" hidden)
+                li.pr-3
+                  a(class="btn_1 gray width-approve delete pr-5")
+                    i(class="fa fa-fw fa-times-circle-o") Cancel
+            
+        //- button.btn.btn-primary.btn_1.medium(type="submit") Save
+  
+  include partials/admin-footer.pug
+  block append scripts
+    script(src="/admin_section/vendor/dropzone/dropzone.js")
+    script.
+      $('.approve-btn').click(function(e) {
+        $("#approved").val('true');
+        $("#approvelisting").submit();
+      })
+      Dropzone.options.myImage = {
+        autoProcessQueue : false,
+        acceptedFiles : '.png,.jpg,.jpeg',
+        uploadMultiple : true,
+        maxFilesize : 5,
+        maxFiles : 5,
+        addRemoveLinks : true,
+        init : function(){
+          $('#saveImage').on('click', function(e){
+            e.preventDefault();
+            $('#myImage').get(0).dropzone.processQueue();
+          })
+
+          this.on('successmultiple', function(file,response){
+            console.log(this.files);
+            console.log(response);
+          })
+
+          this.on("maxfilesexceeded", function(file) {
+            this.removeFile(file); 
+          });
+
+          this.on("error", function(error) {
+            console.log(error)
+          })
+        }
+      }
+      $('a#delete-image').on('click', function(e){
+        e.preventDefault();
+        var evt = $(this);
+        var url = $(this).attr('href');
+        var data = $(this).attr('data-id');
+        console.log(url, data)
+        $.post({
+          url : url,
+          data : {id : data},
+          success : function(result){
+            //window.location.href = '/edit-listing/#{listing.slug}'
+            console.log(result, typeof result);
+            if(result === "Delete Successful"){
+              evt.parentsUntil('.row').get(-1).remove();
+            }
+          }
+        })
+      })

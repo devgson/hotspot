@@ -1790,3 +1790,7 @@ a#delete-image :hover {
   background-color: red;
   color: white;
 }
+
+.width-approve{
+   width: 7em;
+}

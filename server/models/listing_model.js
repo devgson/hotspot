@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const mongoolia = require('mongoolia').default;
+const mongoolia = require("mongoolia").default;
 const validator = require("validator");
-const slug = require('slugs');
+const slug = require("slugs");
 
 const Schema = mongoose.Schema;
 
@@ -9,63 +9,57 @@ const ListingSchema = new Schema({
   title: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
-    algoliaIndex: true
+    text: true
   },
   description: {
     type: String,
     trim: true,
-    algoliaIndex: true
+    text: true
   },
   slug: {
-    type: String,
-    algoliaIndex: true
+    type: String
+  },
+  priceLevel: {
+    type: String
   },
   info: {
     number: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     email: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     website: {
-      type: String,
-      algoliaIndex: true
+      type: String
     },
     state: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     country: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     address: {
       type: String,
-      trim: true,
-      algoliaIndex: true
+      trim: true
     },
     coordinates: {
       lat: {
-        type: Number,
-        algoliaIndex: true
+        type: Number
       },
       lon: {
-        type: Number,
-        algoliaIndex: true
+        type: Number
       }
     },
-    type: Object,
-    algoliaIndex: true,
+    price: Number,
+    type: Object
   },
   category: {
     type: String,
-    lowercase: true,
-    algoliaIndex: true
+    lowercase: true
   },
   tags: [String],
   images: [],
@@ -85,9 +79,24 @@ const ListingSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    algoliaIndex: true
+    default: Date.now
+  },
+  owner: {
+    type: String
   }
+});
+
+ListingSchema.statics.getCategoryList = function() {
+  return this.aggregate([
+    { $unwind: "$category" },
+    { $group: { _id: "$category", count: { $sum: 1 } } },
+    { $sort: { count: -1 } }
+  ])
+};
+
+ListingSchema.index({
+  title: "text",
+  description: "text"
 });
 
 ListingSchema.virtual("reviews", {
@@ -96,22 +105,22 @@ ListingSchema.virtual("reviews", {
   foreignField: "listing"
 });
 
-ListingSchema.pre('find', function (next) {
-  this.populate('reviews');
+ListingSchema.pre("find", function(next) {
+  this.populate("reviews");
   next();
-})
+});
 
-ListingSchema.pre('findOne', function (next) {
-  this.populate('reviews');
+ListingSchema.pre("findOne", function(next) {
+  this.populate("reviews");
   next();
-})
+});
 
-ListingSchema.pre('save', async function (next) {
-  if (!this.isModified('title')) {
+ListingSchema.pre("save", async function(next) {
+  if (!this.isModified("title")) {
     return next();
   }
   this.slug = slug(this.title);
-  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, "i");
   const listingWithSlug = await this.constructor.find({
     slug: slugRegEx
   });
@@ -120,12 +129,6 @@ ListingSchema.pre('save', async function (next) {
   }
   next();
 });
-
-ListingSchema.plugin(mongoolia, {
-  appId: process.env.ALGOLIA_ID,
-  apiKey: process.env.ALGOLIA_ADMIN,
-  indexName: 'listings'
-})
 
 const Listing = mongoose.model("listing", ListingSchema);
 

@@ -1,6 +1,7 @@
 doctype html
 html(lang='en')
   head
+    meta(name='google-site-verification', content='AnbUVdzTElbbqaEbaPN2YMmDJPxDK-kfkPEe6amoHao')
   -var algoliaid = process.env.ALGOLIA_ID;
   -var searchkey = process.env.ALGOLIA_SEARCH;
     meta(charset='utf-8')
@@ -29,6 +30,9 @@ html(lang='en')
       script(src='/js/common_scripts.js')
       script(src='https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.js')
       script(src='/js/algolia.js')
+      script(src="https://unpkg.com/axios/dist/axios.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.10/purify.js")
+      script(src='/js/custom_search.js' type="module")
       script(src='/js/functions.js')
       script(src='/js/animated_canvas.min.js')
       script(src='/assets/validate.js')
@@ -44,7 +48,7 @@ html(lang='en')
     form(action="/signin" method="post")
       .sign-in-wrapper
         a.social_bt.facebook(href='/auth/facebook/callback') Login or Sign up with Facebook
-        a.social_bt.google(href='#') Login or Sign up with Google
+        a.social_bt.google(href='/auth/google/') Login or Sign up with Google
         .divider
           span Or
         .form-group
@@ -114,31 +118,3 @@ html(lang='en')
             }
           })
         })
-
-        Dropzone.options.verifyImage = {
-          autoProcessQueue : false,
-          acceptedFiles : '.png,.jpg.jpeg',
-          uploadMultiple : true,
-          maxFilesize : 5,
-          maxFiles : 5,
-          addRemoveLinks : true,
-          init : function(){
-            $('#saveImage').on('click', function(e){
-              e.preventDefault();
-              $('#verifyImage').get(0).dropzone.processQueue();
-            })
-
-            this.on('successmultiple', function(file,response){
-              console.log(this.files);
-              console.log(response);
-            })
-
-            this.on("maxfilesexceeded", function(file) {
-              this.removeFile(file); 
-            });
-
-            this.on("error", function(error) {
-              console.log(error)
-            })
-          }
-        }

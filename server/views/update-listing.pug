@@ -1,0 +1,203 @@
+extends layout
+
+block append stylesheets
+  link(rel="stylesheet", href="/admin_section/vendor/dropzone/dropzone.css")
+
+block content
+  div.img-container(style="display: none")
+    .d-flex.align-items-center.h-100
+      img.mx-auto.loader-img(src="img/loader.gif")
+  include partials/navbar.pug
+  main.pt-7
+    .container.mt-5
+      .row
+        .col-lg-10.col-md-12.col-12.mx-auto
+            .box_account
+                .text-center.col-.col-lg-10.col-md-12.col-12.mx-auto
+                    h3.new_client.text-center Update Listing
+                if listing.images && listing.images.length > 0
+                    .box_general.padding_bottom.bg-white
+                        .header_box.version_2
+                            h2
+                            i.fa.fa-clock
+                            | Manage Gallery
+                        .row
+                            each image in listing.images
+                                .col-md-3
+                                    .item
+                                    .strip.grid
+                                        figure
+                                            a(href=image.secure_url target="blank")
+                                            img.img-fluid(src=image.secure_url, alt='', width='400', height='266')
+                                        ul.border.border-danger
+                                            li
+                                            a#delete-image(title="Delete Image" href=`/admin/delete-image/${listing.slug}` data-id=image.public_id  onclick='return confirm("Are you sure you want to delete?")')
+                                                span.loc_closed Delete
+                .box_general.padding_bottom.bg-white
+                    .header_box.version_2
+                        h2
+                        i.fa.fa-dollar
+                        | Upload Documents 
+                        form.mb-3(action=`/verify-upload/${listingid}` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
+                        .dz-default.dz-message.text-center
+                            span Click to upload multiple Documents
+                        button.btn.btn-primary.btn_1.medium#saveImage(type="submit") Upload Images
+                .box_general.padding_bottom.bg-white
+                    form.form-row(action=`/api/update/${listing.slug}` method="POST")
+                    
+                        if flashes.socialUser
+                            .form-group.col-12.my-3
+                            .alert.alert-success.alert-dismissible.fade.show
+                                p.d-inline-block.mb-0 
+                                span.icon-ok-circled
+                                | #{flashes.socialUser}
+                                button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        if flashes.userdetails
+                            .form-group.col-12.my-3
+                            .alert.alert-success.alert-dismissible.fade.show
+                                p.d-inline-block.mb-0 
+                                span.icon-ok-circled
+                                | #{flashes.profileEditSuccess}
+                                button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        if flashes.profileEditError
+                            .form-group.col-12.my-3
+                            .alert.alert-danger.alert-dismissible.fade.show
+                                p.mb-0 
+                                span.icon-cancel-circled2
+                                | #{flashes.profileEditError}
+                                button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                                span(aria-hidden="true") &times;
+                        .form-group.col-md-6.col-12
+                            bold(style="color:red") * 
+                            label Listing Title
+                            input.form-control(type='text', value=listing.title, name='title', placeholder='Hotel Mariott' required)
+                        .form-group.col-md-6.col-12
+                            bold(style="color:red") * 
+                            label Tags
+                            if listing.slug
+                            -var tag_listings = listing.tags.toString();
+                            input.form-control(type='text', value= tag_listings placeholder='Tags MUST be separated by commas' name='tags' required)
+                        .form-group.col-md-6.col-12
+                            bold(style="color:red") * 
+                            label Phone Number
+                            input.form-control(type='text' name='info[number]' value=listing.info.number required)
+                        .form-group.col-md-6.col-12
+                            bold(style="color:red") * 
+                            label Description
+                            .editor
+                            textarea.form-control.note-codable(role='textbox', aria-multiline='true' name="description" rows="5" required) #{listing.description}
+                        .header_box.version_2
+                            h2 
+                                i.fa.fa-clock-o
+                                |Hours
+                        if listing.hours
+                            - const day = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+                                each days in day
+                                    .row.w-100
+                                        .col-md-2
+                                            label.fix_spacing #{days}
+                                        .col-md-3
+                                            .form-group
+                                                .styled-select
+                                                    select(name=`hours[${days}]` required)
+                                                        option(selected)= listing.hours ? listing.hours[days][0] : ''
+                                                        option Opening Time
+                                                        option Closed
+                                                        option 1 AM
+                                                        option 2 AM
+                                                        option 3 AM
+                                                        option 4 AM
+                                                        option 5 AM
+                                                        option 6 AM
+                                                        option 7 AM
+                                                        option 8 AM
+                                                        option 9 AM
+                                                        option 10 AM
+                                                        option 11 AM
+                                                        option 12 AM
+                                                        option 1 PM
+                                                        option 2 PM
+                                                        option 3 PM
+                                                        option 4 PM
+                                                        option 5 PM
+                                                        option 6 PM
+                                                        option 7 PM
+                                                        option 8 PM
+                                                        option 9 PM
+                                                        option 10 PM
+                                                        option 11 PM
+                                                        option 12 PM
+                                        .col-md-3
+                                            .form-group
+                                                .styled-select
+                                                    select(name=`hours[${days}]` required)
+                                                        option(selected)= listing.hours ? listing.hours[days][1] : ''
+                                                        option Closing Time
+                                                        option Closed
+                                                        option 1 AM
+                                                        option 2 AM
+                                                        option 3 AM
+                                                        option 4 AM
+                                                        option 5 AM
+                                                        option 6 AM
+                                                        option 7 AM
+                                                        option 8 AM
+                                                        option 9 AM
+                                                        option 10 AM
+                                                        option 11 AM
+                                                        option 12 AM
+                                                        option 1 PM
+                                                        option 2 PM
+                                                        option 3 PM
+                                                        option 4 PM
+                                                        option 5 PM
+                                                        option 6 PM
+                                                        option 7 PM
+                                                        option 8 PM
+                                                        option 9 PM
+                                                        option 10 PM
+                                                        option 11 PM
+                                                        option 12 PM
+                    
+                        .form-group.text-center.mt-3.col-md-12.col-12
+                            input.mx-auto.btn_1.half-width.form-control(type='submit' value="Update")
+  include partials/footer.pug
+
+  style.
+    .profile-custom{
+      color: #000!important
+    }
+  block append scripts
+    script(src="/admin_section/vendor/dropzone/dropzone.js")
+    script.
+      Dropzone.options.myImage = {
+        autoProcessQueue : false,
+        acceptedFiles : '.png,.jpg,.jpeg,.pdf,.doc,.docx',
+        uploadMultiple : true,
+        maxFilesize : 5,
+        maxFiles : 5,
+        addRemoveLinks : true,
+        init : function(){
+          $('#saveImage').on('click', function(e){
+            e.preventDefault();
+            $('#myImage').get(0).dropzone.processQueue();
+            $('.img-container').show();
+          })
+
+          this.on('successmultiple', function(file,response){
+            $('.img-container').hide();
+            console.log(this.files);
+            console.log(response);
+          })
+
+          this.on("maxfilesexceeded", function(file) {
+            this.removeFile(file); 
+          });
+
+          this.on("error", function(error) {
+            console.log(error)
+          })
+        }
+      }

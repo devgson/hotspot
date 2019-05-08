@@ -10,8 +10,8 @@ block content
           .row
             .col-lg-3.col-md-4.col-10
               h4
-                if listings.length
-                  strong #{listings.length}
+                if itemCount
+                  strong #{itemCount}
                   |   Results found
                 else
                   strong 0 Results found
@@ -20,9 +20,10 @@ block content
               // /open search panel
               .row.no-gutters.custom-search-input-2.inner
                 .col-lg-4
-                  .form-group
-                    input.form-control(type='text', name='title' id='search-field' placeholder='What are you looking for...')
+                  .form-group.search-div
+                    input.form-control(type='text', name='title' id='search-field' autocomplete="off" placeholder='What are you looking for...')
                     i.icon_search
+                    .search__results
                 .col-lg-4
                   .form-group
                     input.form-control(type='text', name='location' placeholder='Where')
@@ -41,7 +42,7 @@ block content
         // /row
         // /container
         // /results
-    //.filters_listing.sticky_horizontal
+    .filters_listing.sticky_horizontal
       .container
         ul.clearfix
           li
@@ -54,86 +55,63 @@ block content
               label(for='latest') Latest
           li
             a.btn_filt(data-toggle='collapse', href='#filters', aria-expanded='false', aria-controls='filters', data-text-swap='Less filters', data-text-original='More filters') More filters
-          li
-            .layout_view
-              a.active(href='#0')
-                i.icon-th
-              a(href='#')
-                i.icon-th-list
-              a(href='#')
-                i.icon-map
-          li
-            a.btn_map(data-toggle='collapse', href='#collapseMap', aria-expanded='false', aria-controls='collapseMap', data-text-swap='Hide map', data-text-original='View on map') View on map
       // /container
       // /filters
     #collapseMap.collapse
       #map.map
       // /Map
-    //#filters.collapse
+    #filters.collapse
       .container.margin_30_5
-        .row
-          .col-md-4
-            h6 Rating
-            ul
-              li
+        form(action="/api/filter" method="post")
+          .row
+            .col-md-4
+              h6 Rating
+              ul
+                li
+                  label.container_check
+                    | Superb (5)
+                    input(type='checkbox' name="rating[]" value="5")
+                    span.checkmark
+                li
+                  label.container_check
+                    | Very Good (4)
+                    input(type='checkbox' name="rating[]" value="4")
+                    span.checkmark
+                li
+                  label.container_check
+                    | Good (3)
+                    input(type='checkbox' name="rating[]" value="3")
+                    span.checkmark
+                li
                 label.container_check
-                  | Superb 9+ 
-                  small 25
-                  input(type='checkbox')
+                  | Okay (2)
+                  input(type='checkbox' name="rating[]" value="2")
                   span.checkmark
-              li
-                label.container_check
-                  | Very Good 8+ 
-                  small 133
-                  input(type='checkbox')
-                  span.checkmark
-              li
-                label.container_check
-                  | Good 7+ 
-                  small 32
-                  input(type='checkbox')
-                  span.checkmark
-              li
-                label.container_check
-                  | Pleasant 6+ 
-                  small 12
-                  input(type='checkbox')
-                  span.checkmark
-          .col-md-4
-            h6 Tags
-            ul
-              li
-                label.container_check
-                  | Wireless Internet 
-                  small 12
-                  input(type='checkbox')
-                  span.checkmark
-              li
-                label.container_check
-                  | Smoking Allowed 
-                  small 11
-                  input(type='checkbox')
-                  span.checkmark
-              li
-                label.container_check
-                  | Wheelchair Accesible 
-                  small 23
-                  input(type='checkbox')
-                  span.checkmark
-              li
-                label.container_check
-                  | Parking 
-                  small 56
-                  input(type='checkbox')
-                  span.checkmark
-          .col-md-4
-            .add_bottom_30
-              h6 Distance
-              .distance
-                | Radius around selected destination 
-                span
-                |  km
-              input(type='range', min='10', max='100', step='10', value='30', data-orientation='horizontal')
+                li
+                  label.container_check
+                    | Pleasant (1) 
+                    input(type='checkbox' name="rating[]" value="1")
+                    span.checkmark
+            .col-md-4
+              if categories
+                h6 Tags
+                ul
+                  each category in categories
+                    li
+                      label.container_check
+                        | #{category._id}
+                        small #{category.count}
+                        input(type='checkbox' name="category[]" value=`${category._id}`)
+                        span.checkmark
+            .col-md-4
+              .add_bottom_30
+                h6 Distance
+                .distance
+                  | Radius around selected destination 
+                  span
+                  |  km
+                input(type='range', min='10', max='100', step='10', value='30', data-orientation='horizontal')
+                button(type="submit" class="btn_1 rounded add_top_30") Apply Filters
         // /row
         // /Filters
     .container.margin_60_35
@@ -143,7 +121,7 @@ block content
             .col-xl-4.col-lg-6.col-md-6
               .strip.grid
                 figure
-                  a.wish_bt.bookmark(href='#0')
+                  //a.wish_bt.bookmark(href='#0')
                   a(href=`/listing/${listing.slug}`)
                     img.img-fluid(src= listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                     .read_more
@@ -152,21 +130,38 @@ block content
                 .wrapper
                   h3
                     a(href=`/listing/${listing.slug}`) #{listing.title}
-                  small #{listing.info ?eval(JSON.stringify(listing.info.address)) : ''}
-                  p #{listing.description ? listing.description : ''}
-                  a.address(href='', target='_blank') Get directions
+                  small #{listing.info ? listing.info.address : ''}
+                  p #{listing.description ? `${listing.description.slice(0,25)}...` : ''}
+                  a.address(href=`https://maps.google.com/?q=${listing.info.address || ''}`, target='_blank') Get directions
                 ul
                   li
-                    span.loc_open Now Open
+                    //- listing.price = 3
+                    if listing.info.price
+                      - for( var i = 0 ; i < listing.info.price; i++){
+                        span(style="color:#32a067") $
+                      - }
                   li
                     .score
                       if listing.reviews.length > 0
-                        - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val)
+                        - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val);
                         - const getAverage = ((getRating * 2)/listing.reviews.length).toFixed(1);
+                        - const review = parseInt(getAverage);
+                        - let className = "";
                         span
-                          | Superb 
+                          if review <= 3
+                            - className = "poor";
+                            | Poor
+                          else if review > 3 && review <= 5
+                            - className = "fair";
+                            | Fair
+                          else if review > 5 && review <= 7
+                            - className = "good";
+                            | Good
+                          else if review > 7 && review <= 10
+                            - className = "superb";
+                            | Superb
                           em #{listing.reviews.length} Reviews
-                        strong #{getAverage}
+                        strong(class=className) #{getAverage}
                       //else
                         span
                           | 

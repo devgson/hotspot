@@ -223,29 +223,18 @@ block content
               i.fa.fa-dollar
               |Pricing
           .row
-            .col-md-12
-              h6 Item
-              table#pricing-list-container(style='width:100%;')
-                tbody
-                  tr.pricing-list-item
-                    td
-                      .row
-                        .col-md-4
-                          .form-group
-                            input.form-control(type='text', placeholder='Title')
-                        .col-md-4
-                          .form-group
-                            input.form-control(type='text', placeholder='Description')
-                        .col-md-2
-                          .form-group
-                            input.form-control(type='text', placeholder='Price')
-                        .col-md-2
-                          .form-group
-                            a.delete(href='#')
-                              i.fa.fa-fw.fa-remove
-              a.btn_1.gray.add-pricing-list-item(href='#0')
-                i.fa.fa-fw.fa-plus-circle
-                |Edit Item
+            .col-md-6
+              .form-group
+                bold(style="color:red") * 
+                label Select Pricing Range
+                .styled-select
+                  select(name="info[price]" required)
+                    option(selected)= listing.info.price || ''
+                    option 1
+                    option 2
+                    option 3
+                    option 4
+                    option 5
           // /row
           // /box_general
         button.btn.btn-primary.btn_1.medium(type="submit") Save

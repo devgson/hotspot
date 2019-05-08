@@ -2,12 +2,12 @@ header.header_in.header-menu_fixed
   .container
     .row
       .col-lg-3.col-12
-        #logo
-          a.d-md-flex(href='/', title='Hotspot - Find the hottest places in Lagos')
-            img.mt-2.mt-md-0.img-nav.mr-2(src='/img/flame.png')
-            h3.d-none.d-md-block.mt-2.mb-0.text-dark.logo-text.profile-custom Hotspot
+        #logo.mb-1
+          a(href='/', title='Hotspot - Find the hottest places in Lagos')
+            img(src='/img/flame.png' style="vertical-align:middle").mt-md-0.img-nav.mr-2
+            h3(style="vertical-align:middle").d-inline-block.mt-md-2.mb-0.logo-text.profile-custom Hotspot
       .col-lg-9.col-12
-        ul#top_menu
+        //ul#top_menu
           li.d-flex
             if !currentUser 
               a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
@@ -24,18 +24,32 @@ header.header_in.header-menu_fixed
           ul
             li
               span
-                a(href='/') Home
+                a.profile-custom(href='/') Home
             li
               span
-                a(href='/listings') Listings
-            li
-              span
-                if !currentUser 
-                  a.d-md-none.login(href='#sign-in-dialog', title='Sign In') Sign In
-                else
-                  a.d-md-none(href='/signout', title='Sign Out') Sign Out
-            li
-              a.d-md-none(href='/bookmarks', title='Your wishlist') Bookmarks
+                a.profile-custom(href='/listings') Listings
+            if currentUser
+              li
+                span
+                  a#alertsDropdown.nav-link.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                    img(src="img/avatar.png" class="mr-2 img-responsive img-circle avater-img" style="width:38px; height:38px; vertical-align:middle; border-radius:50%; border:2px solid #d54e0d" alt="")
+                    span.profile_custom= currentUser.first_name
+                  .dropdown-menu(aria-labelledby='alertsDropdown')
+                    a.dropdown-item(href='/mylistings')
+                      span(style="color:black") My Listings
+                    .dropdown-divider
+                    a.dropdown-item(href='/profile')
+                      span(style="color:black") Profile
+                    .dropdown-divider
+                    a.dropdown-item(href='/bookmarks')
+                      span(style="color:black") Bookmarks
+                    .dropdown-divider
+                    a.dropdown-item(href='/signout')
+                      span(style="color:black") Sign Out
+            else
+              li
+                span
+                  a#sign-in.login.w-7.profile-custom(href='#sign-in-dialog', title='Sign In') Sign In
             //- li
             //-   span
             //-     if !currentUser 

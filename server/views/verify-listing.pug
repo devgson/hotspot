@@ -4,6 +4,9 @@ block append stylesheets
   link(rel="stylesheet", href="/admin_section/vendor/dropzone/dropzone.css")
 
 block content
+  div.img-container(style="display: none")
+    .d-flex.align-items-center.h-100
+      img.mx-auto.loader-img(src="img/loader.gif")
   include partials/navbar.pug
   main.pt-7
     .container.mt-5
@@ -61,7 +64,10 @@ block content
                 input.form-control(type='text', name='owner_last_name', value=(user.last_name) readonly="readonly")
               .form-group.col-md-6.col-12
                 label Listing Name
-                input.form-control(type='text', name='listing_name', value=(listing.title) readonly="readonly")
+                input.form-control(type='text', name='title', value=(listing.title) readonly="readonly")
+                input.form-control(type='text', name='listing_image', value= listing.images ? listing.images[0] : '' hidden)
+                input.form-control(type='text', name='listing_category', value= listing.category hidden)
+                input.form-control(type='text', name='listing_slug', value= listing.slug hidden)
               .form-group.text-center.mt-3.col-md-12.col-12
                 input.mx-auto.btn_1.half-width.form-control(type='submit' value="Verify")
 
@@ -165,11 +171,13 @@ block content
           $('#saveImage').on('click', function(e){
             e.preventDefault();
             $('#myImage').get(0).dropzone.processQueue();
+            $('.img-container').show();
           })
 
           this.on('successmultiple', function(file,response){
-            console.log(this.files);
-            console.log(response);
+            $('.img-container').hide();
+            //console.log(this.files);
+            //console.log(response);
           })
 
           this.on("maxfilesexceeded", function(file) {
