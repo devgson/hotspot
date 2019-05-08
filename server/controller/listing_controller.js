@@ -109,7 +109,7 @@ exports.filterSearch = async (req, res) => {
   ]);
   const pageno = req.query.page || 1;
   const pageCount = Math.ceil(itemCount[0].total / req.query.limit);
-  console.log("count is ", itemCount[0].total);
+  console.log("count is ", itemCount[0]);
   res.render("category-view", {
     listings: results,
     pageCount,
