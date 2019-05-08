@@ -35,7 +35,6 @@ router.post("/search-listings", listing.findListings);
 router.get("/search-listings", listing.getfindListings);
 router.get("/category/:category", listing.getCategory);
 
-
 router.post("/api/update/:slug", user.isLoggedIn, listing.updateListing);
 router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
 router.get("/bookmarks", user.isLoggedIn, listing.getBookmarks);
@@ -64,8 +63,7 @@ router.post(
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    scope: ['email', 'profile'],
-    profileFields: ["birthday", "email", "first_name", "gender", "last_name"],
+    scope: ["email"],
     successRedirect: "/profile", // redirect to the secure profile section
     failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
@@ -75,7 +73,7 @@ router.get(
 router.get(
   "/auth/google",
   passport.authenticate("google", {
-    scope: ["https://www.googleapis.com/auth/plus.login"]
+    scope: ["email", "profile"]
   })
 );
 
@@ -92,7 +90,6 @@ router.get("/messages", (req, res) => {
   res.render("messages");
 });
 
-
 router.get("/mylistings", user.isLoggedIn, user.getUserListings);
 
 router.post("/verify", user.isLoggedIn, user.VerifyProcess);
@@ -107,7 +104,6 @@ router.post(
 router.get("/listing/:slug", listing.getListing);
 router.post("/api/bookmark/:listingId", user.bookmarkListing);
 router.post("/api/verify/:listingid", user.isUserLoggedIn, user.claimListing);
-
 
 /* Review Routes */
 router.get("/review", review.getReview);
