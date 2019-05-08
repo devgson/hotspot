@@ -109,12 +109,14 @@ exports.filterSearch = async (req, res) => {
   ]);
   const pageno = req.query.page || 1;
   console.log("count is ", itemCount[0]);
-  const pageCount = Math.ceil(itemCount[0].total / req.query.limit);
+  var item_count_total = itemCount.length > 0 ? itemCount[0].total : 0;
+  const pageCount = Math.ceil(item_count_total / req.query.limit);
+  console.log("count is ", item_count_total);
   res.render("category-view", {
     listings: results,
     pageCount,
     categories,
-    itemCount: itemCount[0].total,
+    itemCount: item_count_total,
     results,
     pageno,
     pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
@@ -351,13 +353,13 @@ exports.updateUserListing = async (req, res) => {
 };
 
 exports.updateListing = async (req, res) => {
-  console.log("user is",res.locals.user);
-  var listing = await Listing.findOneAndUpdate({ slug: req.params.slug }, req.body);
-  
-  req.flash(
-    "successVerify",
-    "Your Listing has been Successfully updated"
+  console.log("user is", res.locals.user);
+  var listing = await Listing.findOneAndUpdate(
+    { slug: req.params.slug },
+    req.body
   );
+
+  req.flash("successVerify", "Your Listing has been Successfully updated");
   res.redirect("/mylistings");
 };
 
