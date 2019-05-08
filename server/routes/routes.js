@@ -64,7 +64,8 @@ router.post(
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    scope: ["email"],
+    scope: ['email', 'profile'],
+    profileFields: ["birthday", "email", "first_name", "gender", "last_name"],
     successRedirect: "/profile", // redirect to the secure profile section
     failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
