@@ -197,7 +197,7 @@ module.exports = function(passport) {
       {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "/auth/facebook/callback",
+        callbackURL: "https://hotspots.com.ng/auth/facebook/callback",
         profileFields: ["last_name", "first_name", "link", "emails"],
         passReqToCallback: true
       },
@@ -246,7 +246,7 @@ module.exports = function(passport) {
       {
         clientID: process.env.GOOGLE_CONSUMER_KEY,
         clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
-        callbackURL: "/auth/google/callback",
+        callbackURL: "https://hotspots.com.ng/auth/google/callback",
         passReqToCallback: true
       },
       async function(req, token, tokenSecret, profile, done) {
