@@ -41,7 +41,7 @@ router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
 router.get("/bookmarks", user.isLoggedIn, listing.getBookmarks);
 
 router.get("/profile-social", (req, res) => {
-  res.render("profile-social", { user: req.session.facebook_social });
+  res.render("profile-social", { user: req.session.social_user });
 });
 router.post(
   "/signin",
@@ -66,7 +66,7 @@ router.get(
   passport.authenticate("facebook", {
     scope: ["email"],
     successRedirect: "/profile", // redirect to the secure profile section
-    failureRedirect: "/?showdefaultmodal=true", // redirect back to the signup page if there is an error
+    failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   })
 );
@@ -82,7 +82,7 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: "/profile", // redirect to the secure profile section
-    failureRedirect: "/?showdefaultmodal=true", // redirect back to the signup page if there is an error
+    failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   })
 );
