@@ -251,7 +251,7 @@ module.exports = function(passport) {
       },
       async function(req, token, tokenSecret, profile, done) {
         try {
-          console.log(profile._json.emails[0].value);
+          console.log(profile);
           await User.findOne(
             { email: profile._json.emails[0].value },
             async function(err, user) {
