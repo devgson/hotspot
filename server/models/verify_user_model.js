@@ -11,7 +11,7 @@ const VerifiedListingSchema = new Schema({
         type: String
 
     },
-    listing_name: {
+    title: {
         type: String
     },
     listing_image: {

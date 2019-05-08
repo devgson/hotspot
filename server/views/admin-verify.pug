@@ -25,7 +25,7 @@ block content
                   figure
                     img(src= verification.listing_image ? verification.listing_image : '/img/blog-3.jpg', alt='')
                   //- small #{listing.category}
-                  h4 #{verification.listing_name} 
+                  h4 #{verification.title} 
                     i(class=`${verification.verification_status === 'true' ? "approved" : "cancel"}`) #{verification.verification_status === 'true' ? "approved" : "unapproved"}
                     
 

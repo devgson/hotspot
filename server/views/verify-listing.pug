@@ -64,7 +64,7 @@ block content
                 input.form-control(type='text', name='owner_last_name', value=(user.last_name) readonly="readonly")
               .form-group.col-md-6.col-12
                 label Listing Name
-                input.form-control(type='text', name='listing_name', value=(listing.title) readonly="readonly")
+                input.form-control(type='text', name='title', value=(listing.title) readonly="readonly")
                 input.form-control(type='text', name='listing_image', value= listing.images ? listing.images[0] : '' hidden)
                 input.form-control(type='text', name='listing_category', value= listing.category hidden)
                 input.form-control(type='text', name='listing_slug', value= listing.slug hidden)

@@ -351,6 +351,7 @@ exports.updateUserListing = async (req, res) => {
 };
 
 exports.updateListing = async (req, res) => {
+  console.log("user is",res.locals.user);
   var listing = await Listing.findOneAndUpdate({ slug: req.params.slug }, req.body);
   
   req.flash(
