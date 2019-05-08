@@ -66,7 +66,7 @@ router.get(
   passport.authenticate("facebook", {
     scope: ["email"],
     successRedirect: "/profile", // redirect to the secure profile section
-    failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
+    failureRedirect: "/?showdefaultmodal=true", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   })
 );
@@ -82,7 +82,7 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: "/profile", // redirect to the secure profile section
-    failureRedirect: "/profile-social", // redirect back to the signup page if there is an error
+    failureRedirect: "/?showdefaultmodal=true", // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   })
 );
