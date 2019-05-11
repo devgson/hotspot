@@ -428,12 +428,25 @@ exports.getAllListings = async (req, res, next) => {
 
 exports.addListingfromGoogle = async (req, res, next) => {
   try {
+    var pagetoken = '';
+    req.listings = [];
     url =
-      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Lagos&fields=rating,formatted_phone_number,address_component,opening_hours,formatted_phone_number,opening_hours,website,restaurant,opening_hours,night_club,shopping_mall,museum,supermarket,bowling_alley,bar&key=" +
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
       process.env.GOOGLE_KEY;
+    nextpageurl =
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
+      process.env.GOOGLE_KEY +
+      "&pagetoken=" +
+      pagetoken;
     const response = await fetch(url);
-    const json = await response.json();
-    req.listings = json;
+    var json = await response.json();
+    req.listings.push(json);
+    while (json.next_page_token) {
+      pagetoken = json.next_page_token;
+      json = await fetch(nextpageurl);
+      req.listings.push(response.json);
+    }
+    console.log("found listing ",req.listings)
     next();
   } catch (error) {
     res.send(error.message);
@@ -496,26 +509,26 @@ exports.createSuperadmin = async (req, res, next) => {
 exports.addListingtodb = async (req, res, next) => {
   try {
     const listings = req.listings.results;
-    await Promise.all(
-      listings.map(async listing => {
-        return await new Listing({
-          title: listing.name,
-          tags: listing.types,
-          category: listing.types[0],
-          info: {
-            address: listing.formatted_address,
-            price: listing.price_level || 0,
-            country: "Nigeria",
-            state: "Lagos",
-            coordinates: {
-              lat: listing.geometry.location.lat,
-              lon: listing.geometry.location.lng
-            }
-          }
-        }).save();
-      })
-    );
-    console.log("Listings added");
+    // await Promise.all(
+    //   listings.map(async listing => {
+    //     return await new Listing({
+    //       title: listing.name,
+    //       tags: listing.types,
+    //       category: listing.types[0],
+    //       info: {
+    //         address: listing.formatted_address,
+    //         price: listing.price_level || 0,
+    //         country: "Nigeria",
+    //         state: "Lagos",
+    //         coordinates: {
+    //           lat: listing.geometry.location.lat,
+    //           lon: listing.geometry.location.lng
+    //         }
+    //       }
+    //     }).save();
+    //   })
+    // );
+    console.log(req.listings.length);
     res.redirect("/listings");
   } catch (error) {
     console.log(error);
