@@ -2,6 +2,9 @@ const Listing = require("../models/listing_model");
 const User = require("../models/user_model");
 const Review = require("../models/review_model");
 const helper = require("../helper/helper");
+const fetch = require("node-fetch");
+const { google } = require("googleapis");
+
 const paginate = require("express-paginate");
 const lodash = require("lodash");
 
@@ -67,6 +70,7 @@ exports.getListing = async (req, res) => {
     res.send(error.message);
   }
 };
+
 exports.filterSearch = async (req, res) => {
   var rating_int;
   var query_selector = {};
@@ -164,9 +168,9 @@ exports.getFilters = async (req, res) => {
     pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
   });
 };
+
 exports.findListings = async (req, res) => {
   try {
-    console.log(req.body);
     req.session.category_search = req.body.category;
     req.session.title_search = req.body.title;
     req.session.address_search = req.body.location;
@@ -231,9 +235,6 @@ exports.getHomeListings = async (req, res) => {
         $options: "i"
       }
     };
-
-    console.log(query);
-
     var categories = await Listing.getCategoryList();
     const [results, itemCount] = await Promise.all([
       Listing.find({ ...query })
@@ -295,6 +296,45 @@ exports.getfindListings = async (req, res) => {
   }
 };
 
+exports.explore = async (req, res) => {
+  try {
+    const url =
+      `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=1+Azikiwe+Road,port-harcourt&destinations=No+9+william+Jumbo+Old+GRA,port-harcourt&key=` +
+      process.env.GOOGLE_KEY;
+    const response = await fetch(url);
+    const json = await response.json();
+    return res.json({
+      data: json
+    });
+    /*const [results, itemCount] = await Promise.all([
+      Listing.find()
+        .limit(req.query.limit)
+        .skip(req.skip)
+        .lean()
+        .exec(),
+      Listing.countDocuments({})
+    ]);
+    const pageno = req.query.page || 1;
+
+    var categories = await Listing.getCategoryList();
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    res.render("explore", {
+      listings: results,
+      pageCount,
+      itemCount,
+      categories,
+      results,
+      pageno,
+      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+    });*/
+
+    // const listings = await Listing.find({...query})
+    // res.render('category-view', { listings })
+  } catch (e) {
+    res.send(e.message);
+  }
+};
+
 exports.getBookmarks = async (req, res) => {
   try {
     const user = res.locals.currentUser;
@@ -313,6 +353,7 @@ exports.getBookmarks = async (req, res) => {
     res.send(e.message);
   }
 };
+
 exports.getCategory = async (req, res) => {
   try {
     const [results, itemCount] = await Promise.all([
@@ -351,12 +392,12 @@ exports.updateUserListing = async (req, res) => {
 };
 
 exports.updateListing = async (req, res) => {
-  var listing = await Listing.findOneAndUpdate({ slug: req.params.slug }, req.body);
-  
-  req.flash(
-    "successVerify",
-    "Your Listing has been Successfully updated"
+  var listing = await Listing.findOneAndUpdate(
+    { slug: req.params.slug },
+    req.body
   );
+
+  req.flash("successVerify", "Your Listing has been Successfully updated");
   res.redirect("/mylistings");
 };
 

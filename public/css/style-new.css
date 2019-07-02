@@ -4705,8 +4705,8 @@ section#reviews {
 
 #review_summary {
   text-align: center;
-  background-color: #32a067;
-  color: #fff;
+  /*background-color: #32a067;*/
+  /*color: #fff;*/
   padding: 20px 10px;
   -webkit-border-radius: 3px 3px 3px 0;
   -moz-border-radius: 3px 3px 3px 0;
@@ -4782,7 +4782,7 @@ section#reviews {
 }
 
 .reviews-container .progress-bar {
-  background-color: #32a067;
+  background-color: #a1a7b3;
 }
 
 .reviews-container .review-box {

@@ -12,7 +12,7 @@ router.get("/", listing.index);
 //   res.render('grid-search');
 // })
 
-router.get("/listings", listing.getfindListings);
+router.get("/explore", listing.getfindListings);
 router.get("/api/search", listing.autoSearch);
 /* User Authentication Routes */
 
@@ -31,10 +31,12 @@ router.get("/search-home-listings", listing.getHomeListings);
 router.post("/api/filter", listing.filterSearch);
 router.get("/api/filter", listing.getFilters);
 
+//router.get("/explore", listing.explore);
+//router.get("/explore/location", listing.exploreByLocation);
+
 router.post("/search-listings", listing.findListings);
 router.get("/search-listings", listing.getfindListings);
 router.get("/category/:category", listing.getCategory);
-
 
 router.post("/api/update/:slug", user.isLoggedIn, listing.updateListing);
 router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
@@ -91,7 +93,6 @@ router.get("/messages", (req, res) => {
   res.render("messages");
 });
 
-
 router.get("/mylistings", user.isLoggedIn, user.getUserListings);
 
 router.post("/verify", user.isLoggedIn, user.VerifyProcess);
@@ -106,7 +107,6 @@ router.post(
 router.get("/listing/:slug", listing.getListing);
 router.post("/api/bookmark/:listingId", user.bookmarkListing);
 router.post("/api/verify/:listingid", user.isUserLoggedIn, user.claimListing);
-
 
 /* Review Routes */
 router.get("/review", review.getReview);

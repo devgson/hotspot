@@ -45,7 +45,10 @@ block content
                 - for( var i = 0 ; i < listing.info.price; i++){
                   span(style="color:#32a067") $
                 - }
-            p= listing.description
+            h5 Description
+            .row
+              .col-md-12
+                p= listing.description
             h5.add_bottom_15 Tags
             .row.add_bottom_30
               .col-md-12
@@ -105,8 +108,8 @@ block content
                         - reviewClass = "good";
                       else if reviewNumber > 7 && reviewNumber <= 10
                         - reviewClass = "superb";
-                      #review_summary(class=reviewClass)
-                        strong #{reviewNumber} / 10
+                      #review_summary(class="score")
+                        strong(class=reviewClass) #{reviewNumber} / 10
                         //em Superb
                         small Based on #{reviewsInfo.numberOfReviews} reviews
                     else
@@ -232,7 +235,7 @@ block content
           .box_detail.booking
             .price
               h5.d-inline Contact us
-              if reviewsInfo
+              //if reviewsInfo
                 - const review = parseInt((reviewsInfo.total/reviewsInfo.numberOfReviews).toFixed(1)*2);
                 - let className = "";
                 .score
