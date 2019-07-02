@@ -429,7 +429,7 @@ exports.getAllListings = async (req, res, next) => {
 exports.addListingfromGoogle = async (req, res, next) => {
   try {
     url =
-      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Lagos&fields=rating,formatted_phone_number,address_component,opening_hours,formatted_phone_number,opening_hours,website,restaurant,opening_hours,night_club,shopping_mall,museum,supermarket,bowling_alley,bar&key=" +
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Lagos&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
       process.env.GOOGLE_KEY;
     const response = await fetch(url);
     const json = await response.json();

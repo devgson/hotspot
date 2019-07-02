@@ -59,7 +59,7 @@ const UserSchema = new Schema({
       listing_id: {
         type: String
       },
-      listing_title: {
+      title: {
         type: String
       },
       category: {

@@ -4705,8 +4705,13 @@ section#reviews {
 
 #review_summary {
   text-align: center;
+<<<<<<< HEAD
   /*background-color: #32a067;*/
   /*color: #fff;*/
+=======
+  background-color: #32a067;
+  color: #fff;
+>>>>>>> 41c4dbfc6a119d5ebd10093f441849b984f720e1
   padding: 20px 10px;
   -webkit-border-radius: 3px 3px 3px 0;
   -moz-border-radius: 3px 3px 3px 0;
@@ -8805,8 +8810,6 @@ header.sticky ul#top_menu li .sign-out {
   height: 6em;
   object-fit: cover;
 }
-<<<<<<< HEAD
-=======
 .img-listings{
     width: auto;
     height: 6em;
@@ -8837,4 +8840,3 @@ header.sticky ul#top_menu li .sign-out {
       .search__result--active {
         background: #f1f1f1; }
   
->>>>>>> a9c407ab3aff1de2321a619d93e594f5ff1797b2

@@ -139,10 +139,9 @@ exports.VerifyProcess = async (req, res, next) => {
 exports.uploadVerification = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.listingid);
-    console.log("listing is", listing);
     const user = res.locals.currentUser;
     var listing_details = {
-      listing_name: listing.title,
+      title: listing.title,
       listing_id: listing._id,
       owner: user._id,
       verification_documents: []
@@ -175,7 +174,7 @@ exports.claimListing = async (req, res, next) => {
     var current_listing = {
       listing_id: req.params.listingid,
       status: false,
-      listing_title: req.body.listing_name,
+      title: req.body.title,
       category: req.body.listing_category,
       listing_image: req.body.listing_image,
       listing_slug: req.body.listing_slug

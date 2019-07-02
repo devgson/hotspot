@@ -43,7 +43,7 @@ router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
 router.get("/bookmarks", user.isLoggedIn, listing.getBookmarks);
 
 router.get("/profile-social", (req, res) => {
-  res.render("profile-social", { user: req.session.facebook_social });
+  res.render("profile-social", { user: req.session.social_user });
 });
 router.post(
   "/signin",
@@ -76,7 +76,7 @@ router.get(
 router.get(
   "/auth/google",
   passport.authenticate("google", {
-    scope: ["https://www.googleapis.com/auth/plus.login"]
+    scope: ["email", "profile"]
   })
 );
 
