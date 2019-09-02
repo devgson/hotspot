@@ -444,6 +444,7 @@ exports.doSettimeout = nextpageurl => {
 };
 
 exports.addListingfromGoogle = async (req, res, next) => {
+  let cat = req.body.category;
   var pagetoken = "";
   req.listings = [];
   let json = [];
@@ -452,7 +453,7 @@ exports.addListingfromGoogle = async (req, res, next) => {
   let request_count = 1;
   try {
     url =
-      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+lagos&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=${cat}+in+lagos&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
       process.env.GOOGLE_KEY;
 
     temp_data = await helper.getRequest(url);
@@ -462,7 +463,7 @@ exports.addListingfromGoogle = async (req, res, next) => {
     while (next_token) {
       request_count += 3;
       nextpageurl =
-        "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?query=${cat}+in+lagos&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
         process.env.GOOGLE_KEY +
         "&pagetoken=" +
         pagetoken +

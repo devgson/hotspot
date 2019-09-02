@@ -18,7 +18,7 @@ exports.index = async (req, res) => {
     );
     const getCategories = lodash.uniqBy(listings, "category");
     const categories = getCategories.map(cat => {
-      return cat.category;
+      return cat.category.replace(/_/g, " ");
     });
     res.render("index", {
       listings,

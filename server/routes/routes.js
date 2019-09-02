@@ -164,12 +164,19 @@ router.get(
   admin.isAdminLoggedIn,
   admin.DeleteListing
 );
-router.get(
-  "/admin/populate-listings",
+
+router.post(
+  "/admin/populate",
   admin.isAdminLoggedIn,
   admin.addListingfromGoogle,
   admin.addListingtodb
 );
+// router.get(
+//   "/admin/populate-listings",
+//   admin.isAdminLoggedIn,
+//   admin.addListingfromGoogle,
+//   admin.addListingtodb
+// );
 
 /*router.get('/row-search', (req, res) => {
   res.render('row-search');
