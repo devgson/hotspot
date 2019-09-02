@@ -2,6 +2,9 @@ const Listing = require("../models/listing_model");
 const User = require("../models/user_model");
 const Review = require("../models/review_model");
 const helper = require("../helper/helper");
+const fetch = require("node-fetch");
+const { google } = require("googleapis");
+
 const paginate = require("express-paginate");
 const lodash = require("lodash");
 
@@ -353,13 +356,15 @@ exports.updateUserListing = async (req, res) => {
 };
 
 exports.updateListing = async (req, res) => {
-  console.log("user is",res.locals.user);
-  var listing = await Listing.findOneAndUpdate({ slug: req.params.slug }, req.body);
-  
-  req.flash(
-    "successVerify",
-    "Your Listing has been Successfully updated"
+  console.log("user is", res.locals.user);
+  var listing = await Listing.findOneAndUpdate(
+    { slug: req.params.slug },
+    req.body
   );
+
+  req.flash("successVerify", "Your Listing has been Successfully updated");
+
+  req.flash("successVerify", "Your Listing has been Successfully updated");
   res.redirect("/mylistings");
 };
 

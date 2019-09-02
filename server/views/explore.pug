@@ -15,7 +15,7 @@ block content
                   |   Results found
                 else
                   strong 0 Results found
-            .col-lg-9.col-md-8.col-2
+            //.col-lg-9.col-md-8.col-2
               a.side_panel.btn_search_mobile(href='#0')
               // /open search panel
               .row.no-gutters.custom-search-input-2.inner
@@ -130,7 +130,7 @@ block content
                 .wrapper
                   h3
                     a(href=`/listing/${listing.slug}`) #{listing.title}
-                  //small #{listing.info ? listing.info.address : ''}
+                  small #{listing.info ? listing.info.address : ''}
                   p #{listing.description ? `${listing.description.slice(0,25)}...` : ''}
                   a.address(href=`https://maps.google.com/?q=${listing.info.address || ''}`, target='_blank') Get directions
                 ul
@@ -172,3 +172,21 @@ block content
           h4 No Results Found
   include partials/paginate.pug
   include partials/footer.pug
+block append scripts
+  script.
+    if ("geolocation" in navigator) {
+      // check if geolocation is supported/enabled on current browser
+      navigator.geolocation.getCurrentPosition(
+      function success(position) {
+        // for when getting location is a success
+        console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+      },
+      function error(error_message) {
+        // for when getting location results in an error
+        console.error('An error has occured while retrieving location', error_message);
+      })
+    } else {
+      // geolocation is not supported
+      // get your location some other way
+      console.log('geolocation is not enabled on this browser');
+    }
