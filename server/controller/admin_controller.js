@@ -3,11 +3,12 @@ const User = require("../models/user_model");
 const Admin = require("../models/admin_model");
 const Verify = require("../models/verify_user_model");
 const fetch = require("node-fetch");
-const algoliasearch = require("algoliasearch");
+const helper = require("../helper/helper");
+// const algoliasearch = require("algoliasearch");
 const { google } = require("googleapis");
 
-var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
-var index = client.initIndex("listings");
+// var client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
+// var index = client.initIndex("listings");
 const { cloudinary, flat } = require("../helper/helper");
 
 const scopes = "https://www.googleapis.com/auth/analytics.readonly";
@@ -337,9 +338,7 @@ async function getCoordinates(address, state, country = "Nigeria") {
     if (json.status === "ZERO_RESULTS")
       return "The address passed along does not exist, please pass a valid address";
     if (json.status !== "OK")
-      return `An error : ${
-        json.status
-      } occured while trying to parse the listing address`;
+      return `An error : ${json.status} occured while trying to parse the listing address`;
     const coordinates = json.results[0].geometry.location;
     return {
       lat: coordinates.lat,
@@ -426,27 +425,60 @@ exports.getAllListings = async (req, res, next) => {
   }
 };
 
+exports.doSettimeout = nextpageurl => {
+  // let temp_next_data = null;
+  // setTimeout(async () => {
+  //   temp_next_data = await helper.getRequest(nextpageurl);
+  //   console.log(nextpageurl);
+  // }, 5000);
+  // console.log("next ", temp_next_data);
+  // return temp_next_data;
+
+  var promise = new Promise(function(resolve, reject) {
+    setTimeout(async function() {
+      temp_next_data = await helper.getRequest(nextpageurl);
+      resolve(temp_next_data);
+    }, 5000);
+  });
+  return promise;
+};
+
 exports.addListingfromGoogle = async (req, res, next) => {
+  var pagetoken = "";
+  req.listings = [];
+  let json = [];
+  let temp_next_data,
+    temp_data = null;
+  let request_count = 1;
   try {
-    var pagetoken = '';
-    req.listings = [];
     url =
-      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
+      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+lagos&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
       process.env.GOOGLE_KEY;
-    nextpageurl =
-      "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
-      process.env.GOOGLE_KEY +
-      "&pagetoken=" +
-      pagetoken;
-    const response = await fetch(url);
-    var json = await response.json();
-    req.listings.push(json);
-    while (json.next_page_token) {
-      pagetoken = json.next_page_token;
-      json = await fetch(nextpageurl);
-      req.listings.push(response.json);
+
+    temp_data = await helper.getRequest(url);
+    json.push(...temp_data.results);
+    let next_token = temp_data.next_page_token ? true : false;
+    pagetoken = temp_data.next_page_token;
+    while (next_token) {
+      request_count += 3;
+      nextpageurl =
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+london&fields=rating,formatted_phone_number,address_component,opening_hours,website,restaurant,opening_hours&key=" +
+        process.env.GOOGLE_KEY +
+        "&pagetoken=" +
+        pagetoken +
+        "&request_count=" +
+        request_count;
+      temp_next_data = await this.doSettimeout(nextpageurl);
+      // console.log(temp_next_data);
+      // console.log("next ", pagetoken);
+      json.push(...temp_next_data.results);
+      next_token = temp_next_data.next_page_token ? true : false;
+      pagetoken = temp_next_data.next_page_token
+        ? temp_next_data.next_page_token
+        : "false";
     }
-    console.log("found listing ",req.listings)
+    req.listings = [...json];
+    console.log("found listing ", req.listings.length);
     next();
   } catch (error) {
     res.send(error.message);
@@ -508,28 +540,28 @@ exports.createSuperadmin = async (req, res, next) => {
 
 exports.addListingtodb = async (req, res, next) => {
   try {
-    const listings = req.listings.results;
-    // await Promise.all(
-    //   listings.map(async listing => {
-    //     return await new Listing({
-    //       title: listing.name,
-    //       tags: listing.types,
-    //       category: listing.types[0],
-    //       info: {
-    //         address: listing.formatted_address,
-    //         price: listing.price_level || 0,
-    //         country: "Nigeria",
-    //         state: "Lagos",
-    //         coordinates: {
-    //           lat: listing.geometry.location.lat,
-    //           lon: listing.geometry.location.lng
-    //         }
-    //       }
-    //     }).save();
-    //   })
-    // );
-    console.log(req.listings.length);
-    res.redirect("/listings");
+    const listings = req.listings;
+    await Promise.all(
+      listings.map(async listing => {
+        return await new Listing({
+          title: listing.name,
+          tags: listing.types,
+          category: listing.types[0],
+          info: {
+            address: listing.formatted_address,
+            price: listing.price_level || 0,
+            country: "Nigeria",
+            state: "Lagos",
+            coordinates: {
+              lat: listing.geometry.location.lat,
+              lon: listing.geometry.location.lng
+            }
+          }
+        }).save();
+      })
+    );
+    // console.log(req.listings.length);
+    res.redirect("/admin/listings");
   } catch (error) {
     console.log(error);
   }

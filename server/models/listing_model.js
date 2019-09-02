@@ -91,13 +91,8 @@ ListingSchema.statics.getCategoryList = function() {
     { $unwind: "$category" },
     { $group: { _id: "$category", count: { $sum: 1 } } },
     { $sort: { count: -1 } }
-  ])
+  ]);
 };
-
-ListingSchema.index({
-  title: "text",
-  description: "text"
-});
 
 ListingSchema.virtual("reviews", {
   ref: "review",

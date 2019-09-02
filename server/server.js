@@ -14,18 +14,18 @@ const mongoStore = require("connect-mongo")(session);
 const fileUpload = require("express-fileupload");
 const algoliasearch = require("algoliasearch");
 const isProd = false;
-const db = 
-process.env.NODE_ENV === "production" || isProd
+const db =
+  process.env.NODE_ENV === "production" || isProd
     ? process.env.PRODUCTION_DB
     : process.env.DEV_DB;
 const path = require("path");
 require("./auth/config")(passport);
 
-const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
-const index = client.initIndex("listings");
-index.setSettings({
-  searchableAttributes: ["title", "tags", "category", "info"]
-});
+// const client = algoliasearch(process.env.ALGOLIA_ID, process.env.ALGOLIA_ADMIN);
+// const index = client.initIndex("listings");
+// index.setSettings({
+//   searchableAttributes: ["title", "tags", "category", "info"]
+// });
 
 const paginate = require("express-paginate");
 const User = require("./models/user_model");
