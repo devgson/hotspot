@@ -7,7 +7,10 @@ block content
   include partials/admin-nav.pug
   .content-wrapper
     .container-fluid
-      include partials/bread-crumb.pug
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='#') Dashboard
+        li.breadcrumb-item.active Verify Listing
       if verification && verification.verification_documents.length > 0
         .box_general.padding_bottom
           .header_box.version_2
@@ -22,7 +25,29 @@ block content
                   //-   li
                   //-     a#delete-image(title="Delete Image" href=`/admin/delete-image/${listing.slug}` data-id=image.public_id  onclick='return confirm("Are you sure you want to delete?")')
                   //-       span.loc_closed Delete
-
+      .box_general.padding_bottom
+        .header_box.version_2
+          h2
+            i.fa.fa-file
+            | User Details
+        .row
+          .col-md-6
+            .form-group
+              bold(style="color:red")
+              label First Name
+              input.form-control(type='text', value=verification.user.first_name, name='first_name', disabled)
+          .col-md-6
+            .form-group
+              bold(style="color:red")
+              label Last Name
+              input.form-control(type='text', value=verification.user.last_name, name='last_name', disabled)
+        .row
+          .col-md-6
+            .form-group
+              bold(style="color:red")
+              label Email
+              input.form-control(type='text', value=verification.user.email, name='email', disabled)
+                  
       .box_general.padding_bottom
         .header_box.version_2
           h2
@@ -31,39 +56,35 @@ block content
         .row
           .col-md-6
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Listing Title
-              - console.log(listing)
               input.form-control(type='text', value=listing.title, name='title', placeholder='Hotel Mariott' disabled)
           .col-md-6
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red") 
               label Category
               .styled-select
                 select(name="category" required value=listing.category disabled)
-                  option Hotel
-                  option Shops
-                  option Restaurant
-                  option Bar
+                  option= listing.category
         .row
           .col-md-6
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Tags
               if listing.slug
-                -var tag_listings = listing.tags.toString();
-              input.form-control(type='text', value= tag_listings placeholder='Tags MUST be separated by commas' name='tags' disabled)
+                - const tagListings = listing.tags.toString();
+              input.form-control(type='text', value= tagListings placeholder='Tags MUST be separated by commas' name='tags' disabled)
         .row
           .col-md-12
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Description
               .editor
                 textarea.form-control.note-codable(role='textbox', aria-multiline='true' name="description" rows="5" required disabled) #{listing.description}
         .row
           .col-md-4
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Phone Number
               input.form-control(type='text' name='info[number]' value=listing.info.number disabled)
           .col-md-4
@@ -72,7 +93,7 @@ block content
               input.form-control(type='text' name='info[website]' value=listing.info.website disabled)
           .col-md-4
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red") 
               label Email
               input.form-control(type='text' name='info[email]' value=listing.info.email disabled)
         .row
@@ -93,7 +114,7 @@ block content
         .row
           .col-md-6
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Select State
               .styled-select
                 select(name="info[state]" value=listing.info.state required disabled)
@@ -101,10 +122,11 @@ block content
                   option Abuja
           .col-md-6
             .form-group
-              bold(style="color:red") * 
+              bold(style="color:red")
               label Address
               input.form-control(type='text', value=listing.info.address placeholder='ex. 250, Fifth Avenue...' name='info[address]' required disabled)
-      form.mb-3(action=`/admin/update-verification/${verification._id}` id="approvelisting" method="post")
+      if verification.verification_status !== "verified" || "denied"
+        //form.mb-3(action=`/admin/verification/${verification._id}` id="approvelisting" method="post")
         .box_general.padding_bottom
           .header_box.version_2
             h2
@@ -114,14 +136,12 @@ block content
             .col-md-6
               ul.d-flex.pl-0(style="list-style: none")
                 li.pr-3
-                label(for="approve-box")
-                  a(class="btn_1 gray width-approve mr-2 approve approve-btn pr-5")
-                    i(class="fa fa-fw fa-check-circle-o") Approve
-                input(type="text" id="approved" name="verification_status" hidden)
+                  a.bg-success.text-center.text-light.p-3(class="btn_1 gray width-approve mr-2 approve approve-btn" href=`/admin/verification/${verification._id}/verify`) Approve
+                    //i(class="fa fa-fw fa-check-circle-o") Approve
                 li.pr-3
-                  a(class="btn_1 gray width-approve delete pr-5")
-                    i(class="fa fa-fw fa-times-circle-o") Cancel
-            
+                  a.bg-danger.text-center.text-light.p-3(class="btn_1 gray width-approve delete" href=`/admin/verification/${verification._id}/deny`) Deny
+                    //i(class="fa fa-fw fa-times-circle-o") Deny
+
         //- button.btn.btn-primary.btn_1.medium(type="submit") Save
   
   include partials/admin-footer.pug

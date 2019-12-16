@@ -6,45 +6,80 @@ const admin = require("../controller/admin_controller");
 const listing = require("../controller/listing_controller");
 const review = require("../controller/review_controller");
 
+/* Review Routes */
+router.get("/review", review.getReview);
+router.get("/review/delete/:reviewId", review.deleteReview);
+router.post("/review/:listing", user.isUserLoggedIn, review.addReview);
+
+/* Users Routes */
 router.get("/", listing.index);
-
-// router.get('/listings', (req, res) => {
-//   res.render('grid-search');
-// })
-
 router.get("/explore", listing.getfindListings);
-router.get("/api/search", listing.autoSearch);
-/* User Authentication Routes */
-
 router.get("/register", user.redirectIfLoggedIn, user.userSignupLogin);
-router.get("/profile", user.isLoggedIn, user.userProfile);
-router.post("/profile/:userId", user.isLoggedIn, user.updateUserProfile);
+router.get("/profile-social", (req, res) => { res.render("profile-social", { user: req.session.social_user }); });
+router.get("/messages", (req, res) => { res.render("messages"); });
+router.get("/mylistings", user.isLoggedIn, user.getUserListings);
 router.get("/signout", user.isLoggedIn, user.signout);
 
-router.get("/add-listing", (req, res) => {
-  res.render("add-listing");
-});
+router.get("/verify/:listingId", user.isLoggedIn, user.verify);
+router.post("/verify-upload/:listingId",user.isUserLoggedIn,user.uploadVerification);
+router.post("/api/verify/:listingId", user.isUserLoggedIn, user.claimListing);
 
-router.post("/search-home-listings", listing.findListings);
+router.get("/bookmarks", user.isLoggedIn, user.getUsersBookmarks);
+router.post("/api/bookmark/:listingId", user.isLoggedIn, user.updateUsersBookmarks);
+
+router.get("/profile", user.isLoggedIn, user.userProfile);
+router.post("/profile/:userId", user.isLoggedIn, user.updateUserProfile);
+
+
+/* Lisiting Routes */
+router.get("/api/search", listing.autoSearch);
+router.get("/category/:category", listing.getCategory);
+router.get("/listing/:slug", listing.getListing);
+router.get("/add-listing", (req, res) => { res.render("add-listing"); });
+
 router.get("/search-home-listings", listing.getHomeListings);
+router.post("/search-home-listings", listing.findListings);
 
-router.post("/api/filter", listing.filterSearch);
+router.get("/search-listings", listing.getfindListings);
+router.post("/search-listings", listing.findListings);
+
+router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
+router.post("/api/update/:slug", user.isLoggedIn, listing.updateListing);
+
 router.get("/api/filter", listing.getFilters);
+router.post("/api/filter", listing.filterSearch);
 
 //router.get("/explore", listing.explore);
 //router.get("/explore/location", listing.exploreByLocation);
 
-router.post("/search-listings", listing.findListings);
-router.get("/search-listings", listing.getfindListings);
-router.get("/category/:category", listing.getCategory);
 
-router.post("/api/update/:slug", user.isLoggedIn, listing.updateListing);
-router.get("/update/listing/:slug", user.isLoggedIn, listing.updateUserListing);
-router.get("/bookmarks", user.isLoggedIn, listing.getBookmarks);
+/* Admin Routes */
+router.get("/admin", admin.isAdminLoggedIn, admin.getAllListings);
+router.get("/admin/create", admin.createSuperadmin);
+router.get("/admin/dashboard", admin.isAdminLoggedIn, admin.dashboard);
+router.get("/admin/listings", admin.isAdminLoggedIn, admin.getAllListings);
+router.get("/admin/algolia", admin.addListingtoAlgolia);
+router.get("/admin/delete-listing/:listing", admin.isAdminLoggedIn, admin.DeleteListing);
+router.get("/admin/logout", admin.isAdminLoggedIn, admin.signout);
+router.post("/admin/populate", admin.isAdminLoggedIn, admin.addListingfromGoogle, admin.addListingtodb);
 
-router.get("/profile-social", (req, res) => {
-  res.render("profile-social", { user: req.session.social_user });
-});
+router.get("/admin/verification",admin.isAdminLoggedIn,admin.getVerifiedListings);
+router.get("/admin/verification/:id",admin.isAdminLoggedIn,admin.getVerifiedListing);
+router.get("/admin/verification/:verificationId/:status",admin.isAdminLoggedIn,admin.updateVerification);
+
+router.get("/admin/add-listing", admin.isAdminLoggedIn, admin.getAddListing);
+router.post("/admin/add-listing", admin.isAdminLoggedIn, admin.postAddListing);
+
+router.get("/admin/edit-listing/:listing",admin.isAdminLoggedIn,admin.getEditListing);
+router.post("/admin/edit-listing/:listing",admin.isAdminLoggedIn,admin.editListing);
+
+router.post("/admin/upload-header/:slug", admin.uploadHeader);
+router.post("/admin/upload-image/:slug", admin.uploadImages);
+router.post("/admin/delete-image/:slug", admin.deleteImage);
+
+router.get("/admin/login", admin.redirectIfLoggedIn, admin.getSignIn);
+router.post("/admin/login", admin.postSignIn);
+
 router.post(
   "/signin",
   passport.authenticate("local-login", {
@@ -89,96 +124,4 @@ router.get(
   })
 );
 
-router.get("/messages", (req, res) => {
-  res.render("messages");
-});
-
-router.get("/mylistings", user.isLoggedIn, user.getUserListings);
-
-router.post("/verify", user.isLoggedIn, user.VerifyProcess);
-
-router.post(
-  "/verify-upload/:listingid",
-  user.isUserLoggedIn,
-  user.uploadVerification
-);
-
-/* Listing Routes */
-router.get("/listing/:slug", listing.getListing);
-router.post("/api/bookmark/:listingId", user.bookmarkListing);
-router.post("/api/verify/:listingid", user.isUserLoggedIn, user.claimListing);
-
-/* Review Routes */
-router.get("/review", review.getReview);
-router.post("/review/:listing", user.isUserLoggedIn, review.addReview);
-router.get("/review/delete/:reviewId", review.deleteReview);
-
-/* Admin Routes */
-router.get("/admin/dashboard", admin.isAdminLoggedIn, admin.dashboard);
-router.get(
-  "/admin/verification",
-  admin.isAdminLoggedIn,
-  admin.getVerifiedListings
-);
-router.get(
-  "/admin/verification/:id",
-  admin.isAdminLoggedIn,
-  admin.getVerifiedListing
-);
-router.get("/admin/add-listing", admin.isAdminLoggedIn, admin.getAddListing);
-router.get(
-  "/admin/edit-listing/:listing",
-  admin.isAdminLoggedIn,
-  admin.getEditListing
-);
-router.post("/admin/add-listing", admin.isAdminLoggedIn, admin.postAddListing);
-router.post(
-  "/admin/edit-listing/:listing",
-  admin.isAdminLoggedIn,
-  admin.editListing
-);
-
-router.post(
-  "/admin/update-verification/:verificationid",
-  admin.isAdminLoggedIn,
-  admin.updateVerification
-);
-
-router.post("/admin/upload-header/:slug", admin.uploadHeader);
-router.post("/admin/upload-image/:slug", admin.uploadImages);
-router.post("/admin/delete-image/:slug", admin.deleteImage);
-/*create superadmin*/
-router.get("/admin/create", admin.createSuperadmin);
-
-router.get("/admin", admin.isAdminLoggedIn, admin.getAllListings);
-
-router.get("/admin/logout", admin.isAdminLoggedIn, admin.signout);
-
-router.get("/admin/login", admin.redirectIfLoggedIn, admin.getSignIn);
-router.post("/admin/login", admin.postSignIn);
-
-router.get("/admin/algolia", admin.addListingtoAlgolia);
-router.get("/admin/listings", admin.isAdminLoggedIn, admin.getAllListings);
-router.get(
-  "/admin/delete-listing/:listing",
-  admin.isAdminLoggedIn,
-  admin.DeleteListing
-);
-
-router.post(
-  "/admin/populate",
-  admin.isAdminLoggedIn,
-  admin.addListingfromGoogle,
-  admin.addListingtodb
-);
-// router.get(
-//   "/admin/populate-listings",
-//   admin.isAdminLoggedIn,
-//   admin.addListingfromGoogle,
-//   admin.addListingtodb
-// );
-
-/*router.get('/row-search', (req, res) => {
-  res.render('row-search');
-})*/
 module.exports = router;

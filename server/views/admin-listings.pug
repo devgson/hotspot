@@ -1,7 +1,7 @@
 extends admin-layout
 
 block content
-  include partials/admin-nav.pug  
+  include partials/admin-nav.pug
   .content-wrapper
     .container-fluid
       // Breadcrumbs
@@ -11,8 +11,9 @@ block content
         li.breadcrumb-item.active Listings
       .box_general
         .header_box
-          h2.d-inline-block Listings
-          .filter
+          h2.d-inline-block Available Listings:
+            b   #{listings.length}
+          //.filter
             select.selectbox(name='orderby')
               option(value='Any time') Any time
               option(value='Latest') Latest
@@ -29,7 +30,7 @@ block content
                   p
                     | #{listing.description}
                   p
-                    a.btn_1.gray(href=`/listing/${listing.slug}`)
+                    a.btn_1.gray(href=`/listing/${listing.slug}` target="blank")
                       i.fa.fa-fw.fa-eye
                       |  View Listing
                   ul.buttons

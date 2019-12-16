@@ -12,45 +12,63 @@ block content
           a(href='#') Dashboard
         li.breadcrumb-item.active Analytics
       .row
-        each field in Object.values(bigGuys)
-          .col-md-4.col-lg-4
+        if trafficSource
+          .col-md-3.col-lg-3
             .card.mb-3
               .card-header
                 i.fa.fa-fw.fa-eye
-                |   #{field.header}
+                |   #{trafficSource.header}
               .card-body
-                if field.listings
-                  ul.links(style="padding-left : 1em; text-align : left")
-                    each listing in field.listings
-                      - const slashIndex = listing[0].lastIndexOf("/");
-                      - const getPathName = slashIndex > 0 ? listing[0].slice(slashIndex + 1) : "Index";
-                      li(style="font-size : 1rem")
-                        a(target="blank" href=listing[0])= getPathName[0].toUpperCase() + getPathName.slice(1)
-                        span  : #{listing[1]} visits
-                if field.browsers
-                  ul.links(style="padding-left : 1em; text-align : left")
-                    each browser in field.browsers
-                      li(style="font-size : 1rem")
-                        span= `${browser[0]} : ${browser[1]} visits`
-                if field.sources
-                  ul.links(style="padding-left : 1em; text-align : left")
-                    each source in field.sources
-                      li(style="font-size : 1rem")
-                        span= `${source[0]} : ${source[1]}`
-              .card-footer= field.name
+                ul.links(style="padding-left : 1em; text-align : left")
+                  each source in trafficSource.sources
+                    li(style="font-size : 1rem")
+                      span= `${source[0]} : ${source[1]}`
+              .card-footer= trafficSource.name
         each field in Object.values(data)
           .col-md-3.col-lg-3
             .card.mb-3
-              .card-header 
+              .card-header
                 i.fa.fa-fw.fa-eye
                 if field.listings
                   |   Top Listings
-                else 
+                else
                   |   #{field.header}
               .card-body.text-center
                 if field.views
                   h1= field.views
               .card-footer= field.name
+      .row
+        if topListings
+          .col-md-8.col-lg-8
+            table.table
+              thead.thead-dark
+                tr
+                  th(scope="col") #
+                  th Listing
+                  th Number of Visits
+              tbody
+                each listing,index in topListings.listings
+                  - const slashIndex = listing[0].lastIndexOf("/");
+                  - const getPathName = slashIndex > 0 ? listing[0].slice(slashIndex + 1) : "Index";
+                  tr
+                    th(scope="row")= index + 1
+                    td
+                      a(href=listing[0])= getPathName[0].toUpperCase() + getPathName.slice(1)
+                    td #{listing[1]} visits
+        if topBrowsers
+          .col-md-4.col-lg-4
+            table.table
+              thead.thead-dark
+                tr
+                  th(scope="col") #
+                  th Browsers
+                  th Number of Visits
+              tbody
+                each browser,index in topBrowsers.browsers
+                  tr
+                    th(scope="row")= index + 1
+                    td= browser[0]
+                    td #{browser[1]} visits
   include partials/admin-footer.pug
   block append scripts
     //script(src="/admin_section/vendor/dropzone/dropzone.js")

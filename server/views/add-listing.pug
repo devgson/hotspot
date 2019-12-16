@@ -7,7 +7,10 @@ block content
   include partials/admin-nav.pug
   .content-wrapper
     .container-fluid
-      include partials/bread-crumb.pug
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='/admin/dashboard') Dashboard
+        li.breadcrumb-item.active Add listing
       //- form(action=`/admin/upload-image` id="myImage" class="dropzone dz-clickable primary-dropzone" method="post")
         .dz-default.dz-message
           span Drag and drop
@@ -75,12 +78,10 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Category
-                .styled-select
-                  select(name="category" required value=listing.category)
-                    option Hotel
-                    option Shops
-                    option Restaurant
-                    option Bar
+                input.form-control(name='category' type="text" list="categories" required value=listing.category)
+                datalist#categories
+                  each category in categories
+                    option= category
           .row
             .col-md-6
               .form-group
@@ -118,7 +119,7 @@ block content
               .form-group
                 label Twitter link (Optional)
                 input.form-control(type='text' name='social_media[twitter]')
-          .row
+          //.row
             .col-md-12
               .form-group
                 label Photos

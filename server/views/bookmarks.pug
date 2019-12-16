@@ -6,41 +6,59 @@ block content
     
     .sub_header_in.mt-0.sticky_header
       .container
-        h1 Bookmarks
+        h5.text-light.text-center Listings Bookmarked : #[b #{listings.length}]
       // /container
     // /sub_header
     main
       .container.margin_60_35
         .row
-          if all_listings.length
-            each listing in all_listings
+          if listings.length
+            each listing in listings
               .col-xl-4.col-lg-6.col-md-6
                 .strip.grid
                   figure
-                    a.wish_bt.liked(href='#0')
-                    a(href='/listings/#{listing.slug}')
+                    a.wish_bt.liked
+                    a(href=`/listing/${listing.slug}`)
                       img.img-fluid(src=listing.images && listing.images.length > 0 ? listing.images[0].secure_url : '/img/blog-3.jpg', alt='')
                       .read_more
                         span Read more
-                    small Restaurant
+                    small #{listing.category}
                   .wrapper
                     h3
-                      a(href='detail.html') #{listing.title}
-                    small #{listing.info ?eval(JSON.stringify(listing.info.address)) : ''}
-                    p
-                      | #{listing.description ? listing.description : ''}
-                    a.address(href=`https://www.google.com/maps/dir//${listing.info ?eval(JSON.stringify(listing.info.address)) : ''}`, target='_blank') Get directions
+                      a(href=`/listing/${listing.slug}`) #{listing.title}
+                    //small #{listing.info ? listing.info.address : ''}
+                    p #{listing.description ? `${listing.description.slice(0,25)}...` : ''}
+                    a.address(href=`https://maps.google.com/?q=${listing.info.address || ''}`, target='_blank') Get directions
                   ul
                     li
-                      span.loc_open Now Open
+                      if listing.info.price
+                      - for( var i = 0 ; i < listing.info.price; i++){
+                        span(style="color:#32a067") $
+                      - }
                     li
                       .score
-                        span
-                          | Superb
-                          em 350 Reviews
-                        strong 8.9
+                        if listing.reviews.length > 0
+                          - const getRating = listing.reviews.map( ratings => ratings.rating).reduce((acc,val) => acc + val);
+                          - const getAverage = ((getRating * 2)/listing.reviews.length).toFixed(1);
+                          - const review = parseInt(getAverage);
+                          - let className = "";
+                          span
+                            if review <= 3
+                              - className = "poor";
+                              | Poor
+                            else if review > 3 && review <= 5
+                              - className = "fair";
+                              | Fair
+                            else if review > 5 && review <= 7
+                              - className = "good";
+                              | Good
+                            else if review > 7 && review <= 10
+                              - className = "superb";
+                              | Superb
+                            em #{listing.reviews.length} Reviews
+                          strong(class=className) #{getAverage}
           // /strip grid
-      .bg_color_1
+      //.bg_color_1
         .container.margin_60_35
           .row
             .col-lg-4

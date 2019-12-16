@@ -135,7 +135,6 @@ block content
                   a.address(href=`https://maps.google.com/?q=${listing.info.address || ''}`, target='_blank') Get directions
                 ul
                   li
-                    //- listing.price = 3
                     if listing.info.price
                       - for( var i = 0 ; i < listing.info.price; i++){
                         span(style="color:#32a067") $

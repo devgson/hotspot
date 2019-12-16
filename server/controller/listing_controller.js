@@ -70,6 +70,7 @@ exports.getListing = async (req, res) => {
     res.send(error.message);
   }
 };
+
 exports.filterSearch = async (req, res) => {
   var rating_int;
   var query_selector = {};
@@ -99,8 +100,8 @@ exports.filterSearch = async (req, res) => {
     filter_count = [...filter_details];
     filter_count.push({ $count: "total" });
   }
-  console.log("count ", filter_details);
-  console.log("count ", filter_count);
+  //console.log("count ", filter_details);
+  //console.log("count ", filter_count);
   req.session.query_selector = query_selector;
   // var filter_listings = await Listing.aggregate();
   const [results, itemCount] = await Promise.all([
@@ -111,10 +112,10 @@ exports.filterSearch = async (req, res) => {
     Listing.aggregate(filter_count)
   ]);
   const pageno = req.query.page || 1;
-  console.log("count is ", itemCount[0]);
+  //console.log("count is ", itemCount[0]);
   var item_count_total = itemCount.length > 0 ? itemCount[0].total : 0;
   const pageCount = Math.ceil(item_count_total / req.query.limit);
-  console.log("count is ", item_count_total);
+  //console.log("count is ", item_count_total);
   res.render("category-view", {
     listings: results,
     pageCount,
@@ -143,8 +144,8 @@ exports.getFilters = async (req, res) => {
     filter_details.push({ $match: req.session.query_selector });
     filter_count = [...filter_details];
     filter_count.push({ $count: "total" });
-    console.log("count ", filter_details);
-    console.log("count ", filter_count);
+    //console.log("count ", filter_details);
+    //console.log("count ", filter_count);
   }
   var categories = await Listing.getCategoryList();
   const [results, itemCount] = await Promise.all([
@@ -155,10 +156,10 @@ exports.getFilters = async (req, res) => {
     Listing.aggregate(filter_count)
   ]);
 
-  console.log("results are ", req.session.query_selector);
+  //console.log("results are ", req.session.query_selector);
   const pageno = req.query.page || 1;
   const pageCount = Math.ceil(itemCount[0].total / req.query.limit);
-  console.log("count is ", itemCount[0].total);
+  //console.log("count is ", itemCount[0].total);
   res.render("category-view", {
     listings: results,
     pageCount,
@@ -169,6 +170,7 @@ exports.getFilters = async (req, res) => {
     pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
   });
 };
+
 exports.findListings = async (req, res) => {
   try {
     console.log(req.body);
@@ -237,7 +239,7 @@ exports.getHomeListings = async (req, res) => {
       }
     };
 
-    console.log(query);
+    //console.log(query);
 
     var categories = await Listing.getCategoryList();
     const [results, itemCount] = await Promise.all([
@@ -300,24 +302,6 @@ exports.getfindListings = async (req, res) => {
   }
 };
 
-exports.getBookmarks = async (req, res) => {
-  try {
-    const user = res.locals.currentUser;
-    // const user_bookmarks = user.bookmarks;
-    var all_listings = [];
-    if (user.bookmarks) {
-      const user_bookmarks = user.bookmarks;
-      for (var i = 0; i < user_bookmarks.length; i++) {
-        const listing = await Listing.findOne({ _id: user_bookmarks[i] });
-        all_listings.push(listing);
-        //Do something
-      }
-    }
-    res.render("bookmarks", { all_listings });
-  } catch (e) {
-    res.send(e.message);
-  }
-};
 exports.getCategory = async (req, res) => {
   try {
     const [results, itemCount] = await Promise.all([
@@ -351,12 +335,12 @@ exports.getCategory = async (req, res) => {
 
 exports.updateUserListing = async (req, res) => {
   var listing = await Listing.findOne({ slug: req.params.slug });
-  console.log("slug is ", req.params.slug);
+  //console.log("slug is ", req.params.slug);
   res.render("update-listing", { listing });
 };
 
 exports.updateListing = async (req, res) => {
-  console.log("user is", res.locals.user);
+  //console.log("user is", res.locals.user);
   var listing = await Listing.findOneAndUpdate(
     { slug: req.params.slug },
     req.body

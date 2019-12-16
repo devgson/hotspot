@@ -23,15 +23,14 @@ block content
             a.active(href='#description') Description
           li
             a(href='#reviews') Reviews
-          if currentUser && currentUser.bookmarks
-            - const changeIdToString = currentUser.bookmarks.map( _id => _id.toString() );
+          if currentUser
+            - const changeIdToString = currentUser.bookmarks.map( bookmark => bookmark._id.toString() );
             - const userBookmarked = changeIdToString.includes( listing._id.toString() );
             - const formClass = userBookmarked ? 'btn_bookmark_selected' : '';
             li.bookmark.d-block.float-right(class=(formClass) name="bookmarks" style="margin-left:auto")
-              form(action=`/api/bookmark/${listing._id}` method="POST")
-                a.icon-bookmark-2()
-                button(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
-
+              a.icon-bookmark-2()
+              button#bookmark(type="submit" style="cursor:pointer; color: white;background: transparent; border: 0px;") #{userBookmarked ? "Bookmarked" : 'Bookmark'}
+          
     .container.margin_60_35
       .row
         .col-lg-8
@@ -57,7 +56,7 @@ block content
                     li.ml-1.list-inline-item= tag
             // /row
             .opening
-              .ribbon
+              //.ribbon
                 span.open Now Open
               .test
                 h3.icon_clock_alt.mr-2.d-inline-block
@@ -226,12 +225,10 @@ block content
         aside#sidebar.col-lg-4
           if currentUser
             .box_detail.booking
-              form(action=`/verify` target="_blank" method="POST")
-                .form-group
-                  p Are you affiliated with this Listing?, Please click below to claim it.
-                .form-group
-                  input(type="text" value=`${listing._id}` name="listingid" hidden)
-                  input.btn_1(type='submit', value='Claim')
+              .form-group
+                p Are you affiliated with this Listing?, Please click below to claim it.
+              .form-group
+                a.btn_1(href=`/verify/${listing._id}` target="_blank") Claim
           .box_detail.booking
             .price
               h5.d-inline Contact us
@@ -285,6 +282,21 @@ block content
 block append scripts
   script(src='/js/analytics.js')
   script.
+    $('#bookmark').on('click', function(e){
+      const isBookmarked = $('.bookmark').hasClass('btn_bookmark_selected')
+      $.ajax({
+        url : '/api/bookmark/#{listing._id}',
+        method : 'post',
+        success : function(){
+          if(isBookmarked){
+            $('.bookmark').removeClass("btn_bookmark_selected")
+            $('#bookmark').text('Bookmark');
+          }else{
+            $('.bookmark').addClass("btn_bookmark_selected")
+            $('#bookmark').text('Bookmarked');
+          }
+      }})
+    })
     //console.log(magnificPopup)
     $('.magnific-gallery').magnificPopup({
       type: 'image',
@@ -292,7 +304,7 @@ block append scripts
       gallery : { enabled : true },
       callbacks: {
         beforeOpen : function(){
-          console.log("Here")
+          //console.log("Here")
         }
       }  
     });

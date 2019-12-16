@@ -4,6 +4,7 @@ const Admin = require("../models/admin_model");
 const Verify = require("../models/verify_user_model");
 const fetch = require("node-fetch");
 const helper = require("../helper/helper");
+const axios = require('axios');
 // const algoliasearch = require("algoliasearch");
 const { google } = require("googleapis");
 
@@ -267,11 +268,9 @@ exports.dashboard = async (req, res, next) => {
       pageViewsTrafficSource()
     ]);
     res.render("dashboard", {
-      bigGuys: {
-        browsers,
-        listings,
-        trafficSource
-      },
+      topListings: listings,
+      topBrowsers: browsers,
+      trafficSource,
       data: {
         pageviewsInLast30Days,
         pageviews,
@@ -305,9 +304,13 @@ exports.isAdminLoggedIn = (req, res, next) => {
 
 exports.getAddListing = async (req, res, next) => {
   try {
+    const categories = await Listing.find({},{ category : 1});
+    const listingCategories = categories.map(listing => listing.category)
+    const filteredCategories = listingCategories.filter((v,i) => listingCategories.indexOf(v) === i)
     res.render("add-listing", {
       title: "Add Listing",
-      listing: {}
+      listing: {},
+      categories: filteredCategories
     });
   } catch (error) {
     res.send(error.message);
@@ -319,9 +322,13 @@ exports.getEditListing = async (req, res, next) => {
     const listing = await Listing.findOne({
       slug: req.params.listing
     });
+    const categories = await Listing.find({},{ category : 1});
+    const listingCategories = categories.map(listing => listing.category)
+    const filteredCategories = listingCategories.filter((v,i) => listingCategories.indexOf(v) === i)
     res.render("edit-listing", {
       listing,
-      title: "Edit Listing"
+      title: "Edit Listing",
+      categories: filteredCategories
     });
   } catch (error) {
     res.send("error is ", error.message);
@@ -357,13 +364,14 @@ exports.postAddListing = async (req, res, next) => {
       req.body.info.address,
       req.body.info.state
     );
-    if (typeof coordinates !== "object") throw new Error(error);
-    req.body.info.coordinates.lat = coordinates.lat;
-    req.body.info.coordinates.lon = coordinates.lon;
-    req.body.info.address = coordinates.formatedAddress;
+    // if (typeof coordinates !== "object") throw new Error(coordinates);
+    req.body.info.coordinates = {};
+    req.body.info.coordinates.lat = 0 // coordinates.lat
+    req.body.info.coordinates.lon = 0 // coordinates.lon
+    req.body.info.address = `${req.body.info.address},${req.body.info.state},Nigeria`; // coordinates.formatedAddress
     req.body.tags = req.body.tags.split(",");
-    await new Listing(req.body).save();
-    res.redirect("/admin/listings");
+    const listing = await new Listing(req.body).save();
+    res.redirect(`/admin/edit-listing/${listing.slug}`);
   } catch (error) {
     res.send(error.message);
   }
@@ -479,7 +487,16 @@ exports.addListingfromGoogle = async (req, res, next) => {
         : "false";
     }
     req.listings = [...json];
+    //const oneListing = req.listings[0].photos[0];
+    //const newUrl = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${oneListing.photo_reference}
+    //&maxwidth=400&key=${process.env.GOOGLE_KEY}`
     console.log("found listing ", req.listings.length);
+    //const response = await axios.get(newUrl)
+    //console.log(response);
+    //const host = response.req.socket._host;
+    //const path = response.req.path;
+    //console.log(host, path);
+    //res.send("Done")
     next();
   } catch (error) {
     res.send(error.message);
@@ -489,7 +506,7 @@ exports.addListingfromGoogle = async (req, res, next) => {
 exports.signout = async (req, res, next) => {
   try {
     await req.session.destroy();
-    res.redirect("/admin");
+    res.redirect("/admin/login");
   } catch (error) {
     res.send(error.message);
   }
@@ -513,13 +530,13 @@ exports.postSignIn = async (req, res, next) => {
       const isValidPassword = await admin.validatePassword(password);
       if (isValidPassword) {
         req.session.adminId = admin._id;
-        return res.redirect("/admin/listings");
+        return res.redirect("/admin/dashboard");
       } else {
-        req.flash("signinError", "Wrong Email Address or Password");
+        req.flash("signInError", "Wrong Email Address or Password");
         res.redirect("back");
       }
     } else {
-      req.flash("signinError", "Wrong Email Address or Password");
+      req.flash("signInError", "Invalid Email Address or Password");
       res.redirect("back");
     }
   } catch (error) {
@@ -532,8 +549,9 @@ exports.createSuperadmin = async (req, res, next) => {
     let body = {};
     body.email = "admin@hotspot.com";
     body.password = "password";
-    const adminUser = await new Admin(body).save();
-    res.send("saved");
+    await new Admin(body).save();
+    req.flash("success", "New Admin has been created");
+    res.redirect("/admin/login");
   } catch (error) {
     res.send(error.message);
   }
@@ -688,27 +706,16 @@ exports.getVerifiedListing = async (req, res, next) => {
 
 exports.updateVerification = async (req, res, next) => {
   try {
-    var verificationid = req.params.verificationid;
-    var verify = await Verify.findByIdAndUpdate(verificationid, req.body);
-
-    var listingid = verify.listing_id;
-    var owner_id = verify.owner;
-    let user = await User.findById(owner_id);
-    var listing_exists = user.listings.filter(x =>
-      x.listing_id.toString() === listingid.toString() ? (x.status = true) : ""
-    );
-    console.log("listing ", listing_exists);
-    if (listing_exists != undefined && listing_exists.length > 0) {
-      console.log("true");
-      await User.findByIdAndUpdate(user._id, user);
-      req.flash("successVerified", "You have successfully verified");
-      res.redirect("back");
-    } else {
-      req.flash(
-        "errorverifying",
-        "There was an error verifying. Try again later"
-      );
-      res.redirect("back");
+    const verificationId = req.params.verificationId;
+    const status = req.params.status;
+    if(status === "verify" || "deny"){
+      const newStatus = status === "verify" ? "verified" : "denied";
+      await Verify.findByIdAndUpdate(verificationId, {
+        date_verified: new Date(),
+        verification_status: newStatus
+      });
+      req.flash("successVerified", "Listing has been successfully claimed by the user");
+      return res.redirect("/admin/verification");
     }
   } catch (e) {
     console.log(e.message);

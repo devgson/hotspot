@@ -3,19 +3,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const VerifiedListingSchema = new Schema({
-  owner_first_name: {
-    type: String
-  },
-  owner_last_name: {
-    type: String
-  },
-  title: {
-    type: String
-  },
-  listing_image: {
-    type: String
-  },
   listing_id: {
+    type: Schema.Types.ObjectId,
+    ref: "listing"
+  },
+  listing: {
     type: Schema.Types.ObjectId,
     ref: "listing"
   },
@@ -24,7 +16,7 @@ const VerifiedListingSchema = new Schema({
     type: Date
   },
   verification_status: String,
-  owner: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "user"
   }
@@ -32,11 +24,13 @@ const VerifiedListingSchema = new Schema({
 
 VerifiedListingSchema.pre("find", function(next) {
   this.populate("user");
+  this.populate("listing");
   next();
 });
 
 VerifiedListingSchema.pre("findOne", function(next) {
   this.populate("user");
+  this.populate("listing");
   next();
 });
 

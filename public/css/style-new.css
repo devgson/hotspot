@@ -1512,7 +1512,7 @@ ul#additional_links li:after {
 
 .hero_single.version_2 {
   height: 620px;
-  background: #222 url(../img/lekki-ikoyi-bridge.jpg) center center no-repeat;
+  background: #222 url(../img/Lekki-Ikoyi-Link-Bridge.jpg) center center no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -3196,6 +3196,10 @@ a.box_feat h3 {
   display: inline-block;
 }
 
+.score small.poor {
+  background-color: #c70505;
+}
+
 .score strong.poor {
   background-color: #c70505;
   color: #fff;
@@ -4705,9 +4709,8 @@ section#reviews {
 
 #review_summary {
   text-align: center;
-  background-color: #32a067;
-  color: #fff;
->>>>>>> 41c4dbfc6a119d5ebd10093f441849b984f720e1
+  /*background-color: #32a067;*/
+  /*color: #fff;*/
   padding: 20px 10px;
   -webkit-border-radius: 3px 3px 3px 0;
   -moz-border-radius: 3px 3px 3px 0;
@@ -8676,7 +8679,7 @@ a.social_bt.google:before {
 
 .bookmark {
   padding: 0.3em;
-  border-radius: 5em;
+  border-radius: 4px;
   border: 1px solid #fff;
   background-color: transparent;
 }

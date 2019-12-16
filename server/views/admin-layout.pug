@@ -5,11 +5,11 @@ html(lang='en')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     meta(name='description', content='')
-    meta(name='author', content='Ansonika')
-    title Hotspot
+    meta(name='author', content='Hotspot')
+    title Admin Dashboard
     // Favicons
     block stylesheets
-      link(rel='shortcut icon', href='/admin_section/img/favicon.ico', type='image/x-icon')
+      link(rel='shortcut icon', href='/img/flame.png', type='image/x-icon')
       link(rel='apple-touch-icon', type='image/x-icon', href='/admin_section/img/apple-touch-icon-57x57-precomposed.png')
       link(rel='apple-touch-icon', type='image/x-icon', sizes='72x72', href='/admin_section/img/apple-touch-icon-72x72-precomposed.png')
       link(rel='apple-touch-icon', type='image/x-icon', sizes='114x114', href='/admin_section/img/apple-touch-icon-114x114-precomposed.png')
@@ -28,8 +28,8 @@ html(lang='en')
       link(href='/admin_section/css/custom.css', rel='stylesheet')
       // WYSIWYG Editor
       link(rel='stylesheet', href='/admin_section/js/editor/summernote-bs4.css')
- 
-  body#page-top.fixed-nav.sticky-footer 
+
+  body#page-top.fixed-nav.sticky-footer
     block content
 
   block scripts
@@ -53,7 +53,7 @@ html(lang='en')
         $('input.date-pick').datepicker();
       // WYSIWYG Editor
       //- script(src='/admin_section/js/editor/summernote-bs4.min.js')
-      
+
 #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
   .modal-dialog(role='document')
     .modal-content

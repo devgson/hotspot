@@ -54,36 +54,10 @@ const UserSchema = new Schema({
   photo: {
     type: String
   },
-  listings: [
+  bookmarks: [
     {
-      listing_id: {
-        type: String
-      },
-      title: {
-        type: String
-      },
-      category: {
-        type: String
-      },
-      listing_image: {
-        type: String
-      },
-      status: {
-        type: String
-      },
-      listing_slug: {
-        type: String
-      },
-      bookmarks: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "listing"
-        }
-      ],
-      createdAt: {
-        type: Date,
-        default: Date.now
-      }
+      type: Schema.Types.ObjectId,
+      ref: "listing"
     }
   ]
 });
@@ -97,6 +71,16 @@ UserSchema.pre("save", async function(next) {
   } else {
     next();
   }
+});
+
+UserSchema.pre("find", function(next) {
+  this.populate("bookmarks");
+  next();
+});
+
+UserSchema.pre("findOne", function(next) {
+  this.populate("bookmarks");
+  next();
 });
 
 UserSchema.methods.hashNewPassword = async function(password) {

@@ -8,11 +8,11 @@ block content
       ol.breadcrumb
         li.breadcrumb-item
           a(href='#') Dashboard
-        li.breadcrumb-item.active Verify Listings
+        li.breadcrumb-item.active Claimed Listings
       .box_general
         .header_box
-          h2.d-inline-block Listings
-          .filter
+          h2.d-inline-block Claimed Listings
+          //.filter
             select.selectbox(name='orderby')
               option(value='Any time') Any time
               option(value='Latest') Latest
@@ -21,25 +21,20 @@ block content
           ul
             if verifications
               each verification in verifications
-                li
+                li.pb-3
                   figure
-                    img(src= verification.listing_image ? verification.listing_image : '/img/blog-3.jpg', alt='')
-                  //- small #{listing.category}
-                  h4 #{verification.title} 
-                    i(class=`${verification.verification_status === 'true' ? "approved" : "cancel"}`) #{verification.verification_status === 'true' ? "approved" : "unapproved"}
-                    
-
+                    img(src= verification.listing.images[0] ? verification.listing.images[0] : '/img/blog-3.jpg', alt='')
+                  h4 #{verification.listing.title} 
+                    i(class=`${verification.verification_status === 'verified' ? "approved" : "cancel"}`) #{verification.verification_status}
                   p
-                    a.btn_1.gray(href=`/admin/verification/${verification._id}`)
-                      i.fa.fa-fw.fa-eye
-                      |  View Listing
+
                   ul.buttons
                     li.mr-2
-                      a.btn_1.red.delete(href=`/verification/delete-verification/${verification._id}` onclick="return confirm('Are you sure?')")
-                        i.fa.fa-fw.fa-trash
-                        | Delete Listing
+                      a.btn_1.gray(href=`/admin/verification/${verification._id}`)
+                        i.fa.fa-fw.fa-eye
+                        | Claim Details
           // /box_general
-      nav(aria-label='...')
+      //nav(aria-label='...')
         ul.pagination.pagination-sm.add_bottom_30
           li.page-item.disabled
             a.page-link(href='#', tabindex='-1') Previous

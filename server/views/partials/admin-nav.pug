@@ -1,6 +1,6 @@
 nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
   a.navbar-brand(href='/')
-    h3.text-light Hotspot
+    h3.text-light Admin Dashboard
   button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarResponsive.collapse.navbar-collapse
@@ -8,7 +8,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
       li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
         a.nav-link(href='/admin/dashboard')
           i.fa.fa-fw.fa-dashboard
-          span.nav-link-text  Dashboard
+          span.nav-link-text  Analytics
       li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
         a.nav-link(href='/admin/listings')
           i.fa.fa-fw.fa-list
@@ -16,12 +16,12 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
       li.nav-item(data-toggle='tooltip', data-placement='right', title='Messages')
         a.nav-link(href='/admin/verification')
           i.fa.fa-fw.fa-envelope-open
-          span.nav-link-text Verification Messages
+          span.nav-link-text  Verification Messages
       //li.nav-item(data-toggle='tooltip', data-placement='right', title='', data-original-title='Bookings')
         a.nav-link(href='bookings.html')
           i.fa.fa-fw.fa-calendar-check-o
           span.nav-link-text
-            | Bookings 
+            | Bookings
             span.badge.badge-pill.badge-primary 6 New
       //li.nav-item(data-toggle='tooltip', data-placement='right', title='My listings')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseMylistings', data-parent='#mylistings')
@@ -30,15 +30,15 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
         ul#collapseMylistings.sidenav-second-level.collapse
           li
             a(href='listings.html')
-              | Pending 
+              | Pending
               span.badge.badge-pill.badge-primary 6
           li
             a(href='listings.html')
-              | Active 
+              | Active
               span.badge.badge-pill.badge-success 6
           li
             a(href='listings.html')
-              | Expired 
+              | Expired
               span.badge.badge-pill.badge-danger 6
       //li.nav-item(data-toggle='tooltip', data-placement='right', title='Reviews')
         a.nav-link(href='reviews.html')
@@ -100,7 +100,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
               | I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.
           .dropdown-divider
           a.dropdown-item.small(href='#') View all messages
-      li.nav-item.dropdown
+      //li.nav-item.dropdown
         a#alertsDropdown.nav-link.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-fw.fa-bell
           span.d-lg-none
@@ -136,7 +136,7 @@ nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-default.fixed-top
             .dropdown-message.small This is an automated server response message. All systems are online.
           .dropdown-divider
           a.dropdown-item.small(href='#') View all alerts
-      li.nav-item
+      //li.nav-item
         form.form-inline.my-2.my-lg-0.mr-lg-2
           .input-group
             input.form-control.search-top(type='text', placeholder='Search for...')

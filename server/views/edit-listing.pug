@@ -7,7 +7,10 @@ block content
   include partials/admin-nav.pug
   .content-wrapper
     .container-fluid
-      include partials/bread-crumb.pug
+      ol.breadcrumb
+        li.breadcrumb-item
+          a(href='/admin/dashboard') Dashboard
+        li.breadcrumb-item.active Edit listing
       if listing.images && listing.images.length > 0
         .box_general.padding_bottom
           .header_box.version_2
@@ -76,12 +79,11 @@ block content
               .form-group
                 bold(style="color:red") * 
                 label Category
-                .styled-select
-                  select(name="category" required value=listing.category)
-                    option Hotel
-                    option Shops
-                    option Restaurant
-                    option Bar
+                input.form-control(type="text" list="categories" required value=listing.category)
+                datalist#categories
+                  datalist#categories
+                  each category in categories
+                    option= category
           .row
             .col-md-6
               .form-group

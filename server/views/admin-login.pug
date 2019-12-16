@@ -1,15 +1,14 @@
 doctype html
 html(lang='en')
-  // Mirrored from www.ansonika.com/sparker/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 27 Nov 2018 13:12:13 GMT
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    meta(name='description', content='SPARKER - Premium directory and listings template by Ansonika.')
-    meta(name='author', content='Ansonika')
-    title SPARKER | Premium directory and listings template by Ansonika.
+    meta(name='description', content='Hotspot')
+    meta(name='author', content='Hotspot')
+    title Hotspot
     // Favicons
-    link(rel='shortcut icon', href='/img/favicon.ico', type='image/x-icon')
+    link(rel='shortcut icon', href='/img/flame.png', type='image/x-icon')
     link(rel='apple-touch-icon', type='image/x-icon', href='/img/apple-touch-icon-57x57-precomposed.png')
     link(rel='apple-touch-icon', type='image/x-icon', sizes='72x72', href='/img/apple-touch-icon-72x72-precomposed.png')
     link(rel='apple-touch-icon', type='image/x-icon', sizes='114x114', href='/img/apple-touch-icon-114x114-precomposed.png')
@@ -30,18 +29,26 @@ html(lang='en')
       div.d-flex.align-items-center
         aside
           figure
-            a(href='/index-2.html')
-              img.logo_sticky(src='/img/logo_sticky.svg', width='165', height='35', alt='')
+            a(href='/', title='Admin')
+              h3(style="vertical-align:middle; color:black").d-inline-block.mt-2.mb-0.logo-text.profile-custom Admin
           form(action="/admin/login" method= "post")
+            if flashes.signInError
+              .form-group
+                .alert.alert-danger.alert-dismissible.fade.show
+                  p.d-inline-block.mb-0 
+                    span.icon-cancel-circled2
+                      | #{flashes.signInError}
+                  button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                    span(aria-hidden="true") &times;
             .form-group
               label Email
-              input#email.form-control(type='email', name='email')
+              input#email.form-control(type='email' required name='email')
               i.icon_mail_alt
             .form-group
               label Password
-              input#password.form-control(type='password', name='password', value='')
+              input#password.form-control(type='password' required name='password', value='')
               i.icon_lock_alt
-            .clearfix.add_bottom_30
+            //.clearfix.add_bottom_30
               .checkboxes.float-left
                 label.container_check
                   | Remember me
@@ -50,7 +57,7 @@ html(lang='en')
               .float-right.mt-1
                 a#forgot(href='/javascript:void(0);') Forgot Password?
             button.btn_1.rounded.full-width(type='submit') Login Now
-          .copy © 2018 Sparker
+          .copy © 2018 Hotspot
     // /login
     // COMMON SCRIPTS
     script(src='/js/common_scripts.js')
